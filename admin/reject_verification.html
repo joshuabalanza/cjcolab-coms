@@ -1,0 +1,41 @@
+<?php
+
+session_name("admin_session");
+session_start();
+
+if (!isset($_SESSION['aid'])) {
+    header('Location: dashboard.php'); // Redirect to the admin login page
+    exit();
+}
+
+if (isset($_GET['id'])) {
+    $verification_id = $_GET['id'];
+
+    // Include the database connection file
+    require('../includes/dbconnection.php');
+
+    // Query to update the verification status as rejected
+    $update_query = "UPDATE user_verification SET status = 'rejected' WHERE verification_id = $verification_id";
+
+    if (mysqli_query($con, $update_query)) {
+
+        // Insert a notification for the user
+        $notificationMessage = 'Your verification has been rejected.';
+        $insertNotificationQuery = "INSERT INTO notifications (user_id, message) VALUES ('$uid', '$notificationMessage')";
+        mysqli_query($con, $insertNotificationQuery);
+
+
+
+
+        $_SESSION['notifications'][] = 'Verification rejected.';
+        // Remove the user from the notifications array
+        $index = array_search('Verification rejected.', $_SESSION['notifications']);
+        unset($_SESSION['notifications'][$index]);
+        header('Location: user_verify.php');
+        exit();
+    } else {
+        $_SESSION['notifications'][] = 'Failed to reject verification.';
+        header('Location: user_verify.php');
+        exit();
+    }
+}

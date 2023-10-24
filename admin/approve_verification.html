@@ -1,0 +1,45 @@
+<?php
+
+session_name("admin_session");
+session_start();
+
+if (!isset($_SESSION['aid'])) {
+    header('Location: dashboard.php'); // Redirect to the admin login page
+    exit();
+}
+
+if (isset($_GET['id'])) {
+    $verification_id = $_GET['id'];
+
+    // Include the database connection file
+    require('../includes/dbconnection.php');
+
+    // Query to update the verification status as approved
+    $update_query = "UPDATE user_verification SET status = 'approved' WHERE verification_id = $verification_id";
+
+    if (mysqli_query($con, $update_query)) {
+
+        $notificationMessage = 'Your verification has been approved.';
+
+        $insertNotificationQuery = "INSERT INTO notifications (user_id, message) VALUES ('$uid', '$notificationMessage')";
+        mysqli_query($con, $insertNotificationQuery);
+
+
+        $_SESSION['notifications'][] = 'Verification approved successfully.';
+
+
+        // Remove the user from the notifications array
+        // $index = array_search('Verification approved successfully.', $_SESSION['notifications']);
+        // unset($_SESSION['notifications'][$index]);
+
+        // Fetch the approved data
+        $approvedDataQuery = "SELECT first_name, last_name, address, gender, birthday FROM user_verification WHERE verification_id = $verification_id";
+        $approvedDataResult = mysqli_query($con, $approvedDataQuery);
+
+        if ($approvedDataResult && mysqli_num_rows($approvedDataResult) >
+0) { $approvedData = mysqli_fetch_assoc($approvedDataResult); // Update the user
+session with the approved data $_SESSION['first_name'] =
+$approvedData['first_name']; $_SESSION['last_name'] =
+$approvedData['last_name']; // Update other fields as needed } header('Location:
+user_verify.php'); exit(); } else { $_SESSION['notifications'][] = 'Failed to
+approve verification.'; header('Location: user_verify.php'); exit(); } }

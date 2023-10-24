@@ -1,0 +1,149 @@
+<?php
+session_name("admin_session");  // If you have an admin session
+session_start();
+
+// Check if the admin is logged in; redirect to the admin login page if not
+if (!isset($_SESSION['aid'])) {
+    header('Location: dashboard.php');  // Redirect to the admin login page
+    exit();
+
+}
+
+// Include the necessary database connection file
+require('../includes/dbconnection.php');
+
+// // Query to retrieve user verification submissions
+// $sql = "SELECT * FROM user_verification";
+// $result = mysqli_query($con, $sql);
+
+// Query to retrieve user verification submissions excluding approved and rejected records
+$sql = "SELECT * FROM user_verification WHERE status NOT IN ('approved', 'rejected')";
+$result = mysqli_query($con, $sql);
+
+
+
+?>
+<?php include('includes/header.php');
+
+// include('includes/nav.php');
+?>
+<div class="container">
+    <h2>User Verification Submissions</h2>
+    <?php
+    // Check for notifications and display them
+  // Check for and display notifications
+if (isset($_SESSION['notifications']) && !empty($_SESSION['notifications'])) {
+    echo '<div class="alert alert-success">';
+    foreach ($_SESSION['notifications'] as $notification) {
+        echo $notification . '<br>';
+    }
+    echo '</div>';
+
+    // Clear the notifications
+    $_SESSION['notifications'] = array();
+}
+
+?>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Submission ID</th>
+                <th>User ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Address</th>
+                <th>Gender</th>
+                <th>Birthday</th>
+                <th>Verification Image</th>
+                <th>Documents</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+        while ($row = mysqli_fetch_assoc($result)) {
+            $pdfFilePath = '../uploads/' . $row['document_filename'];
+
+            echo '</td>';
+            echo '<tr>';
+            echo '<td>' . $row['verification_id'] . '</td>';
+            echo '<td>' . $row['user_id'] . '</td>';
+            echo '<td>' . $row['first_name'] . '</td>';
+            echo '<td>' . $row['last_name'] . '</td>';
+            echo '<td>' . $row['address'] . '</td>';
+            echo '<td>' . $row['gender'] . '</td>';
+            echo '<td>' . $row['birthday'] . '</td>';
+
+            echo '<td><a href="#" onclick="openImageModal(\'../uploads/' . $row['image_filename'] . '\')">View Image</a></td>';
+            // //
+            // // echo '<td><a href="#" onclick="openDocumentModal(\'../uploads/' . $row['document_filename'] . '\')">View Document</a></td>';
+            // // echo '<td><a href="#" onclick="openDocumentModal(\'../uploads/' . $row['document_filename'] . '\')">View Document</a></td>';
+
+            echo '<td><a href="#" onclick="openDocumentModal(\'../uploads/' . $row['document_filename'] . '\')">View Document: ' . $row['document_filename'] . '</a></td>';
+            // Add buttons or links for admin actions (approve, reject, etc.)
+
+            echo '<td>';
+            echo '<a href="approve_verification.php?id=' . $row['verification_id'] . '">Approve</a>';
+            echo '<a href="reject_verification.php?id=' . $row['verification_id'] . '">Reject</a>';
+            echo '</td>';
+
+            // echo '<td>';
+            // echo '<a href="approve_verification.php?id=' . $row['verification_id'] . '">Approve</a>';
+            // echo '<a href="reject_verification.php?id=' . $row['verification_id'] . '">Reject</a>';
+            // echo '</td>';
+
+
+            echo '</tr>';
+
+
+        }
+?>
+        </tbody>
+    </table>
+</div>
+
+<!-- Image Modal -->
+<!-- Image Modal -->
+<div id="imageModal" class="modal">
+    <span class="close" id="imageClose">&times;</span>
+    <img class="modal-content" id="imageContent">
+</div>
+
+<!-- Document Modal -->
+<div id="documentModal" class="modal">
+    <span class="close" id="documentClose">&times;</span>
+    <iframe class="modal-content" id="documentContent"></iframe>
+</div>
+
+
+<script>
+    // Function to hide notifications after 3 seconds
+    function hideNotifications() {
+        setTimeout(function() {
+            var notifications = document.querySelector('.alert');
+            if (notifications) {
+                notifications.style.display = 'none';
+            }
+        }, 3000); // 3 seconds (3000 milliseconds)
+    }
+
+    // Call the hideNotifications function when the page loads
+    window.onload = function() {
+        hideNotifications();
+    };
+    function clearUserData() {
+        setTimeout(function() {
+            var userDataElements = document.querySelectorAll('.user-data');
+            for (var i = 0; i < userDataElements.length; i++) {
+                userDataElements[i].innerHTML = ''; // Clear the content of user data elements
+            }
+        }, 3000); // 3 seconds (3000 milliseconds)
+    }
+
+    // Call the clearUserData function when the page loads
+    window.onload = function() {
+        clearUserData();
+    };
+</script>
+
+<?php include('includes/footer.php')?>

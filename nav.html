@@ -1,0 +1,105 @@
+<!-- Start Navigation -->
+<nav class="navbar navbar-expand-sm navbar-light pl-5 fixed-top">
+    <a href="index.php" class="navbar-brand">COMS</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navigation" class="collapse navbar-collapse justify-content-end">
+        <ul class="navbar-nav pl-5">
+            <li class="nav-item">
+                <a href="index.php" class="nav-link">Home</a>
+            </li>
+            <li class="nav-item">
+                <a href="index.php" class="nav-link">About</a>
+            </li>
+            <li class="nav-item">
+                <a href="index.php" class="nav-link">Concourses</a>
+            </li>
+            <li class="nav-item">
+                <a href="index.php" class="nav-link">Contact</a>
+            </li>
+
+            <?php
+            if (isset($_SESSION['uid'])) {
+                // User is logged in
+                echo '<li class="nav-item dropdown">';
+                echo '<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+                // Check if the user has uploaded an image
+                if (isset($_SESSION['uimage']) && !empty($_SESSION['uimage'])) {
+                    echo '<img src="' . $_SESSION['uimage'] . '" class="user-image" alt="' . $_SESSION['uname'] . '">';
+                } else {
+                    echo 'Hi, ' . $_SESSION['uname'] . ' (' . $_SESSION['utype'] . ')';
+                }
+
+                echo '</a>';
+                echo '<div class="dropdown-menu" aria-labelledby="userDropdown">';
+                echo '<a class="dropdown-item" href="profile.php">
+                <i class="fa-regular fa-user"></i>
+                Account</a>';
+                echo '<a class="dropdown-item" href="logout.php">
+                <i class="fa-solid fa-power-off"></i>Logout</a>';
+                echo '</div>';
+                echo '</li>';
+            } else {
+                // User is not logged in
+                echo '<li class="nav-item">';
+                echo '<a href="login.php" class="nav-link">Login</a>';
+                echo '</li>';
+                echo '<li class="nav-item">';
+                echo '<a href="register.php" class="nav-link">Register</a>';
+                echo '</li>';
+            }
+            ?>
+        </ul>
+    </div>
+</nav>
+<!-- End Navigation -->
+
+
+
+<!-- profile -->
+    <!-- Add this button to trigger the modal in profile.php -->
+    <button class="btn btn-primary" data-toggle="modal" data-target="#notificationsModal">Notifications</button>
+
+    <!-- Add this modal to profile.php -->
+    <div class="modal fade" id="notificationsModal" tabindex="-1" role="dialog" aria-labelledby="notificationsModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="notificationsModalLabel">Notifications</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Fetch and display notifications using PHP -->
+                    <?php
+    
+    $uid = $_SESSION['uid'];
+    
+    $notificationsQuery = "SELECT * FROM notifications WHERE user_id = $uid ORDER BY timestamp DESC";
+    $notificationsResult = mysqli_query($con, $notificationsQuery);
+    
+    if ($notificationsResult && mysqli_num_rows($notificationsResult) > 0) {
+        echo '<ul class="list-group">';
+        while ($notification = mysqli_fetch_assoc($notificationsResult)) {
+            echo '<li class="list-group-item">' . $notification['timestamp'] . ': ' . $notification['message'] . '</li>';
+        }
+        echo '</ul>';
+    } else {
+        echo '<p>No notifications available.</p>';
+    }
+    ?>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Add JavaScript to automatically hide the modal when closed -->
+    <script>
+        $('#notificationsModal').on('hidden.bs.modal', function () {
+            $(this).find('.modal-body').html(''); // Clear the modal content when closed
+        });
+    </script>
+    

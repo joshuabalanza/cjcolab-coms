@@ -1,0 +1,231 @@
+/* font-family: 'Ubuntu', sans-serif; */
+/* #C3423F -read */
+/* #29335C -blue */
+:root {
+  --bg-color: #ecedf0;
+
+  /* --main-color: #9b593c; */
+  --main-color: #c3423f;
+  --secondary-color: #29335c;
+  --white: #ffffff;
+  --black: #000000;
+  --gray: rgba(0, 0, 0, 0.5);
+}
+/* input {
+  border-radius: 5rem !important;
+} */
+body {
+  background-color: var(--bg-color);
+}
+form {
+  background-color: var(--white);
+}
+
+button {
+  border: none;
+  overflow: visible;
+}
+
+.navbar-toggler,
+.navbar-toggler:focus,
+.navbar-toggler:active,
+.navbar-toggler-icon:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+  font-size: 1rem;
+}
+
+.navbar {
+  /* border-bottom: #000000 1px solid; */
+  /* background-color: red; */
+  box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.6);
+  background-color: var(--white);
+}
+.navbar-brand {
+  font-family: "Ubuntu", sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--main-color) !important;
+}
+.nav-item {
+  padding: 0.4rem 0.3rem !important;
+  /* color: var(--secondary-color); */
+}
+.nav-link {
+  font-family: "Ubuntu", sans-serif;
+  font-weight: 500;
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+  color: var(--secondary-color) !important;
+  padding: 0 !important;
+  /* color: rgba(0, 0, 0, 0.5); */
+}
+.nav-link:active,
+.nav-link:hover {
+  color: var(--secondary-color) !important;
+}
+
+/* HOME SECTION */
+.back-image {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 90vh;
+  border-radius: 0;
+  margin-top: 74px;
+}
+
+.main-heading {
+  color: var(--main-color);
+}
+.main-heading p {
+  color: var(--secondary-color);
+}
+@media only screen and (max-width: 600px) {
+  .main-heading {
+    margin-top: 350px;
+    text-align: center;
+  }
+}
+
+@media only screen and (max-width: 900px) {
+  .nav-item {
+    padding: 0.5rem;
+    /* color: var(--secondary-color); */
+  }
+  .nav-link {
+    font-weight: 700;
+    font-size: 1rem;
+    /* color: rgba(0, 0, 0, 0.5); */
+  }
+}
+/* Form */
+
+textarea:focus,
+input:focus {
+  outline: none !important;
+}
+
+.form {
+  position: relative;
+  padding: 0.8rem 0;
+}
+.form-input {
+  /* position: absolute; */
+  transition: all 160ms ease-in;
+}
+
+.form-input:hover {
+  border-color: #adffff;
+}
+
+.form-control {
+  outline: none !important;
+}
+.form-input:focus {
+  border-color: var(--secondary-color);
+  border-color: none !important;
+  outline: none !important;
+}
+
+.form-label {
+  position: absolute;
+  left: 1rem;
+  top: 0.6rem;
+  cursor: text;
+  transition: top 200ms ease-in, left 200ms ease-in font-size 200ms ease-in;
+  background-color: var(--white);
+}
+.form-input:focus ~ .form-label,
+.form-input:not(:placeholder-shown).form-input:not(:focus) ~ .form-label {
+  top: -0.5rem;
+  left: 0.8rem;
+  font-size: 0.8rem;
+  transition-duration: 200ms;
+}
+
+/* FORMS */
+/* REGISTER & LOGIN FORM */
+.register-form,
+.otp-form,
+.login-form,
+.user-profile {
+  margin-top: 74px;
+}
+
+.text-white {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--white);
+  text-decoration: none;
+}
+.btn-cta {
+  background-color: var(--secondary-color) !important;
+  color: var(--white) !important;
+  border-radius: 5px;
+  padding: 0.4rem 2rem;
+}
+
+/* USER PROFILE */
+.custom-file-upload {
+  background-color: #c3ee37; /* Background color of the button */
+  color: white; /* Text color of the button */
+  padding: 10px 15px; /* Padding to increase the button size */
+  border: none; /* Remove any borders */
+  cursor: pointer; /* Change the cursor to a pointer on hover */
+  border-radius: 5px; /* Add some rounded corners */
+}
+.user-image {
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  border: solid 1px var(--secondary-color);
+}
+
+/* SIDEBAR */
+
+.sidebar-sticky {
+  margin-top: 60px;
+  max-height: 100vh;
+  height: -webkit-fill-available;
+
+  /* background-color: var(--main-color); */
+}
+/* .sidebar-sticky ul {
+  padding: 2rem 0;
+} */
+.active {
+  background-color: red;
+}
+
+.sidebar-collapse {
+  padding-left: 2rem;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.modal-content {
+  display: block;
+  margin: 10% auto;
+  max-width: 80%;
+  max-height: 80%;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+}

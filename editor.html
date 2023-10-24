@@ -1,0 +1,75 @@
+<?php
+session_start();
+require('includes/dbconnection.php'); // Include your database connection file
+
+// Check if the user is logged in
+if (!isset($_SESSION['uid'])) {
+    header('Location: login.php'); // Redirect to the login page if not logged in
+    exit();
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Handle form submission
+    $uid = $_SESSION['uid'];
+    $newName = $_POST['newName'];
+    $newPhone = $_POST['newPhone'];
+
+    // Update the user's name and phone in the database
+    $sql = "UPDATE user SET uname = '$newName', uphone = '$newPhone' WHERE uid = $uid";
+    if (mysqli_query($con, $sql)) {
+        $_SESSION['uname'] = $newName;
+        $_SESSION['uphone'] = $newPhone;
+        $message = "Profile updated successfully!";
+    } else {
+        $error = "Error updating profile: " . mysqli_error($con);
+    }
+}
+
+include('includes/header.php');
+include('includes/nav.php');
+?>
+
+<section class="user-profile">
+    <div class="container-fluid p-4 shadow mx-auto" style="max-width: 1000px;">
+        <div class="row">
+            <div class="col-sm-4 col-md-3">
+                <!-- Display user profile image if available -->
+                <img src="assets/images/hero-bg.png" class="border border-primary d-block mx-auto rounded-circle" style="width:150px; height:150px">
+                <h3 class="text-center"><?php echo $_SESSION['uname']; ?></h3>
+                <br>
+                <div class="text-center">
+                    <a href="edit_profile.php"> <!-- Edit profile page URL -->
+                        <button class="btn-sm btn btn-success">Edit</button>
+                    </a>
+                    <a href="delete_profile.php"> <!-- Delete profile page URL -->
+                        <button class="btn-sm btn btn-danger">Delete</button>
+                    </a>
+                </div>
+            </div>
+            <div class="col-sm-8 col-md-9 bg-light p-2">
+                <form method="POST">
+                    <div class="form-group">
+                        <label for="newName">Name:</label>
+                        <input type="text" class="form-control" id="newName" name="newName" value="<?php echo $_SESSION['uname']; ?>">
+                    </div>
+                    <div class="form-group">
+                        <label for="newPhone">Phone:</label>
+                        <input type="text" class="form-control" id="newPhone" name="newPhone" value="<?php echo $_SESSION['uphone']; ?>">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </form>
+                <?php
+                if (isset($message)) {
+                    echo "<div class='alert alert-success'>$message</div>";
+                }
+                if (isset($error)) {
+                    echo "<div class='alert alert-danger'>$error</div>";
+                }
+?>
+            </div>
+        </div>
+        <br>
+    </div>
+</section>
+
+<?php include('includes/footer.php'); ?>
