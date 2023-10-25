@@ -1,12 +1,18 @@
-
+<!-- ******************** -->
+<!-- ***START SESSION**** -->
+<!-- ******************** -->
 <?php
 session_name("user_session");
-
-session_start();?>
-
-
-<?php
+session_start();
 include('includes/dbconnection.php');
+?>
+
+
+<!-- ******************** -->
+<!-- ***** PHP CODE ***** -->
+<!-- ******************** -->
+<?php
+
 // SESSION IS IN THE HEADER.PHP
 // session_start(); // Start the session
 if (isset($_SESSION['uid'])) {
@@ -56,11 +62,13 @@ if (isset($_POST['login'])) {
 ?>
 
 
-
-
-<!-- HTML -->
-<?php include('includes/header.php')?>
-<?php include('includes/nav.php')?>
+<!-- ******************** -->
+<!-- **** START HTML **** -->
+<!-- ******************** -->
+<?php
+  include('includes/header.php');
+include('includes/nav.php');
+?>
 <section class="login-form">
   <div class="co    ntainer pt-5">
     <h2 class="text-center">Login</h2>

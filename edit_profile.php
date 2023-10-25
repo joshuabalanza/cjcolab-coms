@@ -1,13 +1,18 @@
-
+<!-- ******************** -->
+<!-- ***START SESSION**** -->
+<!-- ******************** -->
 <?php
 session_name("user_session");
-
 session_start();
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
+require('includes/dbconnection.php');
+?>
 
-require('includes/dbconnection.php'); // Include your database connection file
-
+<!-- ******************** -->
+<!-- ***** PHP CODE ***** -->
+<!-- ******************** -->
+<?php
 // Check if the user is logged in
 if (!isset($_SESSION['uid'])) {
     header('Location: login.php'); // Redirect to the login page if not logged in
@@ -45,11 +50,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
+?>
 
+<!-- ******************** -->
+<!-- **** START HTML **** -->
+<!-- ******************** -->
+<?php
 include('includes/header.php');
 include('includes/nav.php');
 ?>
-
 <section class="user-profile">
     <div class="container-fluid p-4 shadow mx-auto" style="max-width: 1000px;">
         <div class="row">

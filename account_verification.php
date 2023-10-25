@@ -1,17 +1,29 @@
+<!-- ******************** -->
+<!-- ***START SESSION**** -->
+<!-- ******************** -->
 <?php
 session_name("user_session");
 session_start();
+?>
 
+<!-- ******************** -->
+<!-- ***** PHP CODE ***** -->
+<!-- ******************** -->
+<?php
 // Check if the user is logged in
 if (!isset($_SESSION['uid'])) {
     header('Location: login.php');
     exit();
 }
+?>
 
+<!-- ******************** -->
+<!-- **** START HTML **** -->
+<!-- ******************** -->
+<?php
 include('includes/header.php');
 include('includes/nav.php');
 ?>
-
 <section class="account-verification pt-5">
     <div class="container">
         <h2>Account Verification</h2>

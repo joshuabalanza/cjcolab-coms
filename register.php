@@ -1,10 +1,17 @@
+<!-- ******************** -->
+<!-- ***START SESSION**** -->
+<!-- ******************** -->
 
 <?php
 session_name("user_session");
+session_start();
+include('includes/dbconnection.php');
+?>
 
-session_start();?>
 
-<?php include('includes/dbconnection.php');?>
+<!-- ******************** -->
+<!-- ***** PHP CODE ***** -->
+<!-- ******************** -->
 <?php
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -88,10 +95,14 @@ if (isset($_POST['register'])) {
     }
 }
 ?>
-<!-- HTML -->
+<!-- ******************** -->
+<!-- **** START HTML **** -->
+<!-- ******************** -->
 
-<?php include('includes/header.php')?>
-<?php include('includes/nav.php')?>
+<?php
+include('includes/header.php');
+include('includes/nav.php');
+?>
 <!-- Start Create Account -->
 <section class="register-form">
 <div class="container pt-5">
@@ -100,9 +111,9 @@ if (isset($_POST['register'])) {
         <div class="col-md-6 offset-md-3">
             <form action="" class="shadow-lg p-4" method="POST">
                 <p><?php
-                if (isset($error_message)) {
-                    echo $error_message;
-                }
+               if (isset($error_message)) {
+                   echo $error_message;
+               }
 ?></p>
 
     <div class="form-group form">

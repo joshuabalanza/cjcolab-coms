@@ -1,3 +1,6 @@
+<!-- ******************** -->
+<!-- ***** PHP CODE ***** -->
+<!-- ******************** -->
 <?php
 session_name("user_session");
 session_start();
@@ -10,7 +13,13 @@ if (isset($_SESSION['uid'])) {
 }
 ?>
 
-
+<!-- ******************** -->
+<!-- **** START HTML **** -->
+<!-- ******************** -->
+<?php
+include('includes/header.php');
+include('includes/nav.php');
+?>
 <div class="container">
     <h2>Notifications</h2>
     <table class="table table-bordered">
@@ -37,5 +46,27 @@ while ($notification = mysqli_fetch_assoc($notificationsResult)) {
         </tbody>
     </table>
 </div>
+
+<script>
+// This function checks for new notifications and updates the bell icon.
+function checkForNewNotifications() {
+    // Use AJAX to check for new notifications.
+    $.ajax({
+        url: 'check_notifications.php', // Create a new PHP file for this purpose
+        type: 'POST',
+        data: { userId: <?php echo $_SESSION['uid']; ?> },
+        success: function(response) {
+            if (response === 'true') {
+                // There are new notifications, update the bell icon.
+                const bellIcon = document.querySelector('.fa-solid.fa-bell');
+                bellIcon.classList.add('notification-icon');
+            }
+        }
+    });
+}
+
+// Call the checkForNewNotifications function at regular intervals.
+setInterval(checkForNewNotifications, 5000); // Check every 5 seconds (adjust the interval as needed)
+</script>
 
 <?php include('includes/footer.php'); ?>
