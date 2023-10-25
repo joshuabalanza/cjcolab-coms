@@ -29,3 +29,12 @@ coms.system.adm@gmail.com
 ```
 password
 ```
+
+# Take Note
+
+- Always write code/ make changes in the development branch.  
+  -- to switch to development branch
+
+```
+git checkout development
+```
