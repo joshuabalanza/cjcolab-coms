@@ -32,9 +32,19 @@ password
 
 # Take Note
 
-- Always write code/ make changes in the development branch.  
+- Always write code/ make changes and push in the development branch.  
   -- to switch to development branch
 
 ```
 git checkout development
+```
+
+- Add -> Commit and push your code
+
+```
+git add .
+
+git commit -m "WRITE CHANGES HERE"
+
+git push -u origin development
 ```
