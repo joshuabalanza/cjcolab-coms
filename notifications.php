@@ -5,8 +5,6 @@
 session_name("user_session");
 session_start();
 require('includes/dbconnection.php');
-include('includes/header.php');
-include('includes/nav.php');
 // Include the modal code when the Notifications button is clicked
 if (isset($_SESSION['uid'])) {
     echo '<script>$("#notificationsModal").modal("show");</script>';
