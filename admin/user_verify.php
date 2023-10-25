@@ -1,20 +1,34 @@
+<!-- ******************** -->
+<!-- ***START SESSION**** -->
+<!-- ******************** -->
 <?php
 session_name("admin_session");
 session_start();
+require('../includes/dbconnection.php');
+?>
 
+<!-- ******************** -->
+<!-- ***** PHP CODE ***** -->
+<!-- ******************** -->
+<?php
 if (!isset($_SESSION['aid'])) {
     header('Location: dashboard.php');
     exit();
 }
-
-require('../includes/dbconnection.php');
-
 // Query to retrieve user verification submissions that are not approved or rejected
 $sql = "SELECT * FROM user_verification WHERE status IS NULL";
 $result = mysqli_query($con, $sql);
 ?>
 
-<?php include('includes/header.php'); ?>
+
+
+<!-- ******************** -->
+<!-- **** START HTML **** -->
+<!-- ******************** -->
+<?php
+include('includes/header.php');
+include('includes/nav.php');
+?>
 
 <div class="container">
     <h2>User Verification Submissions</h2>

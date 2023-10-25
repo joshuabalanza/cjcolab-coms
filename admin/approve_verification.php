@@ -1,8 +1,18 @@
+<!-- ******************** -->
+<!-- ***START SESSION**** -->
+<!-- ******************** -->
 <?php
-
 session_name("admin_session");
 session_start();
+require('../includes/dbconnection.php');
+?>
 
+
+<!-- ******************** -->
+<!-- ***** PHP CODE ***** -->
+<!-- ******************** -->
+<?php
+// Check if the user is logged in
 if (!isset($_SESSION['aid'])) {
     header('Location: dashboard.php'); // Redirect to the admin login page
     exit();
@@ -11,8 +21,6 @@ if (!isset($_SESSION['aid'])) {
 if (isset($_GET['id'])) {
     $verification_id = $_GET['id'];
 
-    // Include the database connection file
-    require('../includes/dbconnection.php');
 
     // Check if a verification entry with this ID exists
     $check_existing_query = "SELECT * FROM user_verification WHERE verification_id = '$verification_id'";

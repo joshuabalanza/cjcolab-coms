@@ -1,8 +1,16 @@
+<!-- ******************** -->
+<!-- ***START SESSION**** -->
+<!-- ******************** -->
 <?php
-
 session_name("admin_session");
 session_start();
+require('../includes/dbconnection.php');
+?>
 
+<!-- ******************** -->
+<!-- ***** PHP CODE ***** -->
+<!-- ******************** -->
+<?php
 // Check if the admin is logged in; redirect to the admin login page if not
 if (!isset($_SESSION['aid'])) {
     header('Location: dashboard.php');  // Redirect to the admin login page
@@ -10,8 +18,6 @@ if (!isset($_SESSION['aid'])) {
 }
 
 // Include the necessary database connection file
-require('../includes/dbconnection.php');
-include('includes/header.php');
 
 
 if (isset($_GET['action']) && isset($_GET['id'])) {
@@ -39,6 +45,13 @@ $sql = "SELECT * FROM user_verification";
 $result = mysqli_query($con, $sql);
 ?>
 
+
+<!-- ******************** -->
+<!-- **** START HTML **** -->
+<!-- ******************** -->
+<?php
+    include('includes/header.php');
+?>
 <table class="table table-bordered">
     <thead>
         <tr>
@@ -49,7 +62,7 @@ $result = mysqli_query($con, $sql);
             <th>First Name</th>
             <th>Last Name</th>
             <th>Address</th>
-                <th>Gender</th>
+            <th>Gender</th>
                 <th>Birthday</th>
                 <th>Verification Image</th>
                 <th>Documents</th>
