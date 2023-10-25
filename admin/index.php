@@ -1,10 +1,16 @@
-<!-- REFACTOR -->
-
+<!-- ******************** -->
+<!-- ***START SESSION**** -->
+<!-- ******************** -->
 <?php
-include('../includes/dbconnection.php');
 session_name("admin_session");
-
 session_start();
+include('../includes/dbconnection.php');
+?>
+
+<!-- ******************** -->
+<!-- ***** PHP CODE ***** -->
+<!-- ******************** -->
+<?php
 // SESSION IS IN THE HEADER.PHP
 // session_start(); // Start the session
 if (isset($_SESSION['aid'])) {
@@ -63,13 +69,11 @@ if (isset($_POST['adminlogin'])) {
 ?>
 
 
-
-
-
-
-
-<?php include('includes/header.php');
-
+<!-- ******************** -->
+<!-- **** START HTML **** -->
+<!-- ******************** -->
+<?php
+  include('includes/header.php');
 // include('includes/nav.php');
 ?>
 <section class="login-form">
