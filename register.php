@@ -140,14 +140,12 @@ include('includes/nav.php');
                 <div class="form-group form">
                 <input type="password" class="form-control form-input" name="upassword"id="upassword" placeholder="">
                 <label for="upassword" class="form-label">
-                    <i class="fa-solid fa-key"></i>
-                Password</label>
+                <i class="fas fa-lock"></i>                 Password</label>
                 </div>
                 <div class="form-group form">
                     <input type="password" class="form-control form-input" name="confirm_password" id="confirm_password" placeholder="">
                     <label for="upassword" class="form-label">
-                        <i class="fa-solid fa-key"></i>
-                        
+                    <i class="fas fa-lock"></i>                         
                         Confirm Password</label>
 
                     </div>

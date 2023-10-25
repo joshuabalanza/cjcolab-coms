@@ -106,8 +106,7 @@ include('includes/nav.php');
               placeholder=""
             />
             <label for="upassword" class="form-label">
-              <i class="fa-solid fa-key"></i>
-              Password</label
+            <i class="fas fa-lock"></i>               Password</label
             >
           </div>
      
