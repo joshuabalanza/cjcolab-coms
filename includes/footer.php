@@ -1,6 +1,6 @@
 <footer>
 <!-- Just add something -->
-&copy; COMS 2023
+<!-- &copy; COMS 2023 -->
 </footer>
 
 

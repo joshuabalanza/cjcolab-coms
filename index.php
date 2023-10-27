@@ -25,8 +25,10 @@ session_start();
 <!-- ******************** -->
 <!-- **** START HTML **** -->
 <!-- ******************** -->
-<?php include('includes/header.php')?>
-<?php include('includes/nav.php')?>
+<?php
+include('includes/header.php');
+include('includes/nav.php');
+?>
 
 <!-- Start HOME -->
 <section id="home" class="jumbotron back-image" style="background-image:url(assets/images/hero-bg.png);">

@@ -5,8 +5,6 @@
 session_name("user_session");
 session_start();
 require('includes/dbconnection.php');
-include('includes/header.php');
-include('includes/nav.php');
 // Include the modal code when the Notifications button is clicked
 if (isset($_SESSION['uid'])) {
     echo '<script>$("#notificationsModal").modal("show");</script>';
@@ -20,8 +18,10 @@ if (isset($_SESSION['uid'])) {
 include('includes/header.php');
 include('includes/nav.php');
 ?>
-<div class="container">
-    <h2>Notifications</h2>
+<section class="notification-section">
+
+    <div class="container">
+        <h2>Notifications</h2>
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -46,6 +46,7 @@ while ($notification = mysqli_fetch_assoc($notificationsResult)) {
         </tbody>
     </table>
 </div>
+</section>
 
 <script>
 // This function checks for new notifications and updates the bell icon.
