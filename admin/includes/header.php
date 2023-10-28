@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
     <!-- Fontawesome CSS -->
     <link rel="stylesheet" href="./assets/css/all.min.css">
+    <!-- Data Table CSS -->
+    <link rel="stylesheet" href="./assets/css/datatables.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="./assets/css/style.css">
     <!-- Google Font -->
