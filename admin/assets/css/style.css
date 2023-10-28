@@ -184,11 +184,20 @@ input:focus {
 }
 
 /* SIDEBAR */
-
+.container-fluid {
+  padding-top: 3rem;
+}
+.sidebar {
+  /* background-color: red !important; */
+  height: 100vh;
+  width: 100vw !important;
+  /* margin-top: 60px; */
+}
 .sidebar-sticky {
-  margin-top: 60px;
-  max-height: 100vh;
-  height: -webkit-fill-available;
+  /* padding-top: 2rem; */
+  /* max-height: 100vh; */
+  /* height: 100% !important; */
+  /* height: -webkit-fill-available; */
 
   /* background-color: var(--main-color); */
 }
@@ -228,4 +237,16 @@ input:focus {
   color: #fff;
   font-size: 20px;
   cursor: pointer;
+}
+/* ADMIN PANEL */
+.dashboard,
+.table-owners,
+.table-tenants {
+  /* background-color: red; */
+  /* display: none; */
+}
+
+.container-fluid {
+  /* background-color: red; */
+  width: 100%;
 }

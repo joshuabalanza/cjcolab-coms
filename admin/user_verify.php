@@ -25,13 +25,25 @@ $result = mysqli_query($con, $sql);
 <!-- ******************** -->
 <!-- **** START HTML **** -->
 <!-- ******************** -->
+
 <?php
 include('includes/header.php');
 include('includes/nav.php');
-?>
+// include('users/user_verify.php');
 
+?>
+<div class="container-fluid">
+  <div class="row">
+<?php include('includes/sidebar.php');?>
+
+<section class="col-sm-10 py-5 dashboard">
+    <!-- <div class="dashboard"> -->
+<h4 class="py-3">
+    
+User Verification Submissions
+</h4>
 <div class="container">
-    <h2>User Verification Submissions</h2>
+    
     <?php
     // Check for notifications
     if (isset($_SESSION['notifications']) && !empty($_SESSION['notifications'])) {
@@ -101,6 +113,14 @@ include('includes/nav.php');
     <span class="close" id="documentClose">&times;</span>
     <iframe class="modal-content" id="documentContent"></iframe>
 </div>
+
+    
+    <!-- </div> -->
+    </section>
+</div>
+</div>
+
+
 
 <script>
     function hideNotifications() {

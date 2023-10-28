@@ -44,7 +44,7 @@ include('includes/nav.php');
 <section class="col-sm-10 py-5 dashboard">
     <!-- <div class="dashboard"> -->
 <h4>
-    Dashboard
+    Owners
 
 </h4>
     
@@ -52,5 +52,4 @@ include('includes/nav.php');
     </section>
 </div>
 </div>
-
 <?php include('includes/footer.php')?>
