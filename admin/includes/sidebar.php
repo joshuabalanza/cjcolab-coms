@@ -49,7 +49,8 @@
                                     <ul class="nav flex-column">
                                         <li class="nav-item">
                                           
-                                            <a class="nav-link" href="user_verify.php">User</a>
+                                            <!-- <a class="nav-link" href="user_verify.php">User</a> -->
+                                            <a class="nav-link" href="user_verification_transactions.php">User</a>
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link" href="map_verify.php">Concourse </a>
