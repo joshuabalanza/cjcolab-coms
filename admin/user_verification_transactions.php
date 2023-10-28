@@ -65,7 +65,7 @@ include('includes/nav.php');
     User Verifications
 
 </h4>
-<table class="table table-bordered">
+<table class="table table-bordered" id="datatable">
     <thead>
         <tr>
             <th>Submission ID</th>
@@ -79,7 +79,7 @@ include('includes/nav.php');
                 <th>Birthday</th>
                 <th>Verification Image</th>
                 <th>Documents</th>
-                <!-- <th>Actions</th> -->
+                <th>Actions</th>
             <!-- Add more table headers as needed -->
         </tr>
     </thead>
@@ -99,10 +99,10 @@ include('includes/nav.php');
             echo '<td><a href="#" onclick="openImageModal(\'../uploads/' . $row['image_filename'] . '\')">View Image</a></td>';
             // Add more table data as needed
             echo '<td><a href="#" onclick="openDocumentModal(\'../uploads/' . $row['document_filename'] . '\')">View Document: ' . $row['document_filename'] . '</a></td>';
-            // echo '<td>';
-            // echo '<a href="approve_verification.php?id=' . $row['verification_id'] . '">Approve</a>';
-            // echo '<a href="reject_verification.php?id=' . $row['verification_id'] . '">Reject</a>';
-            // echo '</td>';
+            echo '<td>';
+            echo '<a href="approve_verification.php?id=' . $row['verification_id'] . '">Approve</a>';
+            echo '<a href="reject_verification.php?id=' . $row['verification_id'] . '">Reject</a>';
+            echo '</td>';
             echo '</tr>';
 
         }
@@ -127,7 +127,9 @@ include('includes/nav.php');
 </div>
 </div>
 
+<?php include('includes/footer.php')?>
 <script>
+    $('#datatable').dataTable({});
     // Function to hide notifications after 3 seconds
     function hideNotifications() {
         setTimeout(function() {
@@ -156,4 +158,3 @@ include('includes/nav.php');
         clearUserData();
     };
 </script>
-<?php include('includes/footer.php')?>
