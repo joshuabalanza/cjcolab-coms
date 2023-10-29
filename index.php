@@ -31,7 +31,7 @@ include('includes/nav.php');
 ?>
 
 <!-- Start HOME -->
-<section id="home" class="jumbotron back-image" style="background-image:url(assets/images/hero-bg.png);">
+<section id="home" class="jumbotron container-top back-image" style="background-image:url(assets/images/hero-bg.png);">
    <div class="main-heading">
       <h1 class="text-uppercase font-weight-bold">
          Welcome to COMS

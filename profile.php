@@ -77,7 +77,7 @@ include('includes/nav.php');
             <h3 class="text-center"><?php echo $_SESSION['uname']; ?></h3>
             <br>
             <div class="text-center">
-               <a href="edit_profile.php"> <button class="btn-sm btn btn-success">Edit Profile</button> </a>
+               <a href="profile_edit.php"> <button class="btn-sm btn btn-success">Edit Profile</button> </a>
                <?php if ($verificationStatus === 'approved'): ?>
                <button class="btn-sm btn btn-success" disabled>Verified</button>
                <?php else: ?>
