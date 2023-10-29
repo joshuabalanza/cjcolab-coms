@@ -17,7 +17,7 @@ if (!isset($_SESSION['aid'])) {
     header('Location: dashboard.php');  // Redirect to the admin login page
     exit();
 }
-$sql = "SELECT * FROM user"; // Replace 'user' with your user table name
+$sql = "SELECT * FROM user WHERE utype = 'Owner' "; // Replace 'user' with your user table name
 $result = mysqli_query($con, $sql);
 
 // if ($result) {
@@ -63,7 +63,7 @@ include('includes/nav.php');
 <thead>
 
     <tr><th>User ID</th><th>Name</th><th>Email</th>
-    <th>User Type</th>
+    <!-- <th>User Type</th> -->
     <th>Phone</th><th>Date Created</th></tr>
 </thead>
 <tbody>
@@ -71,11 +71,9 @@ include('includes/nav.php');
       while ($row = mysqli_fetch_assoc($result)) {
           echo '<tr>';
           echo '<td>' . $row['uid'] . '</td>';
-          //   echo '<td>' . $row['first-Na  '] . '</td>';
-
           echo '<td>' . $row['uname'] . '</td>';
           echo '<td>' . $row['uemail'] . '</td>';
-          echo '<td>' . $row['utype'] . '</td>';
+          //   echo '<td>' . $row['utype'] . '</td>';
           echo '<td>' . ($row['uphone'] ? $row['uphone'] : 'N/A') . '</td>';
           echo '<td>' . date("Y-m-d", strtotime($row['created_at'])) . '</td>';
           echo '</tr>';

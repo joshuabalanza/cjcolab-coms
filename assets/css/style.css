@@ -139,7 +139,9 @@ input:focus {
 .register-form,
 .otp-form,
 .login-form,
-.user-profile {
+.user-profile,
+.notification-section,
+.account-verification {
   margin-top: 74px;
 }
 

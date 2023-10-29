@@ -50,9 +50,22 @@ $result = mysqli_query($con, $sql);
 <!-- **** START HTML **** -->
 <!-- ******************** -->
 <?php
-    include('includes/header.php');
+include('includes/header.php');
+include('includes/nav.php');
+// include('users/user_verify.php');
+
 ?>
-<table class="table table-bordered">
+<div class="container-fluid">
+  <div class="row">
+<?php include('includes/sidebar.php');?>
+
+<section class="col-sm-10 py-5 dashboard">
+    <!-- <div class="dashboard"> -->
+<h4>
+    User Verifications
+
+</h4>
+<table class="table table-bordered" id="datatable">
     <thead>
         <tr>
             <th>Submission ID</th>
@@ -66,7 +79,7 @@ $result = mysqli_query($con, $sql);
                 <th>Birthday</th>
                 <th>Verification Image</th>
                 <th>Documents</th>
-                <!-- <th>Actions</th> -->
+                <th>Actions</th>
             <!-- Add more table headers as needed -->
         </tr>
     </thead>
@@ -86,10 +99,10 @@ $result = mysqli_query($con, $sql);
             echo '<td><a href="#" onclick="openImageModal(\'../uploads/' . $row['image_filename'] . '\')">View Image</a></td>';
             // Add more table data as needed
             echo '<td><a href="#" onclick="openDocumentModal(\'../uploads/' . $row['document_filename'] . '\')">View Document: ' . $row['document_filename'] . '</a></td>';
-            // echo '<td>';
-            // echo '<a href="approve_verification.php?id=' . $row['verification_id'] . '">Approve</a>';
-            // echo '<a href="reject_verification.php?id=' . $row['verification_id'] . '">Reject</a>';
-            // echo '</td>';
+            echo '<td>';
+            echo '<a href="approve_verification.php?id=' . $row['verification_id'] . '">Approve</a>';
+            echo '<a href="reject_verification.php?id=' . $row['verification_id'] . '">Reject</a>';
+            echo '</td>';
             echo '</tr>';
 
         }
@@ -108,7 +121,15 @@ $result = mysqli_query($con, $sql);
     <span class="close" id="documentClose">&times;</span>
     <iframe class="modal-content" id="documentContent"></iframe>
 </div>
+    
+    <!-- </div> -->
+    </section>
+</div>
+</div>
+
+<?php include('includes/footer.php')?>
 <script>
+    $('#datatable').dataTable({});
     // Function to hide notifications after 3 seconds
     function hideNotifications() {
         setTimeout(function() {
@@ -137,4 +158,3 @@ $result = mysqli_query($con, $sql);
         clearUserData();
     };
 </script>
-<?php include('includes/footer.php')?>
