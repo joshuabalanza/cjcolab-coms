@@ -65,7 +65,10 @@
                 echo '<div class="dropdown-menu" aria-labelledby="userDropdown">';
                 echo '<a class="dropdown-item" href="profile.php">
                             <i class="fa-regular fa-user"></i>
-                            Account</a>';
+                            My Profile</a>';
+                echo '<a class="dropdown-item" href="profile.php">
+                            <i class="fa-regular fa-user"></i>
+                            Transactions</a>';
                 echo '<a class="dropdown-item" href="logout.php">
                             <i class="fa-solid fa-power-off"></i>Logout</a>';
                 echo '</div>';
