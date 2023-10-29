@@ -1,6 +1,4 @@
-<?php
-?>
-<!-- Rest of your HTML code -->
+
 
 <!-- Start Navigation -->
 <nav class="navbar navbar-expand-sm navbar-light pl-5 fixed-top">
@@ -39,11 +37,12 @@
                 echo '<li class="nav-item">';
                 echo '<a href="reservations.php" class="nav-link">Reservations</a>';
                 echo '</li>';
-                echo '<li class="nav-item">';
-                echo '<a href="notifications.php" class="nav-link"><i class="fa-solid fa-bell"></i></a>';
-                echo '</li>';
+
             } elseif (isset($_SESSION['utype']) && $_SESSION['utype'] == 'Tenant') {
                 // Display these links for Tenant type users
+                echo '<li class="nav-item">';
+                echo '<a href="index.php" class="nav-link">Home</a>';
+                echo '</li>';
                 echo '<li class="nav-item">';
                 echo '<a href="concourses.php" class="nav-link">Concourses</a>';
                 echo '</li>';
@@ -51,35 +50,38 @@
                 echo '<a href="bills.php" class="nav-link">Bills</a>';
                 echo '</li>';
             }
-?>
+         ?>
          
          <?php
-   if (isset($_SESSION['uid'])) {
-       echo '<li class="nav-item dropdown ml-auto">';
-       echo '<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
-       if (isset($_SESSION['uimage']) && !empty($_SESSION['uimage'])) {
-           echo '<img src="' . $_SESSION['uimage'] . '" class="user-image" alt="' . $_SESSION['uname'] . '">';
-       } else {
-           echo 'Hi, ' . $_SESSION['uname'] . ' (' . $_SESSION['utype'] . ')';
-       }
-       echo '</a>';
-       echo '<div class="dropdown-menu" aria-labelledby="userDropdown">';
-       echo '<a class="dropdown-item" href="profile.php">
+            if (isset($_SESSION['uid'])) {
+                echo '<li class="nav-item dropdown ml-auto">';
+                echo '<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+                if (isset($_SESSION['uimage']) && !empty($_SESSION['uimage'])) {
+                    echo '<img src="' . $_SESSION['uimage'] . '" class="user-image" alt="' . $_SESSION['uname'] . '">';
+                } else {
+                    echo 'Hi, ' . $_SESSION['uname'] . ' (' . $_SESSION['utype'] . ')';
+                }
+                echo '</a>';
+                echo '<div class="dropdown-menu" aria-labelledby="userDropdown">';
+                echo '<a class="dropdown-item" href="profile.php">
                             <i class="fa-regular fa-user"></i>
                             Account</a>';
-       echo '<a class="dropdown-item" href="logout.php">
+                echo '<a class="dropdown-item" href="logout.php">
                             <i class="fa-solid fa-power-off"></i>Logout</a>';
-       echo '</div>';
-       echo '</li>';
-   } else {
-       echo '<li class="nav-item">';
-       echo '<a href="login.php" class="nav-link">Login</a>';
-       echo '</li>';
-       echo '<li class="nav-item">';
-       echo '<a href="register.php" class="nav-link">Register</a>';
-       echo '</li>';
-   }
-?>
+                echo '</div>';
+                echo '</li>';
+                echo '<li class="nav-item">';
+                echo '<a href="notifications.php" class="nav-link"><i class="fa-solid fa-bell"></i></a>';
+                echo '</li>';
+            } else {
+                echo '<li class="nav-item">';
+                echo '<a href="login.php" class="nav-link">Login</a>';
+                echo '</li>';
+                echo '<li class="nav-item">';
+                echo '<a href="register.php" class="nav-link">Register</a>';
+                echo '</li>';
+            }
+         ?>
       </ul>
    </div>
 </nav>
