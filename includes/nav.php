@@ -66,9 +66,8 @@
                 echo '<a class="dropdown-item" href="profile.php">
                             <i class="fa-regular fa-user"></i>
                             My Profile</a>';
-                echo '<a class="dropdown-item" href="profile.php">
-                            <i class="fa-regular fa-user"></i>
-                            Transactions</a>';
+                echo '<a class="dropdown-item" href="transactions.php">
+                <i class="fa-solid fa-file-lines"></i>                              Transactions</a>';
                 echo '<a class="dropdown-item" href="logout.php">
                             <i class="fa-solid fa-power-off"></i>Logout</a>';
                 echo '</div>';
