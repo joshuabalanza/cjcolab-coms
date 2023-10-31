@@ -36,3 +36,50 @@ $("#notificationsModal").on("hidden.bs.modal", function () {
 
 // // Call the function to update the count on page load
 // updateNotificationCount();
+
+$(document).ready(function () {
+  // Handle clicking on the "Read" notification link
+  $(".read-notification").click(function (event) {
+    event.preventDefault();
+    var notificationId = $(this).data("notification-id");
+    var notificationContainer = $(event.target).closest("tr");
+    var isBold = notificationContainer.hasClass("bold");
+    $.ajax({
+      type: "GET",
+      url: "notifications.php",
+      data: { action: "read", notification_id: notificationId },
+      success: function (data) {
+        // Update the content of the notification without a page reload
+        notificationContainer.find("td:first").html(data.notification_type);
+        notificationContainer.find("td:nth-child(2)").html(data.message);
+
+        // Toggle the "bold" class
+        if (isBold) {
+          notificationContainer.removeClass("bold");
+        } else {
+          notificationContainer.addClass("bold");
+        }
+
+        // Toggle the icon class based on the "active" class
+        var icon = notificationContainer.find(".read-notification i");
+        icon.toggleClass("fa-envelope fa-envelope-open");
+      },
+    });
+  });
+
+  // Handle clicking on the "Delete" notification link
+  $(".delete-notification").click(function (event) {
+    event.preventDefault();
+    var notificationId = $(this).data("notification-id");
+    var notificationContainer = $(event.target).closest("tr");
+    $.ajax({
+      type: "GET",
+      url: "notifications.php",
+      data: { action: "delete", notification_id: notificationId },
+      success: function () {
+        // Remove the notification row from the table without a page reload
+        notificationContainer.remove();
+      },
+    });
+  });
+});

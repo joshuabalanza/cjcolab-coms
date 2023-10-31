@@ -221,3 +221,19 @@ input:focus {
   font-weight: 700;
   /* color: red; */
 }
+/* ACTIONS */
+.action-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* padding: 0 0.75rem !important; */
+}
+
+.action-divider {
+  display: inline-block;
+  background-color: var(--black);
+  margin: 0 10px;
+  width: 1px;
+  padding: 0;
+  height: 1.6rem;
+}
