@@ -53,7 +53,7 @@ $(document).ready(function () {
         notificationContainer.find("td:first").html(data.notification_type);
         notificationContainer.find("td:nth-child(2)").html(data.message);
         // call the function for the bell notification count
-        updateNotificationCount(); // Call a function to update the count
+        // updateNotificationCount(); // Call a function to update the count
 
         // Toggle the "bold" class
         if (isBold) {
@@ -80,7 +80,7 @@ $(document).ready(function () {
       data: { action: "delete", notification_id: notificationId },
       success: function () {
         // Update the notification count
-        updateNotificationCount(); // Call a function to update the count
+        // updateNotificationCount(); // Call a function to update the count
         // Remove the notification row from the table without a page reload
         notificationContainer.remove();
       },
