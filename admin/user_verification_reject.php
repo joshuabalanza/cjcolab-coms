@@ -34,8 +34,10 @@ if (isset($_GET['id'])) {
             $uid = $userVerificationRow['user_id'];
 
             // Insert a notification for the user
+            $notificationStatus = 1;
+            $notificationType = 'Account Verification';
             $notificationMessage = 'Your verification has been rejected.';
-            $insertNotificationQuery = "INSERT INTO notifications (user_id, message) VALUES ('$uid', '$notificationMessage')";
+            $insertNotificationQuery = "INSERT INTO notifications (user_id, message, notification_type,active) VALUES ('$uid', '$notificationMessage', '$notificationType','$notificationStatus')";
             mysqli_query($con, $insertNotificationQuery);
         }
 
