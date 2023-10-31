@@ -19,14 +19,21 @@ if (isset($_SESSION['uid'])) {
             $notification = mysqli_fetch_assoc($readResult);
 
             if ($notification) {
+                // para mabago din value sa database, hindi lang sa frontend
+                $newActiveValue = $notification['active'] == 1 ? 0 : 1;
+
                 // Mark the notification as read (set 'active' to 0)
-                $updateQuery = "UPDATE notifications SET active = 0 WHERE user_id = $uid AND notification_id = $notification_id";
+                // $updateQuery = "UPDATE notifications SET active = 0 WHERE user_id = $uid AND notification_id = $notification_id";
+                $updateQuery = "UPDATE notifications SET active = $newActiveValue WHERE user_id = $uid AND notification_id = $notification_id";
+
                 $updateResult = mysqli_query($con, $updateQuery);
 
                 if ($updateResult) {
                     // Display the notification content
                     echo '<h2>' . $notification['notification_type'] . '</h2>';
                     echo '<p>' . $notification['message'] . '</p>';
+
+                    echo json_encode(['notification_type' => $notification['notification_type'], 'message' => $notification['message']]);
                 }
             }
         } elseif ($action === 'delete') {
