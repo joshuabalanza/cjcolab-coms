@@ -217,3 +217,7 @@ input:focus {
   /* left: 0; */
   right: 1.7rem;
 }
+.bold {
+  font-weight: 700;
+  /* color: red; */
+}
