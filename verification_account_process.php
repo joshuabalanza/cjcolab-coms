@@ -81,11 +81,11 @@ if (isset($_POST['submit_verification'])) {
 
         if (mysqli_query($con, $update_query)) {
             // Verification data updated successfully
-            header('Location: account_verification.php?success=true');
+            header('Location: verification_account.php?success=true');
             exit();
         } else {
             // Handle database update error
-            header('Location: account_verification.php?error=database');
+            header('Location: verification_account.php?error=database');
             exit();
         }
     } else {
@@ -95,11 +95,11 @@ if (isset($_POST['submit_verification'])) {
 
         if (mysqli_query($con, $insert_query)) {
             // Verification data inserted successfully
-            header('Location: account_verification.php?success=true');
+            header('Location: verification_account.php?success=true');
             exit();
         } else {
             // Handle database insertion error
-            header('Location: account_verification.php?error=database');
+            header('Location: verification_account.php?error=database');
             exit();
         }
     }
