@@ -27,7 +27,7 @@ include('includes/nav.php');
 <section class="account-verification pt-5">
     <div class="container">
         <h2>Account Verification</h2>
-        <form action="process_account_verification.php" method="post" enctype="multipart/form-data">
+        <form action="verification_account_process.php" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="first_name">First Name:</label>
                 <input type="text" class="form-control" name="first_name" required>

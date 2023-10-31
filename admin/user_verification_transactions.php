@@ -100,8 +100,8 @@ include('includes/nav.php');
             // Add more table data as needed
             echo '<td><a href="#" onclick="openDocumentModal(\'../uploads/' . $row['document_filename'] . '\')">View Document: ' . $row['document_filename'] . '</a></td>';
             echo '<td>';
-            echo '<a href="approve_verification.php?id=' . $row['verification_id'] . '">Approve</a>';
-            echo '<a href="reject_verification.php?id=' . $row['verification_id'] . '">Reject</a>';
+            echo '<a href="user_verification_approve.php?id=' . $row['verification_id'] . '">Approve</a>';
+            echo '<a href="user_verification_reject.php?id=' . $row['verification_id'] . '">Reject</a>';
             echo '</td>';
             echo '</tr>';
 

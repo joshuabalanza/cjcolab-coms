@@ -34,17 +34,20 @@ if (isset($_GET['id'])) {
             $uid = $userVerificationRow['user_id'];
 
             // Insert a notification for the user
+            $notificationFrom =  $_SESSION['aname'];
+            $notificationStatus = 1;
+            $notificationType = 'Account Verification';
             $notificationMessage = 'Your verification has been rejected.';
-            $insertNotificationQuery = "INSERT INTO notifications (user_id, message) VALUES ('$uid', '$notificationMessage')";
+            $insertNotificationQuery = "INSERT INTO notifications (from_user, user_id, message, notification_type,active) VALUES ('$notificationFrom','$uid', '$notificationMessage', '$notificationType','$notificationStatus')";
             mysqli_query($con, $insertNotificationQuery);
         }
 
         $_SESSION['notifications'][] = 'Verification rejected successfully.';
-        header('Location: user_verify.php');
+        header('Location: user_verification_transactions.php');
         exit();
     } else {
         $_SESSION['notifications'][] = 'Failed to reject verification.';
-        header('Location: user_verify.php');
+        header('Location: user_verification_transactions.php');
         exit();
     }
 }

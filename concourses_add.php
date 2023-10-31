@@ -44,38 +44,18 @@ include('includes/nav.php');
 ?>
 
 
-<section style= "margin-top:74px;">
+<section style= "margin-top:75px;">
 <?php
 echo 'Hi, ' . $_SESSION['uname'] . ' (' . $_SESSION['utype'] . ')';
 echo $utype;
 ?>
  
+<div >
+    <div class="text-center">
+add map here
+    </div>
+</div>
  
- 
- <div class="text-center">
-     <?php if ($verificationStatus === 'approved' && $utype === 'Owner'): ?>
-        <a href="concourse_add.php">
-            <button class="btn-sm btn btn-success">Add a Concourse</button>
-        </a>
-        <?php elseif ($verificationStatus === 'approved' && $utype === 'Tenant'): ?>
-            <a href="tenant-apply-space.php">
-                <button class="btn-sm btn btn-success">Apply For Space</button>
-                </a>
-               <?php else: ?>
-                <!-- You need to verify your account -->
-                
-                <!-- ************************************ -->
-                <!-- *******TO BE EDITED    ****** -->
-                <!-- ************************************ -->
-                <h1>
-                    spaces, rents, assigned spaces will be here
-                    
-                </h1>
-                <a href="verification_account.php">
-                    <button class="btn-sm btn btn-success">Verify Account to access concourses</button>
-                </a>
-                <?php endif; ?>
-            </div>
             
             
             

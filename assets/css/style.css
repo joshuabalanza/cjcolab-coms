@@ -173,3 +173,67 @@ input:focus {
   border-radius: 50%;
   border: solid 1px var(--secondary-color);
 }
+
+.round {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  position: relative;
+  background: red;
+  display: inline-block;
+  padding: 0.3rem 0.2rem !important;
+  margin: 0.3rem 0.2rem !important;
+  left: -18px;
+  top: 10px;
+  z-index: 99 !important;
+}
+
+/* .notification-indicator { */
+/* position: relative; */
+/* width: 2rem;
+  height: 2rem; */
+/* background-color: red; */
+/* color: white; */
+/* border-radius: 50%; */
+/* padding: 5px 8px; */
+/* font-size: 14px; */
+/* position: absolute; */
+/* top: 0; */
+/* right: 0; */
+/* } */
+
+.notification-circle {
+  position: absolute;
+  width: 1.3rem;
+  height: 1.3rem;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 3px 7px;
+  font-size: 10px;
+  font-weight: 900;
+  position: absolute;
+  top: 13px;
+  /* left: 0; */
+  right: 1.7rem;
+}
+.bold {
+  font-weight: 700;
+  /* color: red; */
+}
+/* ACTIONS */
+.action-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* padding: 0 0.75rem !important; */
+}
+
+.action-divider {
+  display: inline-block;
+  background-color: var(--black);
+  margin: 0 10px;
+  width: 1px;
+  padding: 0;
+  height: 1.6rem;
+}
