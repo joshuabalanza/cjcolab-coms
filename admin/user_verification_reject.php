@@ -40,11 +40,11 @@ if (isset($_GET['id'])) {
         }
 
         $_SESSION['notifications'][] = 'Verification rejected successfully.';
-        header('Location: user_verify.php');
+        header('Location: user_verification_transactions.php');
         exit();
     } else {
         $_SESSION['notifications'][] = 'Failed to reject verification.';
-        header('Location: user_verify.php');
+        header('Location: user_verification_transactions.php');
         exit();
     }
 }
