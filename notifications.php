@@ -63,6 +63,8 @@ include('includes/nav.php');
         <table class="table table-bordered">
             <thead>
                 <tr>
+                <th>From</th>
+
                     <th>Subject</th>
                     <th>Message</th>
                     <th>Date</th>
@@ -74,12 +76,16 @@ include('includes/nav.php');
                 // Fetch and display notifications from the database
                 $uid = $_SESSION['uid'];
 $notificationsQuery = "SELECT * FROM notifications WHERE user_id = $uid ORDER BY timestamp DESC";
+// $notificationsQuery = "SELECT notification_id, notification_type, message, timestamp, from_user FROM notifications WHERE user_id = $uid ORDER BY timestamp DESC";
+
 // $notificationsQuery = "SELECT notification_id, notification_type, message, timestamp FROM notifications WHERE user_id = $uid ORDER BY timestamp DESC";
 
 $notificationsResult = mysqli_query($con, $notificationsQuery);
 
 while ($notification = mysqli_fetch_assoc($notificationsResult)) {
     echo '<tr class="' . ($notification['active'] ? 'bold' : '') . '">';
+    echo '<td>' . $notification['from_user'] . '</td>';
+
     echo '<td>' . $notification['notification_type'] . '</td>';
     echo '<td>' . $notification['message'] . '</td>';
     echo '<td>' . $notification['timestamp'] . '</td>';
