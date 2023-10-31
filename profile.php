@@ -81,7 +81,7 @@ include('includes/nav.php');
                <?php if ($verificationStatus === 'approved'): ?>
                <button class="btn-sm btn btn-success" disabled>Verified</button>
                <?php else: ?>
-               <a href="account_verification.php">
+               <a href="verification_account.php">
                <button class="btn-sm btn btn-success">Verify Account</button>
                </a>
                <?php endif; ?>
