@@ -52,6 +52,8 @@ $(document).ready(function () {
         // Update the content of the notification without a page reload
         notificationContainer.find("td:first").html(data.notification_type);
         notificationContainer.find("td:nth-child(2)").html(data.message);
+        // call the function for the bell notification count
+        updateNotificationCount(); // Call a function to update the count
 
         // Toggle the "bold" class
         if (isBold) {
@@ -77,9 +79,33 @@ $(document).ready(function () {
       url: "notifications.php",
       data: { action: "delete", notification_id: notificationId },
       success: function () {
+        // Update the notification count
+        updateNotificationCount(); // Call a function to update the count
         // Remove the notification row from the table without a page reload
         notificationContainer.remove();
       },
     });
   });
 });
+
+// function updateNotificationCount() {
+//   $.ajax({
+//     type: "GET",
+//     url: "get_notification_count.php", // Endpoint to fetch the updated count
+//     success: function (count) {
+//       $("#notification-indicator").text(count);
+//       // Handle the count display and any other necessary actions
+//     },
+//   });
+// }
+
+// function updateNotificationCount() {
+//   $.ajax({
+//     type: "GET",
+//     url: "get_notification_count.php", // Endpoint to fetch the updated count
+//     success: function (count) {
+//       $("#notification-indicator").text(count);
+//       // Handle the count display and any other necessary actions
+//     },
+//   });
+// }
