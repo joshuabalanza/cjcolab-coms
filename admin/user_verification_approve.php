@@ -39,8 +39,9 @@ if (isset($_GET['id'])) {
                 $uid = $userVerificationRow['user_id'];
 
                 // Insert a notification for the user
+                $notificationType = 'Account Verification';
                 $notificationMessage = 'Your verification has been approved.';
-                $insertNotificationQuery = "INSERT INTO notifications (user_id, message) VALUES ('$uid', '$notificationMessage')";
+                $insertNotificationQuery = "INSERT INTO notifications (user_id, message, notification_type) VALUES ('$uid', '$notificationMessage', '$notificationType')";
                 mysqli_query($con, $insertNotificationQuery);
             }
 

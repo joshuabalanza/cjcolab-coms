@@ -54,6 +54,9 @@
          
          <?php
             if (isset($_SESSION['uid'])) {
+
+                // include('get_notification_count.php');
+
                 echo '<li class="nav-item dropdown ml-auto">';
                 echo '<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
                 if (isset($_SESSION['uimage']) && !empty($_SESSION['uimage'])) {
@@ -64,17 +67,42 @@
                 echo '</a>';
                 echo '<div class="dropdown-menu" aria-labelledby="userDropdown">';
                 echo '<a class="dropdown-item" href="profile.php">
-                            <i class="fa-regular fa-user"></i>
-                            My Profile</a>';
+                <i class="fa-regular fa-user"></i>
+                My Profile</a>';
                 echo '<a class="dropdown-item" href="transactions.php">
                 <i class="fa-solid fa-file-lines"></i>                              Transactions</a>';
                 echo '<a class="dropdown-item" href="logout.php">
-                            <i class="fa-solid fa-power-off"></i>Logout</a>';
+                <i class="fa-solid fa-power-off"></i>Logout</a>';
                 echo '</div>';
                 echo '</li>';
+
+                // *******************
+                // NOTIFICATIONS
+                // *******************
+
+                include('get_notification_count.php');
                 echo '<li class="nav-item">';
-                echo '<a href="notifications.php" class="nav-link"><i class="fa-solid fa-bell"></i></a>';
+                echo '<a href="notifications.php" class="nav-link"><i class="fa-solid fa-bell fa-xl" id="bell-count"></i></a>';
+                if ($notificationCount > 0) {
+                    echo '<div class="notification-circle">';
+
+                    echo '<span id="notification-indicator" class="notification-indicator">' . $notificationCount . '</span>';
+                }
+                echo '</div>';
                 echo '</li>';
+
+
+            // echo '<li class="nav-item">';
+            // echo '<a href="notifications.php" class="nav-link "><i class="fa-solid fa-bell" id="bell-count"></i></a>';
+
+            // // Check if there are unread notifications
+            // if ($notificationCount > 0) {
+            //     echo '<div class="notification-indicator">' . $notificationCount . '</div>'; // Display the count
+            // }
+
+            // echo '</li>';
+
+
             } else {
                 echo '<li class="nav-item">';
                 echo '<a href="login.php" class="nav-link">Login</a>';
@@ -85,6 +113,7 @@
             }
          ?>
       </ul>
+      
    </div>
 </nav>
 <!-- End Navigation -->
