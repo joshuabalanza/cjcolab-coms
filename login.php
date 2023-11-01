@@ -32,24 +32,30 @@ if (isset($_POST['login'])) {
         if ($result->num_rows == 1) {
             $row = $result->fetch_assoc();
 
-            // Verify the password
-            if (password_verify($upassword, $row['upassword'])) {
-                // Password is correct, so create session variables
-                $_SESSION['uid'] = $row['uid'];
-                $_SESSION['uemail'] = $row['uemail'];
-                $_SESSION['uname'] = $row['uname'];
-                $_SESSION['utype'] = $row['utype'];
-                $_SESSION['uphone'] = $row['uphone'];
-                $_SESSION['uimage'] = $row['uimage']; // Add this line to set the uimage session variable
+
+            if ($row['verified'] == 1) {
+
+                // Verify the password
+                if (password_verify($upassword, $row['upassword'])) {
+                    // Password is correct, so create session variables
+                    $_SESSION['uid'] = $row['uid'];
+                    $_SESSION['uemail'] = $row['uemail'];
+                    $_SESSION['uname'] = $row['uname'];
+                    $_SESSION['utype'] = $row['utype'];
+                    $_SESSION['uphone'] = $row['uphone'];
+                    $_SESSION['uimage'] = $row['uimage']; // Add this line to set the uimage session variable
 
 
-                // Redirect to a protected page or the user's profile
-                // header('Location: dashboard.php'); // Change 'dashboard.php' to your desired protected page
-                header('Location: index.php'); // Change 'dashboard.php' to your desired protected page
+                    // Redirect to a protected page or the user's profile
+                    // header('Location: dashboard.php'); // Change 'dashboard.php' to your desired protected page
+                    header('Location: index.php'); // Change 'dashboard.php' to your desired protected page
 
-                exit();
+                    exit();
+                } else {
+                    $error_message = "Invalid password";
+                }
             } else {
-                $error_message = "Invalid password";
+                $error_message = "Account not verified. Please verify your account by entering the OTP.";
             }
         } else {
             $error_message = "User not found. Please register first.";
