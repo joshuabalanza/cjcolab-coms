@@ -88,7 +88,7 @@ if (isset($_POST['register'])) {
                 }
 
                 // Redirect to OTP verification page
-                header('Location: otp_verification.php?email=' . $uemail);
+                header('Location: otp.php?email=' . $uemail);
                 exit();
             }
         }

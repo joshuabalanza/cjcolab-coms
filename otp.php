@@ -42,6 +42,8 @@ if (isset($_POST['verify_otp'])) {
                 <p><?php
                 if (isset($error_message)) {
                     echo $error_message;
+                } if (isset($_GET['success']) && $_GET['success'] == 1) {
+                    echo "OTP has been successfully resent. Please check your email.";
                 }
 ?></p>
                 <div class="form-group form">
@@ -53,6 +55,16 @@ if (isset($_POST['verify_otp'])) {
                 </div>
                 <button type="submit" class="btn btn-danger mt-3 btn-block shadow-sm font-weight-bold" name="verify_otp">Verify OTP</button>
             </form>
+
+            <!-- OTP Resend -->
+           <form action="otp-resend.php" method="POST">
+                    <div class="form-group form">
+                        <input type="email" class="form-control form-input" name="email" id="email" autocomplete="off" placeholder="Enter your email">
+                        <label for "email" class="form-label">Email</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary" name="resend_otp">Resend OTP</button>
+                </form>
+                <!-- Otp resend -->
         </div>
     </div>
 </div>
