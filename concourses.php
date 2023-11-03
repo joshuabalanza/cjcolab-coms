@@ -99,7 +99,9 @@ include('includes/nav.php');
       <div class="modal-content">
          <span class="close" id="closeAddConcourseModal">&times;</span>
          <h2>Add a Concourse</h2>
-         <form id="concourseForm" method="POST" action="process_concourse.php">
+         <!-- <form id="concourseForm" method="POST" action="verification_concourse_process.php"> -->
+         <form id="concourseForm" method="POST" action="verification_concourse_process.php" enctype="multipart/form-data">
+
             <label for="concourseName">Concourse Name:</label>
             <input type="text" id="concourseName" name="concourseName" required>
             <label for="concourseAddress">Concourse Address:</label>
@@ -109,7 +111,7 @@ include('includes/nav.php');
             <label for="concourseSpaces">Spaces:</label>
             <!-- <textarea id="concourseSpaces" name="concourseSpaces" required></textarea> -->
             <input type="number" id="concourseSpaces" name="concourseSpaces" required>
-            <button type="submit" class="btn btn-success">Submit</button>
+            <button type="submit" class="btn btn-success"name="submit_concourse" >Submit</button>
          </form>
       </div>
    </div>
@@ -117,4 +119,5 @@ include('includes/nav.php');
    <!-- ********END OF ADD CONCOURSE MODAL****** -->
    <!-- **************************************** -->
 </section>
+<?php echo $_SESSION['uemail']; ?>
 <?php include('includes/footer.php'); ?>
