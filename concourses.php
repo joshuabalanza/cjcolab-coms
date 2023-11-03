@@ -21,6 +21,10 @@ if (!isset($_SESSION['uid'])) {
 $uid = $_SESSION['uid'];
 $utype = $_SESSION['utype'];
 
+// $mappp = $_SESSION['approved_concourse'];
+
+// Check if there are approved concourse details in the session
+
 // **********************
 // ***USER VERIFY********
 // **********************
@@ -40,8 +44,22 @@ if ($verificationResult && mysqli_num_rows($verificationResult) > 0) {
 // **********************
 
 
+// Check the status in the user_verification table
+// $mapStatus = "Not approved"; // Default status
+// // $mapStatusApprove = "approve"; // Default status
+// $mapQuery = "SELECT * FROM concourse_verification WHERE status = $mapStatus";
+// $mapResult = mysqli_query($con, $mapQuery);
 
+// if ($mapResult && mysqli_num_rows($mapResult) > 0) {
+//     $mapData = mysqli_fetch_assoc($mapResult);
+//     $mapStatus = $mapData['status'];
 
+// }
+
+// **************************************
+
+$approvedMapQuery = "SELECT * FROM concourse_verification WHERE status = 'approved'";
+$approvedMapResult = mysqli_query($con, $approvedMapQuery);
 
 ?>
 <!-- ******************** -->
@@ -90,6 +108,56 @@ include('includes/nav.php');
          </div>
       </div>
       <?php endif; ?>
+  
+      <?php
+      if ($approvedMapResult && mysqli_num_rows($approvedMapResult) > 0) {
+          echo '<h3>Approved Maps</h3>';
+          echo '<table>';
+          echo '<tr>';
+          echo '<th>Concourse ID</th>';
+          echo '<th>Owner ID</th>';
+          echo '<th>Concourse Name</th>';
+          echo '<th>Concourse Map</th>';
+          echo '</tr>';
+
+          while ($mapData = mysqli_fetch_assoc($approvedMapResult)) {
+              echo '<tr>';
+              echo '<td>' . $mapData['concourse_id'] . '</td>';
+              echo '<td>' . $mapData['owner_id'] . '</td>';
+              echo '<td>' . $mapData['concourse_name'] . '</td>';
+              echo '<td><a href="../uploads/' . $mapData['concourse_map'] . '">View Map</a></td>';
+              echo '</tr>';
+          }
+
+          echo '</table>';
+      } else {
+          echo 'No approved maps found.';
+      }
+
+?>
+  
+    <!-- <h3>Approved Concourse Details</h3>
+    <table>
+        <tr>
+            <th>Concourse ID</th>
+            <th>Owner ID</th>
+            <th>Owner Name</th>
+            <th>Concourse Name</th>
+            <th>Concourse Map</th>
+            <th>Spaces</th>
+            <th>Status</th>
+        </tr>
+        <tr>
+            <td><?= $approvedConcourseDetails['concourse_id'] ?></td>
+            <td><?= $approvedConcourseDetails['owner_id'] ?></td>
+            <td><?= $approvedConcourseDetails['owner_name'] ?></td>
+            <td><?= $approvedConcourseDetails['concourse_name'] ?></td>
+            <td><a href="../uploads/<?= $approvedConcourseDetails['concourse_map'] ?>">View Map</a></td>
+            <td><?= $approvedConcourseDetails['spaces'] ?></td>
+            <td><?= $approvedConcourseDetails['status'] ?></td>
+        </tr>
+    </table> -->
+ 
    </div>
 
    <!-- **************************************** -->
@@ -97,7 +165,10 @@ include('includes/nav.php');
    <!-- **************************************** -->
    <div class= "container-fluid">
       <h3>Concourses</h3>
+
    </div>
+
+
    <!-- **************************************** -->
    <!-- *****END DISPLAYED FEATURED CONCOURSE*** -->
    <!-- **************************************** -->
@@ -131,5 +202,8 @@ include('includes/nav.php');
    <!-- ********END OF ADD CONCOURSE MODAL****** -->
    <!-- **************************************** -->
 </section>
-<?php echo $_SESSION['uemail']; ?>
+<?php
+// echo $_SESSION['uemail'];
+// echo $_SESSION['approved_concourse'];
+?>
 <?php include('includes/footer.php'); ?>
