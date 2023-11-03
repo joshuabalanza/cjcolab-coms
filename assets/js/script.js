@@ -109,3 +109,83 @@ $(document).ready(function () {
 //     },
 //   });
 // }
+
+// modal for add concourse
+// Get the modal and close button elements
+var addConcourseModal = document.getElementById("addConcourseModal");
+var openAddConcourseModalBtn = document.getElementById("openAddConcourseModal");
+var closeAddConcourseModalBtn = document.getElementById(
+  "closeAddConcourseModal"
+);
+
+// Function to open the modal
+function openAddConcourseModal() {
+  addConcourseModal.style.display = "block";
+}
+// Event listener for the open button
+// openAddConcourseModalBtn.addEventListener("click", openAddConcourseModal);
+
+// Event listener for the close button if it exists
+if (openAddConcourseModalBtn) {
+  openAddConcourseModalBtn.addEventListener("click", openAddConcourseModal);
+}
+
+// Function to close the modal
+function closeAddConcourseModal() {
+  addConcourseModal.style.display = "none";
+}
+// Event listener for the close button
+// closeAddConcourseModalBtn.addEventListener("click", closeAddConcourseModal);
+
+// Event listener for the close button if it exists
+if (closeAddConcourseModalBtn) {
+  closeAddConcourseModalBtn.addEventListener("click", closeAddConcourseModal);
+}
+// You can also close the modal when the user clicks anywhere outside the modal content
+window.addEventListener("click", function (event) {
+  if (event.target == addConcourseModal) {
+    closeAddConcourseModal();
+  }
+});
+// Get the modal and close button elements
+// var modal = document.getElementById("verificationModal");
+// var closeBtn = modal.querySelector(".close");
+
+// // Function to close the modal
+// function closeModal() {
+//   modal.style.display = "none";
+// }
+
+// // Event listener for the close button
+// closeBtn.addEventListener("click", closeModal);
+
+// // You can also close the modal when the user clicks anywhere outside the modal content
+// window.addEventListener("click", function (event) {
+//   if (event.target == modal) {
+//     closeModal();
+//   }
+// });
+document.addEventListener("DOMContentLoaded", function () {
+  // Get the modal and close button elements
+  var modal = document.getElementById("verificationModal");
+  var closeBtn = modal ? modal.querySelector(".close") : null;
+
+  // Function to close the modal
+  function closeModal() {
+    if (modal) {
+      modal.style.display = "none";
+    }
+  }
+
+  // Event listener for the close button
+  if (closeBtn) {
+    closeBtn.addEventListener("click", closeModal);
+  }
+
+  // You can also close the modal when the user clicks anywhere outside the modal content
+  window.addEventListener("click", function (event) {
+    if (modal && event.target == modal) {
+      closeModal();
+    }
+  });
+});

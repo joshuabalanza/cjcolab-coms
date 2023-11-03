@@ -37,44 +37,84 @@ if ($verificationResult && mysqli_num_rows($verificationResult) > 0) {
 <!-- ******************** -->
 <?php
 include('includes/header.php');
+
 include('includes/nav.php');
 ?>
-<section style= "margin-top:75px;">
+<section style= "margin-top:90px;">
    <?php
-//    echo 'Hi, ' . $_SESSION['uname'] . ' (' . $_SESSION['utype'] . ')';
-// echo $utype;
+   //    echo 'Hi, ' . $_SESSION['uname'] . ' (' . $_SESSION['utype'] . ')';
+   // echo $utype;
 ?>
-
-
-   <div class="text-center">
-<!-- ********************************************************************** -->
-<!-- **** CTA BUTTON DISPLAY DEPENDING ON USER TYPE AND ACCOUNT STATUS **** -->
-<!-- ********************************************************************** -->
-
-<!-- OWNER -->
+   <div class="container-fluid">
+      <!-- ********************************************************************** -->
+      <!-- **** CTA BUTTON DISPLAY DEPENDING ON USER TYPE AND ACCOUNT STATUS **** -->
+      <!-- ********************************************************************** -->
+      <!-- OWNER -->
       <?php if ($verificationStatus === 'approved' && $utype === 'Owner'): ?>
       <h3>Your Concourse</h3>
-      <a href="concourse_add.php">
-      <button class="btn-sm btn btn-success">Add a Concourse</button>
-      </a>
+      <button id="openAddConcourseModal" class="btn-sm btn btn-success">Add a Concourse</button>
+      <!-- <a href="concourse_add.php">
+         <button class="btn-sm btn btn-success">Add a Concourse</button>
+         </a> -->
       <?php elseif ($verificationStatus === 'rejected' && $utype === 'Owner'): ?>
-      <a href="verification_account.php">
-      <button class="btn-sm btn btn-success">Verify Account to add concourses</button>
-      </a>
-
+      <div id="verificationModal" class="prompt-modal">
+         <div class="modal-content">
+            <span class="close">&times;</span>
+            <p>Verify your account to add concourse.</p>
+            <a href="verification_account.php" class="btn-sm btn btn-success">Verify Account</a>
+         </div>
+      </div>
       <!-- TENANT -->
       <?php elseif ($verificationStatus === 'approved' && $utype === 'Tenant'): ?>
       <a href="tenant-apply-space.php">
       <button class="btn-sm btn btn-success">Apply For Space</button>
       </a>
       <?php else: ?>
-      <a href="verification_account.php">
-      <button class="btn-sm btn btn-success">Verify Account to apply for Space</button>
-      </a>
+      <div id="verificationModal" class="prompt-modal">
+         <div class="modal-content">
+            <span class="close">&times;</span>
+            <p>Verify your account to apply for space.</p>
+            <a href="verification_account.php" class="btn-sm btn btn-success">Verify Account</a>
+         </div>
+      </div>
       <?php endif; ?>
    </div>
-   <div class= "">
+
+   <!-- **************************************** -->
+   <!-- ******DISPLAYED FEATURED CONCOURSE****** -->
+   <!-- **************************************** -->
+   <div class= "container-fluid">
       <h3>Concourses</h3>
    </div>
+   <!-- **************************************** -->
+   <!-- *****END DISPLAYED FEATURED CONCOURSE*** -->
+   <!-- **************************************** -->
+
+   <!-- //////////////////////////////////////// -->
+
+   <!-- **************************************** -->
+   <!-- ********ADD CONCOURSE MODAL************* -->
+   <!-- **************************************** -->
+   <div id="addConcourseModal" class="modal">
+      <div class="modal-content">
+         <span class="close" id="closeAddConcourseModal">&times;</span>
+         <h2>Add a Concourse</h2>
+         <form id="concourseForm" method="POST" action="process_concourse.php">
+            <label for="concourseName">Concourse Name:</label>
+            <input type="text" id="concourseName" name="concourseName" required>
+            <label for="concourseAddress">Concourse Address:</label>
+            <input type="text" id="concourseAddress" name="concourseAddress" required>
+            <label for="concourseImage">Concourse Image:</label>
+            <input type="file" id="concourseImage" name="concourseImage" required>
+            <label for="concourseSpaces">Spaces:</label>
+            <!-- <textarea id="concourseSpaces" name="concourseSpaces" required></textarea> -->
+            <input type="number" id="concourseSpaces" name="concourseSpaces" required>
+            <button type="submit" class="btn btn-success">Submit</button>
+         </form>
+      </div>
+   </div>
+   <!-- **************************************** -->
+   <!-- ********END OF ADD CONCOURSE MODAL****** -->
+   <!-- **************************************** -->
 </section>
 <?php include('includes/footer.php'); ?>
