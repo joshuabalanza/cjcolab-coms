@@ -58,6 +58,8 @@ if ($verificationResult && mysqli_num_rows($verificationResult) > 0) {
 
 // **************************************
 
+$uploadDirectory = __DIR__ . '/uploads/';
+
 $approvedMapQuery = "SELECT * FROM concourse_verification WHERE status = 'approved'";
 $approvedMapResult = mysqli_query($con, $approvedMapQuery);
 
@@ -110,29 +112,34 @@ include('includes/nav.php');
       <?php endif; ?>
   
       <?php
-      if ($approvedMapResult && mysqli_num_rows($approvedMapResult) > 0) {
-          echo '<h3>Approved Maps</h3>';
-          echo '<table>';
-          echo '<tr>';
-          echo '<th>Concourse ID</th>';
-          echo '<th>Owner ID</th>';
-          echo '<th>Concourse Name</th>';
-          echo '<th>Concourse Map</th>';
-          echo '</tr>';
+     if ($approvedMapResult && mysqli_num_rows($approvedMapResult) > 0) {
+         echo '<h3>Approved Maps</h3>';
+         echo '<table>';
+         echo '<tr>';
+         echo '<th>Concourse ID</th>';
+         echo '<th>Owner ID</th>';
+         echo '<th>Owner Name</th>';
+         echo '<th>Concourse Name</th>';
+         echo '<th>Concourse Map</th>';
+         echo '</tr>';
 
-          while ($mapData = mysqli_fetch_assoc($approvedMapResult)) {
-              echo '<tr>';
-              echo '<td>' . $mapData['concourse_id'] . '</td>';
-              echo '<td>' . $mapData['owner_id'] . '</td>';
-              echo '<td>' . $mapData['concourse_name'] . '</td>';
-              echo '<td><a href="../uploads/' . $mapData['concourse_map'] . '">View Map</a></td>';
-              echo '</tr>';
-          }
+         while ($mapData = mysqli_fetch_assoc($approvedMapResult)) {
+             echo '<tr>';
+             echo '<td>' . $mapData['concourse_id'] . '</td>';
+             echo '<td>' . $mapData['owner_id'] . '</td>';
+             echo '<td>' . $mapData['owner_name'] . '</td>';
+             echo '<td>' . $mapData['concourse_name'] . '</td>';
+             //  echo '<td><img src="' . $uploadDirectory . $mapData['concourse_map'] . '" alt="Concourse Map"></td>';
+             echo '<td><img src="/COMS/uploads/' . $mapData['concourse_map'] . '" alt="Concourse Map"></td>';
 
-          echo '</table>';
-      } else {
-          echo 'No approved maps found.';
-      }
+             echo '</tr>';
+         }
+
+         echo '</table>';
+     } else {
+         echo 'No approved maps found.';
+     }
+
 
 ?>
   
