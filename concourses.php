@@ -137,7 +137,19 @@ $checkApprovedMapsQuery = "SELECT * FROM concourse_verification WHERE owner_id =
     <h3>Concourses</h3>
     <div class="row">
         <?php
-        $approvedConcoursesQuery = "SELECT * FROM concourse_verification WHERE status = 'approved' ORDER BY `concourse_verification`.`concourse_id` DESC";
+
+$itemsPerPage = 6;  // Number of items to display per page
+
+if (isset($_GET['page'])) {
+    $currentPage = (int)$_GET['page'];
+} else {
+    $currentPage = 1;  // Default to page 1
+}
+
+$offset = ($currentPage - 1) * $itemsPerPage;
+//   $approvedConcoursesQuery = "SELECT * FROM concourse_verification WHERE status = 'approved' ORDER BY `concourse_verification`.`concourse_id` DESC";
+$approvedConcoursesQuery = "SELECT * FROM concourse_verification WHERE status = 'approved' ORDER BY `concourse_verification`.`concourse_id` DESC LIMIT $itemsPerPage OFFSET $offset";
+
 $approvedConcoursesResult = mysqli_query($con, $approvedConcoursesQuery);
 
 if ($approvedConcoursesResult && mysqli_num_rows($approvedConcoursesResult) > 0) {
@@ -161,7 +173,20 @@ if ($approvedConcoursesResult && mysqli_num_rows($approvedConcoursesResult) > 0)
     </div>
 </div>
 
+  <!-- Pagination controls -->
+  <ul class="pagination">
+        <?php
+        $totalItemsQuery = "SELECT COUNT(*) FROM concourse_verification WHERE status = 'approved'";
+$totalItemsResult = mysqli_query($con, $totalItemsQuery);
+$totalItems = mysqli_fetch_array($totalItemsResult)[0];
+$totalPages = ceil($totalItems / $itemsPerPage);
 
+for ($page = 1; $page <= $totalPages; $page++) {
+    $activeClass = ($page == $currentPage) ? 'active' : '';
+    echo "<li class='page-item $activeClass'><a class='page-link' href='concourses.php?page=$page'>$page</a></li>";
+}
+?>
+    </ul>
 
    <!-- **************************************** -->
    <!-- *****END DISPLAYED FEATURED CONCOURSE*** -->
