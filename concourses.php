@@ -133,19 +133,16 @@ $checkApprovedMapsQuery = "SELECT * FROM concourse_verification WHERE owner_id =
    <!-- **************************************** -->
    <!-- ******DISPLAYED FEATURED CONCOURSE****** -->
    <!-- **************************************** -->
-   <div class= "container-fluid">
-      <h3>Concourses</h3>
-
-
-      <?php
-    // Query to retrieve approved concourses
-    $approvedConcoursesQuery = "SELECT * FROM concourse_verification WHERE status = 'approved' ORDER BY `concourse_verification`.`concourse_id` DESC";
+   <div class="container-fluid">
+    <h3>Concourses</h3>
+    <div class="row">
+        <?php
+        $approvedConcoursesQuery = "SELECT * FROM concourse_verification WHERE status = 'approved' ORDER BY `concourse_verification`.`concourse_id` DESC";
 $approvedConcoursesResult = mysqli_query($con, $approvedConcoursesQuery);
 
 if ($approvedConcoursesResult && mysqli_num_rows($approvedConcoursesResult) > 0) {
-    echo '<div class="card-deck">';
-
     while ($concourseData = mysqli_fetch_assoc($approvedConcoursesResult)) {
+        echo '<div class="col-md-4 mb-4">';
         echo '<div class="card">';
         echo '<img src="/COMS/uploads/' . $concourseData['concourse_map'] . '" class="card-img-top" alt="Concourse Map">';
         echo '<div class="card-body">';
@@ -155,13 +152,14 @@ if ($approvedConcoursesResult && mysqli_num_rows($approvedConcoursesResult) > 0)
         echo '<p class="card-text">Owner Name: ' . $concourseData['owner_name'] . '</p>';
         echo '</div>';
         echo '</div>';
+        echo '</div>';
     }
-    echo '</div>';
 } else {
     echo 'No approved concourses found.';
 }
 ?>
-   </div>
+    </div>
+</div>
 
 
    <!-- **************************************** -->
