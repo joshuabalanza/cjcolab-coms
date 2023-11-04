@@ -75,6 +75,26 @@ include('includes/nav.php');
       <!-- <a href="concourse_add.php">
          <button class="btn-sm btn btn-success">Add a Concourse</button>
          </a> -->
+         <?php
+if ($approvedMapResult && mysqli_num_rows($approvedMapResult) > 0) {
+    echo '<h3>Your Concourse</h3>';
+    echo '<div class="card-deck">';
+    while ($mapData = mysqli_fetch_assoc($approvedMapResult)) {
+        echo '<div class="card">';
+        echo '<img src="/COMS/uploads/' . $mapData['concourse_map'] . '" class="card-img-top" alt="Concourse Map">';
+        echo '<div class="card-body">';
+        echo '<h5 class="card-title">' . $mapData['concourse_name'] . '</h5>';
+        echo '<p class="card-text">Concourse ID: ' . $mapData['concourse_id'] . '</p>';
+        echo '<p class="card-text">Owner ID: ' . $mapData['owner_id'] . '</p>';
+        echo '<p class="card-text">Owner Name: ' . $mapData['owner_name'] . '</p>';
+        echo '</div>';
+        echo '</div>';
+    }
+    echo '</div>';
+} else {
+    echo 'No approved maps found.';
+}
+?>
       <?php elseif ($verificationStatus === 'rejected' && $utype === 'Owner'): ?>
       <div id="verificationModal" class="prompt-modal">
          <div class="modal-content">
@@ -98,58 +118,8 @@ include('includes/nav.php');
       </div>
       <?php endif; ?>
   
-      <?php
-   //   if ($approvedMapResult && mysqli_num_rows($approvedMapResult) > 0) {
-   //       echo '<h3>Approved Maps</h3>';
-   //       echo '<table>';
-   //       echo '<tr>';
-   //       echo '<th>Concourse ID</th>';
-   //       echo '<th>Owner ID</th>';
-   //       echo '<th>Owner Name</th>';
-   //       echo '<th>Concourse Name</th>';
-   //       echo '<th>Concourse Map</th>';
-   //       echo '<th>Manage</th>';
-   //       echo '</tr>';
-
-   //       while ($mapData = mysqli_fetch_assoc($approvedMapResult)) {
-   //           echo '<tr>';
-   //           echo '<td>' . $mapData['concourse_id'] . '</td>';
-   //           echo '<td>' . $mapData['owner_id'] . '</td>';
-   //           echo '<td>' . $mapData['owner_name'] . '</td>';
-   //           echo '<td>' . $mapData['concourse_name'] . '</td>';
-   //           //  echo '<td><img src="' . $uploadDirectory . $mapData['concourse_map'] . '" alt="Concourse Map"></td>';
-   //           echo '<td><img class="map-container concourse-container" src="/COMS/uploads/' . $mapData['concourse_map'] . '" alt="Concourse Map"></td>';
-
-   //           echo '</tr>';
-   //       }
-
-   //       echo '</table>';
-   //   } else {
-   //       echo 'No approved maps found.';
-   //   }
 
 
-?>
-<?php
-if ($approvedMapResult && mysqli_num_rows($approvedMapResult) > 0) {
-    echo '<h3>Your Concourse</h3>';
-    echo '<div class="card-deck">';
-    while ($mapData = mysqli_fetch_assoc($approvedMapResult)) {
-        echo '<div class="card">';
-        echo '<img src="/COMS/uploads/' . $mapData['concourse_map'] . '" class="card-img-top" alt="Concourse Map">';
-        echo '<div class="card-body">';
-        echo '<h5 class="card-title">' . $mapData['concourse_name'] . '</h5>';
-        echo '<p class="card-text">Concourse ID: ' . $mapData['concourse_id'] . '</p>';
-        echo '<p class="card-text">Owner ID: ' . $mapData['owner_id'] . '</p>';
-        echo '<p class="card-text">Owner Name: ' . $mapData['owner_name'] . '</p>';
-        echo '</div>';
-        echo '</div>';
-    }
-    echo '</div>';
-} else {
-    echo 'No approved maps found.';
-}
-?>
 
   
    
