@@ -142,7 +142,7 @@ $approvedConcoursesResult = mysqli_query($con, $approvedConcoursesQuery);
 
 if ($approvedConcoursesResult && mysqli_num_rows($approvedConcoursesResult) > 0) {
     while ($concourseData = mysqli_fetch_assoc($approvedConcoursesResult)) {
-        echo '<div class="col-md-4 mb-4">';
+        echo '<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">';
         echo '<div class="card">';
         echo '<img src="/COMS/uploads/' . $concourseData['concourse_map'] . '" class="card-img-top" alt="Concourse Map">';
         echo '<div class="card-body">';
