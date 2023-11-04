@@ -76,12 +76,14 @@ include('includes/nav.php');
         loadConcourses(1); // Load the first page by default
 
         // Pagination click event handler
-        $(document).on('click', '.page-link', function () {
+        $(document).on('click', '.page-link', function (event) {
+            event.preventDefault(); // Prevent the default link behavior
             var page = $(this).data('page');
             loadConcourses(page);
         });
     });
 </script>
+
 
 <section style= "margin-top:90px;">
    <?php
