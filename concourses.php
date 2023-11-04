@@ -70,56 +70,18 @@ include('includes/nav.php');
       <!-- ********************************************************************** -->
       <!-- OWNER -->
       <?php if ($verificationStatus === 'approved' && $utype === 'Owner'): ?>
-      <h3>Your Concourse will be placed here// currently fixing styling</h3>
+      <h3>Your Concourse</h3>
       <button id="openAddConcourseModal" class="btn-sm btn btn-success">Add a Concourse</button>
       <!-- <a href="concourse_add.php">
          <button class="btn-sm btn btn-success">Add a Concourse</button>
          </a> -->
          <?php
-// if ($approvedMapResult && mysqli_num_rows($approvedMapResult) > 0) {
-//     echo '<h3>Your Concourse</h3>';
-//     echo '<div class="card-deck">';
-//     while ($mapData = mysqli_fetch_assoc($approvedMapResult)) {
-//         echo '<div class="card">';
-//         echo '<img src="/COMS/uploads/' . $mapData['concourse_map'] . '" class="card-img-top" alt="Concourse Map">';
-//         echo '<div class="card-body">';
-//         echo '<h5 class="card-title">' . $mapData['concourse_name'] . '</h5>';
-//         echo '<p class="card-text">Concourse ID: ' . $mapData['concourse_id'] . '</p>';
-//         echo '<p class="card-text">Owner ID: ' . $mapData['owner_id'] . '</p>';
-//         echo '<p class="card-text">Owner Name: ' . $mapData['owner_name'] . '</p>';
-//         echo '</div>';
-//         echo '</div>';
-//     }
-//     echo '</div>';
-// } else {
-//     echo 'No approved maps found.';
-// }
-// if ($approvedMapResult && mysqli_num_rows($approvedMapResult) > 0) {
-//     echo '<h3>Your Concourse</h3>';
-//     echo '<div class="card-deck">';
-//     while ($mapData = mysqli_fetch_assoc($approvedMapResult)) {
-//         if ($mapData['owner_id'] == $uid) {
-//             // Check if the owner ID of the concourse matches the currently logged-in user's ID
-//             echo '<div class="card">';
-//             echo '<img src="/COMS/uploads/' . $mapData['concourse_map'] . '" class="card-img-top" alt="Concourse Map">';
-//             echo '<div class="card-body">';
-//             echo '<h5 class="card-title">' . $mapData['concourse_name'] . '</h5>';
-//             echo '<p class="card-text">Concourse ID: ' . $mapData['concourse_id'] . '</p>';
-//             echo '<p class="card-text">Owner ID: ' . $mapData['owner_id'] . '</p>';
-//             echo '<p class="card-text">Owner Name: ' . $mapData['owner_name'] . '</p>';
-//             echo '</div>';
-//             echo '</div>';
-//         }
-//     }
-//     echo '</div>';
-// } else {
-//     echo 'No approved maps found.';
-// }
+
 $checkApprovedMapsQuery = "SELECT * FROM concourse_verification WHERE owner_id = '$uid' AND status = 'approved'";
           $checkApprovedMapsResult = mysqli_query($con, $checkApprovedMapsQuery);
 
           if ($checkApprovedMapsResult && mysqli_num_rows($checkApprovedMapsResult) > 0) {
-              echo '<h3>Your Concourse</h3>';
+              //   echo '<h3>Your Concourse</h3>';
               echo '<div class="card-deck">';
               while ($mapData = mysqli_fetch_assoc($checkApprovedMapsResult)) {
                   echo '<div class="card">';
@@ -174,6 +136,31 @@ $checkApprovedMapsQuery = "SELECT * FROM concourse_verification WHERE owner_id =
    <div class= "container-fluid">
       <h3>Concourses</h3>
 
+
+      <?php
+    // Query to retrieve approved concourses
+    $approvedConcoursesQuery = "SELECT * FROM concourse_verification WHERE status = 'approved' ORDER BY `concourse_verification`.`concourse_id` DESC";
+$approvedConcoursesResult = mysqli_query($con, $approvedConcoursesQuery);
+
+if ($approvedConcoursesResult && mysqli_num_rows($approvedConcoursesResult) > 0) {
+    echo '<div class="card-deck">';
+
+    while ($concourseData = mysqli_fetch_assoc($approvedConcoursesResult)) {
+        echo '<div class="card">';
+        echo '<img src="/COMS/uploads/' . $concourseData['concourse_map'] . '" class="card-img-top" alt="Concourse Map">';
+        echo '<div class="card-body">';
+        echo '<h5 class="card-title">' . $concourseData['concourse_name'] . '</h5>';
+        echo '<p class="card-text">Concourse ID: ' . $concourseData['concourse_id'] . '</p>';
+        echo '<p class="card-text">Owner ID: ' . $concourseData['owner_id'] . '</p>';
+        echo '<p class="card-text">Owner Name: ' . $concourseData['owner_name'] . '</p>';
+        echo '</div>';
+        echo '</div>';
+    }
+    echo '</div>';
+} else {
+    echo 'No approved concourses found.';
+}
+?>
    </div>
 
 
