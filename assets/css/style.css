@@ -246,60 +246,6 @@ input:focus {
   height: 1.6rem;
 }
 
-<<<<<<< HEAD
-/* Login.php */
-
-.login-section {
-  width: 100%;
-}
-.login-section > #overlay {
-  display: flex;
-  height: 100vh;
-  /* background-image: linear-gradient(rgba(155, 89, 60, 0.8), rgba(0, 0, 0, 0.7)),
-    url(../images/loginbg.png); */
-  background-image: linear-gradient(rgba(155, 89, 60, 0.8), rgba(0, 0, 0, 0.7)),
-    url(../images/loginbg2.jpg);
-  background-size: cover;
-
-  /* background-image: url(../assets/images/loginbg.png); */
-}
-.login-form-wrapper {
-  background-color: #fff;
-  width: 50%;
-  height: 500px;
-  margin: auto;
-  justify-content: center;
-  border-radius: 25px;
-  text-align: center;
-  position: relative;
-  display: flex;
-}
-
-.left-panel {
-  background-image: url(../images/loginbg2.jpg);
-  background-size: cover;
-  top: 0;
-  padding-top: 20px;
-  padding-left: 20px;
-  border-top-left-radius: 25px;
-  border-bottom-left-radius: 25px;
-  left: 0;
-  width: 40%;
-  height: 100%;
-}
-
-.right-panel {
-  border-radius: 25px;
-  top: 0;
-  right: 0;
-  height: 100%;
-  width: 100%;
-  background-color: rgb(255, 255, 255);
-}
-.login-form {
-  height: 100%;
-}
-=======
 /* <style> */
 
 .prompt-modal {
@@ -343,4 +289,3 @@ input:focus {
   cursor: pointer;
 }
 /* </style> */
->>>>>>> 5371b868278c159a005d944452d7334cd2ebddda
