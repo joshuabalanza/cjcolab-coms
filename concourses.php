@@ -59,6 +59,42 @@ include('includes/header.php');
 
 include('includes/nav.php');
 ?>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function loadConcourses(page) {
+        $.ajax({
+            type: 'GET',
+            url: 'get_concourse.php',
+            data: { page: page },
+            success: function (data) {
+                $('#concourse-list').html(data);
+            }
+        });
+    }
+
+    function loadPagination(totalPages, currentPage) {
+        var paginationHTML = '<ul class="pagination" id="pagination">';
+        for (var i = 1; i <= totalPages; i++) {
+            var activeClass = (i === currentPage) ? 'active' : '';
+            paginationHTML += '<li class="page-item ' + activeClass + '">';
+            paginationHTML += '<a class="page-link" data-page="' + i + '" href="#">' + i + '</a>';
+            paginationHTML += '</li>';
+        }
+        paginationHTML += '</ul>';
+        $('#pagination').html(paginationHTML);
+    }
+
+    $(document).ready(function () {
+        loadConcourses(1);
+    });
+
+    $('#pagination').on('click', 'a.page-link', function (event) {
+        event.preventDefault();
+        var page = $(this).data('page');
+        loadConcourses(page);
+    });
+</script>
+
 <section style= "margin-top:90px;">
    <?php
    //    echo 'Hi, ' . $_SESSION['uname'] . ' (' . $_SESSION['utype'] . ')';
@@ -75,9 +111,8 @@ include('includes/nav.php');
       <!-- <a href="concourse_add.php">
          <button class="btn-sm btn btn-success">Add a Concourse</button>
          </a> -->
-         <?php
-
-$checkApprovedMapsQuery = "SELECT * FROM concourse_verification WHERE owner_id = '$uid' AND status = 'approved'";
+      <?php
+   $checkApprovedMapsQuery = "SELECT * FROM concourse_verification WHERE owner_id = '$uid' AND status = 'approved'";
           $checkApprovedMapsResult = mysqli_query($con, $checkApprovedMapsQuery);
 
           if ($checkApprovedMapsResult && mysqli_num_rows($checkApprovedMapsResult) > 0) {
@@ -121,79 +156,23 @@ $checkApprovedMapsQuery = "SELECT * FROM concourse_verification WHERE owner_id =
          </div>
       </div>
       <?php endif; ?>
-  
-
-
-
-  
-   
- 
    </div>
-
    <!-- **************************************** -->
    <!-- ******DISPLAYED FEATURED CONCOURSE****** -->
    <!-- **************************************** -->
    <div class="container-fluid">
-    <h3>Concourses</h3>
-    <div class="row">
-        <?php
+      <h3>Concourses</h3>
+      <div id="concourse-list" class="row">
+         <!-- This div will be populated with the fetched data -->
+      </div>
+   </div>
+   <div id="pagination"></div>
 
-$itemsPerPage = 6;  // Number of items to display per page
-
-if (isset($_GET['page'])) {
-    $currentPage = (int)$_GET['page'];
-} else {
-    $currentPage = 1;  // Default to page 1
-}
-
-$offset = ($currentPage - 1) * $itemsPerPage;
-//   $approvedConcoursesQuery = "SELECT * FROM concourse_verification WHERE status = 'approved' ORDER BY `concourse_verification`.`concourse_id` DESC";
-$approvedConcoursesQuery = "SELECT * FROM concourse_verification WHERE status = 'approved' ORDER BY `concourse_verification`.`concourse_id` DESC LIMIT $itemsPerPage OFFSET $offset";
-
-$approvedConcoursesResult = mysqli_query($con, $approvedConcoursesQuery);
-
-if ($approvedConcoursesResult && mysqli_num_rows($approvedConcoursesResult) > 0) {
-    while ($concourseData = mysqli_fetch_assoc($approvedConcoursesResult)) {
-        echo '<div class="col-lg-4 col-md-4 col-sm-6 col-12 mb-4">';
-        echo '<div class="card">';
-        echo '<img src="/COMS/uploads/' . $concourseData['concourse_map'] . '" class="card-img-top" alt="Concourse Map">';
-        echo '<div class="card-body">';
-        echo '<h5 class="card-title">' . $concourseData['concourse_name'] . '</h5>';
-        echo '<p class="card-text">Concourse ID: ' . $concourseData['concourse_id'] . '</p>';
-        echo '<p class="card-text">Owner ID: ' . $concourseData['owner_id'] . '</p>';
-        echo '<p class="card-text">Owner Name: ' . $concourseData['owner_name'] . '</p>';
-        echo '</div>';
-        echo '</div>';
-        echo '</div>';
-    }
-} else {
-    echo 'No approved concourses found.';
-}
-?>
-    </div>
-</div>
-
-  <!-- Pagination controls -->
-  <ul class="pagination">
-        <?php
-        $totalItemsQuery = "SELECT COUNT(*) FROM concourse_verification WHERE status = 'approved'";
-$totalItemsResult = mysqli_query($con, $totalItemsQuery);
-$totalItems = mysqli_fetch_array($totalItemsResult)[0];
-$totalPages = ceil($totalItems / $itemsPerPage);
-
-for ($page = 1; $page <= $totalPages; $page++) {
-    $activeClass = ($page == $currentPage) ? 'active' : '';
-    echo "<li class='page-item $activeClass'><a class='page-link' href='concourses.php?page=$page'>$page</a></li>";
-}
-?>
-    </ul>
-
+   <!-- Pagination controls -->
    <!-- **************************************** -->
    <!-- *****END DISPLAYED FEATURED CONCOURSE*** -->
    <!-- **************************************** -->
-
    <!-- //////////////////////////////////////// -->
-
    <!-- **************************************** -->
    <!-- ********ADD CONCOURSE MODAL************* -->
    <!-- **************************************** -->
@@ -203,7 +182,6 @@ for ($page = 1; $page <= $totalPages; $page++) {
          <h2>Add a Concourse</h2>
          <!-- <form id="concourseForm" method="POST" action="verification_concourse_process.php"> -->
          <form id="concourseForm" method="POST" action="verification_concourse_process.php" enctype="multipart/form-data">
-
             <label for="concourseName">Concourse Name:</label>
             <input type="text" id="concourseName" name="concourseName" required>
             <label for="concourseAddress">Concourse Address:</label>
@@ -222,7 +200,7 @@ for ($page = 1; $page <= $totalPages; $page++) {
    <!-- **************************************** -->
 </section>
 <?php
-// echo $_SESSION['uemail'];
-// echo $_SESSION['approved_concourse'];
+   // echo $_SESSION['uemail'];
+   // echo $_SESSION['approved_concourse'];
 ?>
 <?php include('includes/footer.php'); ?>
