@@ -33,6 +33,10 @@ if ($approvedConcoursesResult && mysqli_num_rows($approvedConcoursesResult) > 0)
 }
 // Calculate the total number of pages
 
+$totalItemsQuery = "SELECT COUNT(*) FROM concourse_verification WHERE status = 'approved'";
+$totalItemsResult = mysqli_query($con, $totalItemsQuery);
+$totalItems = mysqli_fetch_array($totalItemsResult)[0];
+// $totalPages = ceil($totalItems / $itemsPerPage);
 $totalPages = ceil($totalItems / $itemsPerPage);
 
 // Generate the pagination links

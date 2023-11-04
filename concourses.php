@@ -72,26 +72,14 @@ include('includes/nav.php');
         });
     }
 
-    function loadPagination(totalPages, currentPage) {
-        var paginationHTML = '<ul class="pagination" id="pagination">';
-        for (var i = 1; i <= totalPages; i++) {
-            var activeClass = (i === currentPage) ? 'active' : '';
-            paginationHTML += '<li class="page-item ' + activeClass + '">';
-            paginationHTML += '<a class="page-link" data-page="' + i + '" href="#">' + i + '</a>';
-            paginationHTML += '</li>';
-        }
-        paginationHTML += '</ul>';
-        $('#pagination').html(paginationHTML);
-    }
-
     $(document).ready(function () {
-        loadConcourses(1);
-    });
+        loadConcourses(1); // Load the first page by default
 
-    $('#pagination').on('click', 'a.page-link', function (event) {
-        event.preventDefault();
-        var page = $(this).data('page');
-        loadConcourses(page);
+        // Pagination click event handler
+        $(document).on('click', '.page-link', function () {
+            var page = $(this).data('page');
+            loadConcourses(page);
+        });
     });
 </script>
 
@@ -166,8 +154,10 @@ include('includes/nav.php');
          <!-- This div will be populated with the fetched data -->
       </div>
    </div>
-   <div id="pagination"></div>
+   <div id="pagination" class="text-center"></div>
 
+
+   <!-- <div id="pagination"></div> -->
    <!-- Pagination controls -->
    <!-- **************************************** -->
    <!-- *****END DISPLAYED FEATURED CONCOURSE*** -->
