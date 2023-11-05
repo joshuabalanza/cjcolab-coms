@@ -12,6 +12,10 @@
 // DISPLAY LOCATION(CITY/ ,POSTAL CODE BARANGAY)
 // ADD A REVIEW/ FEEDBACK(COMMENT)OR STAR(TENANT CAN GIVE FEEDBACKS)
 
+// Contract of lease?
+// update for renewal/termination of tenant in the space?
+// termination of contract(notification)
+
 
 // PER SPACES
 // SPACE NO:
