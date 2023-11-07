@@ -51,29 +51,41 @@ include('includes/header.php');
 include('includes/nav.php');
 ?>
 
-<div class="concourse-container">
-    <div class="concourse-details">
-        <?php
-        // Display the detailed information
-        if ($concourseResult && mysqli_num_rows($concourseResult) > 0) {
-            $concourseData = mysqli_fetch_assoc($concourseResult);
+<section class="concourse-configuration" style="margin-top:80px;   display: flex;
+">
 
-            echo '<h3>Concourse Details</h3>';
-            echo '<div class="card">';
-            echo '<img src="/COMS/uploads/' . $concourseData['concourse_map'] . '" class="card-img-top smaller-image" alt="Concourse Map">';
-            echo '<div class="card-body">';
-            echo '<h5 class="card-title">' . $concourseData['concourse_name'] . '</h5>';
-            echo '<p class="card-text">Concourse ID: ' . $concourseData['concourse_id'] . '</p>';
-            echo '<p class="card-text">Owner ID: ' . $concourseData['owner_id'] . '</p>';
-            echo '<p class="card-text">Owner Name: ' . $concourseData['owner_name'] . '</p>';
-            // Add more details as needed
-            echo '</div>';
-            echo '</div>';
-        } else {
-            echo 'Concourse not found.';
-        }
+  
+        <div class="concourse-details">
+    <?php
+    // Display the detailed information
+    if ($concourseResult && mysqli_num_rows($concourseResult) > 0) {
+        $concourseData = mysqli_fetch_assoc($concourseResult);
+
+        echo '<h3>Concourse Details</h3>';
+
+        echo '<div>';
+        echo '<h5 class="card-title">Concourse Map</h5>';
+        echo '<a href="" class="card-title">Manage Spaces</a>';
+        echo '</div>';
+        echo '<div class="card">';
+        echo '<img src="/COMS/uploads/' . $concourseData['concourse_map'] . '" class="card-img-top smaller-image" alt="Concourse Map">';
+        echo '<div class="card-body">';
+        echo '<h5 class="card-title">' . $concourseData['concourse_name'] . '</h5>';
+        echo '<p class="card-text">Concourse ID: ' . $concourseData['concourse_id'] . '</p>';
+        echo '<p class="card-text">Owner ID: ' . $concourseData['owner_id'] . '</p>';
+        // echo '<p class="card-text">Concourse Name: ' . $concourseData['owner_name'] . '</p>';
+        echo '<p class="card-text">Owner Name: ' . $concourseData['owner_name'] . '</p>';
+        // Add the user image here
+        echo '<img src="' . $_SESSION['uimage'] . '" class="card-img-top" style="height:50px; width:50px;" alt="User Image">';
+        // Add more details as needed
+        echo '</div>';
+        echo '</div>';
+    } else {
+        echo 'Concourse not found.';
+    }
 ?>
-    </div>
+</div>
+
 
     <div class="edit-concourse-form">
         <h3>Edit Concourse Details</h3>
@@ -94,6 +106,7 @@ include('includes/nav.php');
             <input type="submit" value="Save">
         </form>
     </div>
-</div>
+
+</section>
 
 <?php include('includes/footer.php'); ?>
