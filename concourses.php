@@ -20,6 +20,7 @@ if (!isset($_SESSION['uid'])) {
 
 $uid = $_SESSION['uid'];
 $utype = $_SESSION['utype'];
+$uimage = $_SESSION['uimage'];
 
 // $mappp = $_SESSION['approved_concourse'];
 
@@ -96,6 +97,7 @@ include('includes/nav.php');
       <!-- ********************************************************************** -->
       <!-- OWNER -->
       <?php if ($verificationStatus === 'approved' && $utype === 'Owner'): ?>
+         
       <h3>Your Concourse</h3>
       <button id="openAddConcourseModal" class="btn-sm btn btn-success">Add a Concourse</button>
       <!-- <a href="concourse_add.php">
@@ -110,7 +112,10 @@ include('includes/nav.php');
               echo '<div class="card-deck">';
               while ($mapData = mysqli_fetch_assoc($checkApprovedMapsResult)) {
                   echo '<div class="card">';
+                  // Create a link to concourse_configuration.php with the concourse_id parameter
+                  echo '<a href="concourse_configuration.php?concourse_id=' . $mapData['concourse_id'] . '">';
                   echo '<img src="/COMS/uploads/' . $mapData['concourse_map'] . '" class="card-img-top" alt="Concourse Map">';
+                  echo '</a>';
                   echo '<div class="card-body">';
                   echo '<h5 class="card-title">' . $mapData['concourse_name'] . '</h5>';
                   echo '<p class="card-text">Concourse ID: ' . $mapData['concourse_id'] . '</p>';
@@ -119,7 +124,6 @@ include('includes/nav.php');
                   echo '</div>';
                   echo '</div>';
               }
-              echo '</div>';
           } else {
               echo 'No approved maps found.';
           }
