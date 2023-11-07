@@ -103,24 +103,29 @@ include('includes/nav.php');
       <!-- <a href="concourse_add.php">
          <button class="btn-sm btn btn-success">Add a Concourse</button>
          </a> -->
-      <?php
-   $checkApprovedMapsQuery = "SELECT * FROM concourse_verification WHERE owner_id = '$uid' AND status = 'approved'";
+         <?php
+$checkApprovedMapsQuery = "SELECT * FROM concourse_verification WHERE owner_id = '$uid' AND status = 'approved'";
           $checkApprovedMapsResult = mysqli_query($con, $checkApprovedMapsQuery);
 
           if ($checkApprovedMapsResult && mysqli_num_rows($checkApprovedMapsResult) > 0) {
-              //   echo '<h3>Your Concourse</h3>';
+              echo '<div class="col-lg-4 col-md-4 col-sm-6 col-12 mb-4">';
+
               echo '<div class="card-deck">';
               while ($mapData = mysqli_fetch_assoc($checkApprovedMapsResult)) {
                   echo '<div class="card">';
                   // Create a link to concourse_configuration.php with the concourse_id parameter
                   echo '<a href="concourse_configuration.php?concourse_id=' . $mapData['concourse_id'] . '">';
+                  // Add the user's image here
                   echo '<img src="/COMS/uploads/' . $mapData['concourse_map'] . '" class="card-img-top" alt="Concourse Map">';
+
                   echo '</a>';
                   echo '<div class="card-body">';
                   echo '<h5 class="card-title">' . $mapData['concourse_name'] . '</h5>';
                   echo '<p class="card-text">Concourse ID: ' . $mapData['concourse_id'] . '</p>';
                   echo '<p class="card-text">Owner ID: ' . $mapData['owner_id'] . '</p>';
+                  // echo '<img src="' . $_SESSION['uimage'] . '" class="card-img-top" alt="User Image">';
                   echo '<p class="card-text">Owner Name: ' . $mapData['owner_name'] . '</p>';
+                  echo '</div>';
                   echo '</div>';
                   echo '</div>';
               }
