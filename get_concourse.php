@@ -21,9 +21,25 @@ if ($approvedConcoursesResult && mysqli_num_rows($approvedConcoursesResult) > 0)
         echo '<img src="/COMS/uploads/' . $concourseData['concourse_map'] . '" class="card-img-top" alt="Concourse Map">';
         echo '<div class="card-body">';
         echo '<h5 class="card-title">' . $concourseData['concourse_name'] . '</h5>';
-        echo '<p class="card-text">Concourse ID: ' . $concourseData['concourse_id'] . '</p>';
-        echo '<p class="card-text">Owner ID: ' . $concourseData['owner_id'] . '</p>';
-        echo '<p class="card-text">Owner Name: ' . $concourseData['owner_name'] . '</p>';
+
+        echo '<p class="card-text"><i class="fa-solid fa-location-dot"></i> ' . $concourseData['concourse_address'] . '</p>';
+        // echo '<p class="card-text">Concourse ID: ' . $concourseData['concourse_id'] . '</p>';
+        // echo '<p class="card-text">Concourse ID: ' . $concourseData['concourse_id'] . '</p>';
+        // echo '<p class="card-text">Owner ID: ' . $concourseData['owner_id'] . '</p>';
+
+        // echo  '<div class="bg-gray">';
+        // echo  '<ul>';
+        // echo    '<li><span>150</span> Sqft</li>';
+        // echo  '<li><span>1</span> Beds</li>';
+        // echo '<li><span>1</span> Baths</li>';
+        // echo '<li><span>1</span> Kitchen</li>';
+        // echo '<li><span>1</span> Balcony</li>';
+
+        // echo '</ul>';
+        // echo '</div>';
+        echo '<p class="card-text">By: ' . $concourseData['owner_name'] . '</p>';
+        // echo '<p class="card-text">: ' . $concourseData['owner_name'] . '</p>';
+        echo '<p class="card-text"><i class="fa-solid fa-calendar-days"></i> ' . date('Y-m-d', strtotime($concourseData['created_at'])) . '</p>';
         echo '</div>';
         echo '</div>';
         echo '</div>';

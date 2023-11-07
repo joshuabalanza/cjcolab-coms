@@ -34,6 +34,7 @@ if ($utype === 'Owner' && $verificationStatus === 'approved') {
         $owner_id = $uid; // The owner's user ID
         $owner_name = $_SESSION['uname']; // The owner's name
         $concourse_name = mysqli_real_escape_string($con, $_POST['concourseName']);
+        $concourse_address = mysqli_real_escape_string($con, $_POST['concourseAddress']);
         $concourse_map = ''; // You can set this based on your requirements
         $spaces = mysqli_real_escape_string($con, $_POST['concourseSpaces']);
 
@@ -84,8 +85,8 @@ if ($utype === 'Owner' && $verificationStatus === 'approved') {
             if (move_uploaded_file($image_tmp, $upload_path)) {
                 // File upload was successful
                 // Update the database query to include the image filename
-                $insert_query = "INSERT INTO concourse_verification (owner_id, owner_name, concourse_name, concourse_map, spaces, created_at, status)
-                                VALUES ('$owner_id', '$owner_first_name $owner_last_name', '$concourse_name', '$image_filename', '$spaces', NOW(), 'pending')";
+                $insert_query = "INSERT INTO concourse_verification (owner_id, owner_name, concourse_name,concourse_address, concourse_map, spaces, created_at, status)
+                                VALUES ('$owner_id', '$owner_first_name $owner_last_name', '$concourse_name','$concourse_address', '$image_filename', '$spaces', NOW(), 'pending')";
 
                 if (mysqli_query($con, $insert_query)) {
                     // Concourse verification data inserted successfully
