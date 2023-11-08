@@ -189,8 +189,8 @@ echo '</div>';
             <input type="text" id="concourseName" name="concourseName" required>
             <label for="concourseAddress">Concourse Address:</label>
             <input type="text" id="concourseAddress" name="concourseAddress" required>
-            <label for="concourseImage">Concourse Image:</label>
-            <input type="file" id="concourseImage" name="concourseImage" required>
+            <label for="concourseMap">Concourse Map:</label>
+            <input type="file" id="concourseMap" name="concourseMap" required>
             <label for="concourseSpaces">Spaces:</label>
             <!-- <textarea id="concourseSpaces" name="concourseSpaces" required></textarea> -->
             <input type="number" id="concourseSpaces" name="concourseSpaces" required>
