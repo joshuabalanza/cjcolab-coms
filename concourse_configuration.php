@@ -1,10 +1,18 @@
-    <?php
-    session_name("user_session");
+<!-- ******************** -->
+<!-- ***START SESSION**** -->
+<!-- ******************** -->
+<?php
+session_name("user_session");
 session_start();
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 require('includes/dbconnection.php');
+?>
 
+<!-- ******************** -->
+<!-- ***** PHP CODE ***** -->
+<!-- ******************** -->
+<?php
 if (isset($_GET['concourse_id'])) {
     $concourse_id = $_GET['concourse_id'];
 
@@ -14,13 +22,13 @@ if (isset($_GET['concourse_id'])) {
 
     // Check if a POST request was made to update Concourse details
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $concourse_id = $_POST['concourse_id']; // You should validate and sanitize this input.
+        $concourse_id = $_POST['concourse_id'];
 
         // Retrieve form data
         $total_area = $_POST['total_area'];
-        $total_spaces = $_POST['total_spaces'];
+        $total_spaces = $_POST['spaces'];
         $location = $_POST['location'];
-        $contract_of_lease = $_FILES['contract_of_lease']['name']; // Handle file upload.
+        // $contract_of_lease = $_FILES['contract_of_lease']['name']; // Handle file upload.
         $feedback = $_POST['feedback'];
 
         // Update the database with the new data
@@ -65,10 +73,12 @@ include('includes/nav.php');
 
         echo '<div>';
         echo '<h5 class="card-title">Concourse Map</h5>';
-        echo '<a href="" class="card-title">Manage Spaces</a>';
+        echo '<a href="index.php" class="card-title">';
+        echo '<button>Manage Spaces</button>';
+        echo ' <a>';
         echo '</div>';
         echo '<div class="card">';
-        echo '<img src="/COMS/uploads/' . $concourseData['concourse_map'] . '" class="card-img-top smaller-image" alt="Concourse Map">';
+        echo '<img src="/COMS/uploads/' . $concourseData['concourse_map'] . '" class="card-img-top smaller-image" alt="Concourse Map" style="width: 200px; height: 200px;">';
         echo '<div class="card-body">';
         echo '<h5 class="card-title">' . $concourseData['concourse_name'] . '</h5>';
         echo '<p class="card-text">Concourse ID: ' . $concourseData['concourse_id'] . '</p>';
@@ -76,7 +86,7 @@ include('includes/nav.php');
         // echo '<p class="card-text">Concourse Name: ' . $concourseData['owner_name'] . '</p>';
         echo '<p class="card-text">Owner Name: ' . $concourseData['owner_name'] . '</p>';
         // Add the user image here
-        echo '<img src="' . $_SESSION['uimage'] . '" class="card-img-top" style="height:50px; width:50px;" alt="User Image">';
+        // echo '<img src="' . $_SESSION['uimage'] . '" class="card-img-top" style="height:50px; width:50px;" alt="User Image">';
         // Add more details as needed
         echo '</div>';
         echo '</div>';
@@ -94,10 +104,10 @@ include('includes/nav.php');
             <input type="text" name="total_area" value="<?php echo $concourseData['concourse_total_area']; ?>"><br>
 
             <label for="total_spaces">Total Spaces:</label>
-            <input type="text" name="total_spaces" value="<?php echo $concourseData['total_spaces']; ?>"><br>
+            <input type="text" name="total_spaces" value="<?php echo $concourseData['spaces']; ?>"><br>
 
-            <label for="location">Location (City/Postal Code/Barangay):</label>
-            <input type="text" name="location" value="<?php echo $concourseData['location']; ?>"><br>
+            <!-- <label for="location">Location (City/Postal Code/Barangay):</label>
+            <input type="text" name="location" value="<?php echo $concourseData['location']; ?>"><br> -->
 
             <label for="contract_of_lease">Contract of Lease:</label>
             <input type="file" name="contract_of_lease"><br>
