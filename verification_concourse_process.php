@@ -74,9 +74,9 @@ if ($utype === 'Owner' && $verificationStatus === 'approved') {
         //     header('Location: concourses.php?error=database');
         //     exit();
         // }
-        if ($_FILES['concourseImage']['error'] === UPLOAD_ERR_OK) {
-            $image_name = $_FILES['concourseImage']['name'];
-            $image_tmp = $_FILES['concourseImage']['tmp_name'];
+        if ($_FILES['concourseMap']['error'] === UPLOAD_ERR_OK) {
+            $image_name = $_FILES['concourseMap']['name'];
+            $image_tmp = $_FILES['concourseMap']['tmp_name'];
             $image_extension = pathinfo($image_name, PATHINFO_EXTENSION);
             $image_filename = uniqid() . '.' . $image_extension;
 
