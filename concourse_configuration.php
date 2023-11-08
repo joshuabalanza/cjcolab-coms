@@ -66,7 +66,7 @@ if (isset($_GET['concourse_id'])) {
     <!-- ******************** -->
     <?php
 include('includes/header.php');
-// include('includes/nav.php');
+include('includes/nav.php');
 ?>
 
 <section class="concourse-configuration" style="margin-top:80px;   display: flex; justify-content:space-evenly;">
@@ -82,7 +82,9 @@ include('includes/header.php');
 
         echo '<div>';
         echo '<h5 class="card-title">Concourse Map</h5>';
-        echo '<a href="index.php" class="card-title">';
+        // echo '<a href="index.php" class="card-title">'
+        echo '<a href="map_display.php?concourse_id=' . $concourseData['concourse_id'] . '" class="card-title">';
+        ;
         echo '<button>Manage Spaces</button>';
         echo ' </a>';
         echo '</div>';
