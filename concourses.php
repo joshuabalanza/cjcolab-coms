@@ -115,7 +115,17 @@ $checkApprovedMapsQuery = "SELECT * FROM concourse_verification WHERE owner_id =
                   echo '<div class="card">';
                   echo '<a href="concourse_configuration.php?concourse_id=' . $mapData['concourse_id'] . '">';
                   echo '<div class="image-container">';
-                  echo '<img src="/COMS/uploads/' . $mapData['concourse_map'] . '" class="card-img-top" style="width:100%; height: 300px;" alt="Concourse Map">';
+                  if (!empty($mapData['concourse_image'])) {
+                      // Display the concourse_image if it exists
+                      echo '<img src="/COMS/uploads/featured-concourse/' . $mapData['concourse_image'] . '" id="concourseImage" class="card-img-top smaller-image" alt="Concourse Image" style="width:100%; height: 300px;">';
+                  } elseif (!empty($mapData['concourse_map'])) {
+                      // Display the concourse_map if concourse_image is not available
+                      echo '<img src="/COMS/uploads/' . $mapData['concourse_map'] . '" id="concourseImage" class="card-img-top smaller-image" alt="Concourse Map" style="width:100%; height: 300px;">';
+                  } else {
+                      // Handle the case when both concourse_image and concourse_map are empty, e.g., display a placeholder image
+                      echo '<img src="path_to_placeholder_image.jpg" id="concourseImage" class="card-img-top smaller-image" alt="Placeholder Image" style="width:100%; height: 300px;">';
+                  }
+                  // echo '<img src="/COMS/uploads/' . $mapData['concourse_map'] . '" class="card-img-top" style="width:100%; height: 300px;" alt="Concourse Map">';
                   echo '</div>';
                   echo '</a>';
                   echo '<div class="card-body">';
