@@ -75,6 +75,7 @@ include('includes/nav.php');
                     <th>Subject</th>
                     <th>Message</th>
                     <th>Date</th>
+                    <th>Time</th>
                     <th class= "action-cell">Actions</th>
                 </tr>
             </thead>
@@ -95,7 +96,10 @@ while ($notification = mysqli_fetch_assoc($notificationsResult)) {
 
     echo '<td>' . $notification['notification_type'] . '</td>';
     echo '<td>' . $notification['message'] . '</td>';
-    echo '<td>' . $notification['timestamp'] . '</td>';
+    // echo '<td>' . $notification['timestamp'] . '</td>';
+    echo '<td>' . date('M, d Y', strtotime($notification['timestamp'])) . '</td>';
+
+    echo '<td>' . date('h:i A', strtotime($notification['timestamp'])) . '</td>';
 
     // echo '<td class = "action-cell">';
     // echo '<a href="#" class="read-notification" data-notification-id="' . $notification['notification_id'] . '"><i class="fa-solid fa-envelope"></i></a>';
