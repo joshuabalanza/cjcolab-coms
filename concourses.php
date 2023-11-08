@@ -116,7 +116,10 @@ $checkApprovedMapsQuery = "SELECT * FROM concourse_verification WHERE owner_id =
                   // Create a link to concourse_configuration.php with the concourse_id parameter
                   echo '<a href="concourse_configuration.php?concourse_id=' . $mapData['concourse_id'] . '">';
                   // Add the user's image here
+                  echo '<div class="image-container" >';
+
                   echo '<img src="/COMS/uploads/' . $mapData['concourse_map'] . '" class="card-img-top" alt="Concourse Map">';
+                  echo '</div>';
 
                   echo '</a>';
                   echo '<div class="card-body">';

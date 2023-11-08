@@ -18,7 +18,10 @@ if ($approvedConcoursesResult && mysqli_num_rows($approvedConcoursesResult) > 0)
         // Generate the HTML for each concourse and echo it
         echo '<div class="col-lg-4 col-md-4 col-sm-6 col-12 mb-4">';
         echo '<div class="card">';
-        echo '<img src="/COMS/uploads/' . $concourseData['concourse_map'] . '" class="card-img-top" alt="Concourse Map">';
+        echo '<div class="image-container" style="min-width: 300px; ">';
+
+        echo '<img src="/COMS/uploads/' . $concourseData['concourse_map'] . '" class="card-img-top" style="width:100%; height: 300px;" alt="Concourse Map">';
+        echo '</div>';
         echo '<div class="card-body">';
         echo '<h5 class="card-title">' . $concourseData['concourse_name'] . '</h5>';
 
