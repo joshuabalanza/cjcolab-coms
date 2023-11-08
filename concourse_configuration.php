@@ -27,20 +27,11 @@ if (isset($_GET['concourse_id'])) {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $concourse_id = $_POST['concourse_id'];
 
-        // Retrieve form data
-        // $total_area = $_POST['concourse_total_area'];
-        // $total_spaces = $_POST['spaces'];
-        // $location = $_POST['location'];
-        // $contract_of_lease = $_FILES['contract_of_lease']['name']; // Handle file upload.
-        // $feedback = $_POST['feedback'];
 
         // Update the database with the new data
         $updateQuery = "UPDATE concourse_verification SET
-                -- concourse_total_area = '$total_area',
-                -- total_spaces = '$total_spaces',
-                -- location = '$location',
-                -- contract_of_lease = '$contract_of_lease',
-                -- feedback = '$feedback'
+
+           
                 WHERE concourse_id = $concourse_id";
 
         // Execute the query
