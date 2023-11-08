@@ -70,7 +70,7 @@ if (isset($_POST['login'])) {
 include('includes/header.php');
 include('includes/nav.php');
 ?>
-<section class="login-section" style= "margin-top:75px;">
+<section class="login-section">
    <div id="overlay">
       <div class="login-form-wrapper">
          <div class="left-panel">

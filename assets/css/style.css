@@ -289,3 +289,15 @@ input:focus {
   cursor: pointer;
 }
 /* </style> */
+.login-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+.login-form-wrapper {
+  display: flex;
+}
+.left-panel {
+  background-color: #9b593c;
+}
