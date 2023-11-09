@@ -47,7 +47,32 @@ include('includes/nav.php');
     Dashboard
 
 </h4>
-    
+<div>
+
+    1. total owners <br/>
+    2. total tenants
+</div>
+<div>
+<h6>pie chart</h6>
+    3. total users?<br/>
+    4. total verified users
+</div>
+<div>
+<h6>pie chart?</h6>
+    5. total no of map applications(all maps that are not verified)<br/>
+    6. total no of maps verified     
+</div>
+<div>
+
+    7. rents?<br/>
+    8. total spaces    
+</div>
+<div>
+
+    9. <strong>Bills?</strong><br/>
+    10. <strong>Commission?</strong><br/>
+
+</div>
     <!-- </div> -->
     </section>
 </div>

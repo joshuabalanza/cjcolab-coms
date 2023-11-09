@@ -1,6 +1,7 @@
 /* font-family: 'Ubuntu', sans-serif; */
 /* #C3423F -read */
 /* #29335C -blue */
+
 :root {
   --bg-color: #ecedf0;
   /* --main-color: #9b593c; */
@@ -10,7 +11,15 @@
   --black: #000000;
   --gray: rgba(0, 0, 0, 0.5);
 }
-
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+img {
+  max-width: 100%;
+  display: block;
+}
 button {
   border: none;
   overflow: visible;
@@ -138,7 +147,6 @@ input:focus {
 /* REGISTER & LOGIN FORM */
 .register-form,
 .otp-form,
-.login-form,
 .user-profile,
 .notification-section,
 .account-verification {
@@ -281,6 +289,18 @@ input:focus {
   cursor: pointer;
 }
 /* </style> */
+.login-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+.login-form-wrapper {
+  display: flex;
+}
+.left-panel {
+  background-color: #9b593c;
+}
 
 .concourse-configuration {
   display: flex;

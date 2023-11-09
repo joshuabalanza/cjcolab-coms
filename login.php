@@ -2,17 +2,14 @@
 <!-- ***START SESSION**** -->
 <!-- ******************** -->
 <?php
-session_name("user_session");
+   session_name("user_session");
 session_start();
 include('includes/dbconnection.php');
 ?>
-
-
 <!-- ******************** -->
 <!-- ***** PHP CODE ***** -->
 <!-- ******************** -->
 <?php
-
 // SESSION IS IN THE HEADER.PHP
 // session_start(); // Start the session
 if (isset($_SESSION['uid'])) {
@@ -66,82 +63,120 @@ if (isset($_POST['login'])) {
     }
 }
 ?>
-
-
 <!-- ******************** -->
 <!-- **** START HTML **** -->
 <!-- ******************** -->
 <?php
-  include('includes/header.php');
+include('includes/header.php');
 include('includes/nav.php');
 ?>
-<section class="login-form">
-  <div class="co    ntainer pt-5">
-    <h2 class="text-center">Login</h2>
-    <div class="row mt-4 mb-4">
-      <div class="col-md-6 offset-md-3">
-        <form action="" class="shadow-lg p-4" method="POST">
-         
-
-       
-        <p><?php
-                    if (isset($error_message)) {
-                        echo $error_message;
-                    }
-?></p>
-          <div class="form-group form">
-            <input
-              type="text"
-              class="form-control form-input"
-              name="uemail"
-              id="uemail"
-              autocomplete="off"
-              placeholder=""
-            />
-            <label for="uemail" class="form-label">
-              <i class="fa-solid fa-envelope"></i>
-              Email</label
-            >
-          </div>
-          <div class="form-group form">
-            <input
-              type="password"
-              class="form-control form-input"
-              name="upassword"
-              id="upassword"
-              placeholder=""
-            />
-            <label for="upassword" class="form-label">
-            <i class="fas fa-lock"></i>               Password</label
-            >
-          </div>
-     
-          <button
-            type="submit"
-            class="btn border-danger text-danger mt-3 btn-block shadow-sm font-weight-bold"
-            name="login"
-          >
-            Login
-          </button>
-
-          <div class="text-center">
-
-              <h6 class=" mt-5">Dont have an account?</h6>      
-              <button
-              class="btn-cta align-center"
-              name="register"
-              >
-              <a class="text-white text-center" href="register.php">
-                  
-                  Sign Up
-                </a>
-            </button>  
-        </div>
-        </form>
+<section class="login-section">
+   <div id="overlay">
+      <div class="login-form-wrapper">
+         <div class="left-panel">
+            <a href="">
+               <h1>COMS</h1>
+            </a>
+         </div>
+         <div class="right-panel">
+            <form action="" class="login-form shadow-lg p-4" method="POST">
+               <div class="form-group form">
+                  <input
+                     type="text"
+                     class="form-control form-input"
+                     name="uemail"
+                     id="uemail"
+                     autocomplete="off"
+                     placeholder=""
+                     />
+                  <label for="uemail" class="form-label">
+                  <i class="fa-solid fa-envelope"></i>
+                  Email</label
+                     >
+               </div>
+               <div class="form-group form">
+                  <input
+                     type="password"
+                     class="form-control form-input"
+                     name="upassword"
+                     id="upassword"
+                     placeholder=""
+                     />
+                  <label for="upassword" class="form-label">
+                  <i class="fas fa-lock"></i> Password</label
+                     >
+               </div>
+               <button
+                  type="submit"
+                  class="btn border-danger text-danger mt-3 btn-block shadow-sm font-weight-bold"
+                  name="login"
+                  >
+               Login
+               </button>
+               <div class="text-center">
+                  <h6 class="mt-5">Dont have an account?</h6>
+                  <button class="btn-cta align-center" name="register">
+                  <a class="text-white text-center" href="register.php"> Sign Up </a>
+                  </button>
+               </div>
+            </form>
+         </div>
       </div>
-    </div>
-  </div>
+   </div>
+   <!-- <h2 class="text-center">Login</h2>
+      <form action="" class="shadow-lg p-4" method="POST">
+       
+      
+      
+      
+        <div class="form-group form">
+          <input
+            type="text"
+            class="form-control form-input"
+            name="uemail"
+            id="uemail"
+            autocomplete="off"
+            placeholder=""
+          />
+          <label for="uemail" class="form-label">
+            <i class="fa-solid fa-envelope"></i>
+            Email</label
+          >
+        </div>
+        <div class="form-group form">
+          <input
+            type="password"
+            class="form-control form-input"
+            name="upassword"
+            id="upassword"
+            placeholder=""
+          />
+          <label for="upassword" class="form-label">
+          <i class="fas fa-lock"></i>               Password</label
+          >
+        </div>
+      
+        <button
+          type="submit"
+          class="btn border-danger text-danger mt-3 btn-block shadow-sm font-weight-bold"
+          name="login"
+        >
+          Login
+        </button>
+      
+        <div class="text-center">
+      
+            <h6 class=" mt-5">Dont have an account?</h6>      
+            <button
+            class="btn-cta align-center"
+            name="register"
+            >
+            <a class="text-white text-center" href="register.php">
+                
+                Sign Up
+              </a>
+          </button>  
+      </div>
+      </form> -->
 </section>
-
-
 <?php include('includes/footer.php')?>
