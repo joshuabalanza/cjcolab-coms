@@ -81,15 +81,37 @@ include('includes/nav.php');
          font-size: 65px;
       }
 
+   
       .login-section {
-         padding: 50px;
+      padding: 50px;
+      opacity: 0;
+      animation: fadeIn 3s forwards;
       }
+
+         /* Keyframes for fadeIn animation */
+         @keyframes fadeIn {
+            from {
+               opacity: 0;
+            }
+            to {
+               opacity: 1;
+            }
+         }
 
       .login-section h1 {
          font-family: 'Times New Roman';
          font-size: 50px;
          padding-left: 20px;
          letter-spacing: 2px;
+      }
+      .card {
+      background-color: rgba(255, 255, 255, 0.8); /* Use rgba for opacity */
+      transition: background-color 0.3s ease; /* Smooth transition for background color */
+      }
+
+      /* Add hover effect for the card */
+      .card:hover {
+         background-color: rgba(255, 255, 255, 1); /* Change opacity on hover */
       }
    </style>
 </head>
@@ -111,7 +133,7 @@ include('includes/nav.php');
                   <div class="col-md-6 col-lg-5 d-flex align-items-center justify-content-center">
                      <img src="assets/images/Logo-9b593c.png" alt="Login Form" class="img-fluid">
                   </div>
-                  <div class="col-md-6 col-lg-7 d-flex align-items-center">
+                  <div class="col-md-6 col-lg-7 d-flex align-items-center" >
                      <div class="card-body p-4 p-lg-5 text-black">
                         <form>
                            <div class="d-flex align-items-center mb-3 pb-1">
