@@ -10,17 +10,7 @@ session_start();
 // if (isset($_SESSION['uid'])) {
 //     echo '<script>$("#notificationsModal").modal("show");</script>';
 // }
-?>
-
-
-
-
-
-
-
-
-
-
+?> 
 
 <!-- ******************** -->
 <!-- **** START HTML **** -->
@@ -29,25 +19,115 @@ session_start();
 include('includes/header.php');
 include('includes/nav.php');
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous"> -->
+    <title>COMS</title>
+    <link rel="icon" href="assets/images/Logo-9b593c.png">
+    <style>
+      .about-section{
+         width: 100%;
+         height: auto;
+         color: #fff;
+         position: relative;
+         background-color: #9b593c;
+         padding: 50px;
+      }
 
-<!-- Start HOME -->
-<section id="home" class="jumbotron container-top back-image" style="background-image:url(assets/images/hero-bg.png);">
-   <div class="main-heading">
-      <h1 class="text-uppercase font-weight-bold">
-         Welcome to COMS
-      </h1>
-      <p class="font-italic">Concessionaire Operations Monitoring System</p>
-      <a href="login.php" class="btn btn-success mr-4">Login</a>
-      <a href="register.php" class="btn btn-danger mr-4">Sign Up</a>
-   </div>
-</section>
-<!-- End HOME -->
-<!-- Start About -->
-<section id="about">
-   <div class="container">
-      <div class="jumbotron">
-         <h2 class="text-center">About COMS</h2>
-         <p class="text-center">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi unde, accusamus praesentium maxime molestiae earum explicabo atque obcaecati tenetur amet quas itaque, nostrum nulla sequi dolor fugiat deserunt placeat mollitia! <br> Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit vel neque ipsam culpa nesciunt aliquam quae at earum sunt tempore amet, quam tenetur nostrum. Fugit quae obcaecati voluptates ipsa perspiciatis.</p>
+      .about-section .par{
+         padding-left: 20px;
+         padding-bottom: 25px;
+         font-family: Arial;
+         letter-spacing: 1.2px;
+         line-height: 30px;
+      }
+
+      .about-section h1{
+         font-family: 'Times New Roman';
+         font-size: 50px;
+         padding-left: 20px;
+         letter-spacing: 2px;
+      }
+
+      .about-section .cn{
+         width: 160px;
+         height: 40px;
+         background: #ff7200;
+         border: none;
+         margin-bottom: 10px;
+         margin-left: 20px;
+         font-size: 18px;
+         border-radius: 10px;
+         cursor: pointer;
+         transition: .4s ease;
+         
+      }
+
+      .about-section .cn a{
+         text-decoration: none;
+         color: #000;
+         transition: .3s ease;
+      }
+
+      .cn:hover{
+         background-color: #fff;
+      }
+
+      .about-section span{
+         color: #ff7200;
+         font-size: 65px;
+      }
+
+      .login-section {
+         padding: 50px;
+      }
+
+      .login-section h1 {
+         font-family: 'Times New Roman';
+         font-size: 50px;
+         padding-left: 20px;
+         letter-spacing: 2px;
+      }
+   </style>
+</head>
+<body>
+<section class="vh-100" style="background-color: #9b593c;">
+   <div class="container-fluid">
+      <div class="row">
+         <div class="col-md-6 about-section" style="margin-top: 20em;">
+            <h1>About Us</h1>
+            <p class="par">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt neque 
+               expedita atque eveniet <br> quis nesciunt. Quos nulla vero consequuntur, fugit nemo ad delectus 
+            <br> a quae totam ipsa illum minus laudantium?</p>
+            <button class="cn"><a href="#">Contact Us</a></button>
+         </div>
+         <!-- Login Section-->
+         <div class="col-md-6 login-section">
+            <div class="card" style="border-radius: 1rem;">
+               <div class="row g-0">
+                  <div class="col-md-6 col-lg-5 d-flex align-items-center justify-content-center">
+                     <img src="assets/images/Logo-9b593c.png" alt="Login Form" class="img-fluid">
+                  </div>
+                  <div class="col-md-6 col-lg-7 d-flex align-items-center">
+                     <div class="card-body p-4 p-lg-5 text-black">
+                        <form>
+                           <div class="d-flex align-items-center mb-3 pb-1">
+                              <span class="h1 fw-bold mb-0">Welcome to COMS</span>
+                           </div>
+                        </form>
+                        <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px; font-style: italic;">Concessionaire Operations Monitoring System</h5>
+                        <div class="d-grid gap-2 col-6 mx-auto">
+                              <button class="btn btn-dark btn-lg btn-block" style="background-color: #9b593c;" type="button" onclick="redirectToLogin()">Login</button>
+                              <button class="btn btn-dark btn-lg btn-block" style="background-color: #3C7E9B;" type="button" onclick="redirectToSignUp()">Sign Up</button>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
       </div>
    </div>
 </section>
@@ -83,7 +163,8 @@ include('includes/nav.php');
 <section id="contact"></section>
 <!-- End Contacy -->
 <!-- Start Create Account -->
-<div class="container pt-5">
+<!-- hindi na siguro ito need sa welcome page -->
+<!-- <div class="container pt-5">
    <h2 class="text-center">Create an Account</h2>
    <div class="row mt-4 mb-4" >
       <div class="col-md-6 offset-md-3">
@@ -110,9 +191,20 @@ include('includes/nav.php');
          </form>
       </div>
    </div>
-</div>
+</div> -->
 <!-- End Create Account -->
 <!-- modal notificatio -->
 <!-- Add JavaScript to automatically hide the modal when closed -->
 <!-- In any section where you want to open the modal -->
 <?php include('includes/footer.php')?>
+<script>
+    function redirectToLogin() {
+        window.location.href = "login.php";
+    }
+
+    function redirectToSignUp() {
+        window.location.href = "register.php";
+    }
+</script>
+</body>
+</html>
