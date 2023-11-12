@@ -1,8 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COMS</title>
+    <style>
+    .transparent-nav {
+        background-color: transparent !important; /* Set the background color to transparent */
+        box-shadow: none !important; /* Remove any box shadow */
+    }
+    .coms-text {
+        color: white !important;
+        opacity: 80%; /* Set the text color to white */
+    }
+        /* Custom class for white text color */
+    .nav-link{
+        color: white !important;
+    }
 
-
+    /* Hover effect for navigation links */
+    .nav-link:hover{
+        background-color: rgba(255, 255, 255, 0.3);
+        color: #eeeeee !important;
+        transition: background-color 0.3s ease;
+    }
+</style>
+</head>
+<body>
 <!-- Start Navigation -->
-<nav class="navbar navbar-expand-sm navbar-light pl-5 fixed-top">
-   <a href="index.php" class="navbar-brand">COMS</a>
+<nav class="navbar navbar-expand-sm navbar-light pl-5 fixed-top <?php echo isset($_SESSION['uid']) ? '' : 'transparent-nav'; ?>">
+   <a href="index.php" class="navbar-brand coms-text">COMS</a>
    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation">
    <span class="navbar-toggler-icon"></span>
    </button>
@@ -11,15 +38,16 @@
          <?php
             if (!isset($_SESSION['uid'])) {
                 // Display these links when no one is logged in
+                $linkClass = isset($_SESSION['uid']) ? '' : 'nav-link-white'; // Add a custom class for white color
+
                 echo '<li class="nav-item">';
-                echo '<a href="index.php" class="nav-link">Home</a>';
+                echo '<a href="index.php" class="nav-link ' . $linkClass . '">Home</a>';
                 echo '</li>';
                 echo '<li class="nav-item">';
-                echo '<a href="index.php" class="nav-link">About</a>';
+                echo '<a href="index.php" class="nav-link ' . $linkClass . '">About</a>';
                 echo '</li>';
                 echo '<li class="nav-item">';
-                echo '<a href="index.php" class="nav-link">Contact</a>';
-                echo '</li>';
+                echo '<a href="index.php" class="nav-link ' . $linkClass . '">Contact</a>';
             } elseif (isset($_SESSION['utype']) && $_SESSION['utype'] == 'Owner') {
                 // Display these links for Owner type users
                 echo '<li class="nav-item">';
@@ -117,3 +145,6 @@
    </div>
 </nav>
 <!-- End Navigation -->
+</body>
+</html>
+
