@@ -55,78 +55,136 @@ include('includes/nav.php');
 // include('users/user_verify.php');
 
 ?>
-<div class="container-fluid">
-  <div class="row">
-<?php include('includes/sidebar.php');?>
-
-<section class="col-sm-10 py-5 dashboard">
-    <!-- <div class="dashboard"> -->
-<h4>
-    User Verifications
-
-</h4>
-<table class="table table-bordered" id="datatable">
-    <thead>
-        <tr>
-            <th>Submission ID</th>
-            <th>User ID</th>
-            <th>Status</th>
-
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Address</th>
-            <th>Gender</th>
-                <th>Birthday</th>
-                <th>Verification Image</th>
-                <th>Documents</th>
-                <th>Actions</th>
-            <!-- Add more table headers as needed -->
-        </tr>
-    </thead>
-    <tbody>
-        <?php
-        while ($row = mysqli_fetch_assoc($result)) {
-            echo '<tr>';
-            echo '<td>' . $row['verification_id'] . '</td>';
-            echo '<td>' . $row['user_id'] . '</td>';
-            echo '<td>' . $row['status'] . '</td>';
-            echo '<td>' . $row['first_name'] . '</td>';
-            echo '<td>' . $row['last_name'] . '</td>';
-            echo '<td>' . $row['address'] . '</td>';
-            echo '<td>' . $row['gender'] . '</td>';
-            echo '<td>' . $row['birthday'] . '</td>';
-
-            echo '<td><a href="#" onclick="openImageModal(\'../uploads/' . $row['image_filename'] . '\')">View Image</a></td>';
-            // Add more table data as needed
-            echo '<td><a href="#" onclick="openDocumentModal(\'../uploads/' . $row['document_filename'] . '\')">View Document: ' . $row['document_filename'] . '</a></td>';
-            echo '<td>';
-            echo '<a href="user_verification_approve.php?id=' . $row['verification_id'] . '">Approve</a>';
-            echo '<a href="user_verification_reject.php?id=' . $row['verification_id'] . '">Reject</a>';
-            echo '</td>';
-            echo '</tr>';
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COMS</title>
+    <style>
+        /* Style for the User Details Modal */
+        #userDetailsModal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.7);
         }
-?>
-    </tbody>
-</table>
-<!-- Image Modal -->
-<!-- Image Modal -->
-<div id="imageModal" class="modal">
-    <span class="close" id="imageClose">&times;</span>
-    <img class="modal-content" id="imageContent">
-</div>
 
-<!-- Document Modal -->
-<div id="documentModal" class="modal">
-    <span class="close" id="documentClose">&times;</span>
-    <iframe class="modal-content" id="documentContent"></iframe>
-</div>
-    
-    <!-- </div> -->
-    </section>
-</div>
-</div>
+        /* Style for the User Details Modal Content */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+        }
 
+        /* Style for the Close button */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+        }
+
+        /* Vertically align the table content */
+        table {
+            table-layout: fixed;
+            width: 100%;
+        }
+
+        th, td {
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <?php include('includes/sidebar.php');?>
+
+        <section class="col-sm-10 py-5 dashboard">
+            <h4>User Verifications</h4>
+            <table class="table table-bordered" id="datatable">
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        echo '<tr>';
+                        echo '<td>' . $row['first_name'] . '</td>';
+                        echo '<td>' . $row['last_name'] . '</td>';
+                        echo '<td>';
+                        echo '<a href="#" onclick="openUserDetailsModal(' . htmlspecialchars(json_encode($row), ENT_QUOTES, 'UTF-8') . ')">View User</a>';
+                        echo '</td>';
+                        echo '</tr>';
+                    }
+                    ?>
+                </tbody>
+            </table>
+            <!-- User Details Modal -->
+            <div id="userDetailsModal" class="modal">
+                <div class="modal-content">
+                    <span class="close" id="userDetailsClose">&times;</span>
+                    <form id="userDetailsForm">
+                        <label for="submissionId">Submission ID:</label>
+                        <input type="text" id="submissionId" name="submissionId" readonly>
+
+                        <label for="userId">User ID:</label>
+                        <input type="text" id="userId" name="userId" readonly>
+
+                        <label for="status">Status:</label>
+                        <input type="text" id="status" name="status" readonly>
+
+                        <label for="firstName">First Name:</label>
+                        <input type="text" id="firstName" name="firstName" readonly>
+
+                        <label for="lastName">Last Name:</label>
+                        <input type="text" id="lastName" name="lastName" readonly>
+
+                        <label for="address">Address:</label>
+                        <input type="text" id="address" name="address" readonly>
+
+                        <label for="gender">Gender:</label>
+                        <input type="text" id="gender" name="gender" readonly>
+
+                        <label for="birthday">Birthday:</label>
+                        <input type="text" id="birthday" name="birthday" readonly>
+
+                        <label for="verificationImage">Verification Image:</label>
+                        <a href="#" id="verificationImageLink" target="_blank">View Image</a>
+
+                        <label for="documentLink">Document:</label>
+                        <a href="#" id="documentLink" target="_blank">View Document</a>
+
+                        <div class="actions">
+                            <a href="#" id="approveLink">Approve</a>
+                            <a href="#" id="rejectLink">Reject</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
 <?php include('includes/footer.php')?>
 <script>
     $('#datatable').dataTable({});
@@ -157,4 +215,64 @@ include('includes/nav.php');
     window.onload = function() {
         clearUserData();
     };
+    // User Details Modal
+    function openUserDetailsModal(user) {
+        // Dynamically generate HTML for user details
+        var userDetailsHTML = '';
+        userDetailsHTML += '<label for="submissionId">Submission ID:</label>';
+        userDetailsHTML += '<input type="text" id="submissionId" name="submissionId" value="' + user['verification_id'] + '" readonly>';
+
+        userDetailsHTML += '<label for="userId">User ID:</label>';
+        userDetailsHTML += '<input type="text" id="userId" name="userId" value="' + user['user_id'] + '" readonly>';
+
+        userDetailsHTML += '<label for="status">Status:</label>';
+        userDetailsHTML += '<input type="text" id="status" name="status" value="' + user['status'] + '" readonly>';
+
+        userDetailsHTML += '<label for="firstName">First Name:</label>';
+        userDetailsHTML += '<input type="text" id="firstName" name="firstName" value="' + user['first_name'] + '" readonly>';
+
+        userDetailsHTML += '<label for="lastName">Last Name:</label>';
+        userDetailsHTML += '<input type="text" id="lastName" name="lastName" value="' + user['last_name'] + '" readonly>';
+
+        userDetailsHTML += '<label for="address">Address:</label>';
+        userDetailsHTML += '<input type="text" id="address" name="address" value="' + user['address'] + '" readonly>';
+
+        userDetailsHTML += '<label for="gender">Gender:</label>';
+        userDetailsHTML += '<input type="text" id="gender" name="gender" value="' + user['gender'] + '" readonly>';
+
+        userDetailsHTML += '<label for="birthday">Birthday:</label>';
+        userDetailsHTML += '<input type="text" id="birthday" name="birthday" value="' + user['birthday'] + '" readonly>';
+
+        userDetailsHTML += '<label for="verificationImage">Verification Image:</label>';
+        userDetailsHTML += '<a href="../uploads/' + user['image_filename'] + '" target="_blank">View Image</a>';
+
+        userDetailsHTML += '<label for="documentLink">Document:</label>';
+        userDetailsHTML += '<a href="../uploads/' + user['document_filename'] + '" target="_blank">View Document: ' + user['document_filename'] + '</a>';
+
+        userDetailsHTML += '<div class="actions">';
+        userDetailsHTML += '<a href="user_verification_approve.php?id=' + user['verification_id'] + '">Approve</a>';
+        userDetailsHTML += '<a href="user_verification_reject.php?id=' + user['verification_id'] + '">Reject</a>';
+        userDetailsHTML += '</div>';
+
+        // Display user details in the modal form
+        $('#userDetailsForm').html(userDetailsHTML);
+        $('#userDetailsModal').css('display', 'block');
+    }
+
+        // Close User Details Modal
+        $('#userDetailsClose').on('click', function() {
+        $('#userDetailsModal').css('display', 'none');
+    });
+
+    // Function to open image modal (Assuming you have this function defined)
+    function openImageModal(imagePath) {
+        // Your implementation for opening the image modal
+    }
+
+    // Function to open document modal (Assuming you have this function defined)
+    function openDocumentModal(documentPath) {
+        // Your implementation for opening the document modal
+    }
 </script>
+</body>
+</html>
