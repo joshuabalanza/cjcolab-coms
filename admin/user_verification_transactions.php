@@ -55,12 +55,6 @@ include('includes/nav.php');
 // include('users/user_verify.php');
 
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>COMS</title>
     <style>
         /* Style for the User Details Modal */
         #userDetailsModal {
@@ -128,10 +122,32 @@ include('includes/nav.php');
             display: flex;
             justify-content: space-between;
         }
+        /* input box */
+        input {
+            border: none;
+            border-bottom: 1px solid #ccc;
+            padding: 5px;
+        }
+            /* Style for bold labels */
+        label {
+            font-weight: bold;
+        }
+    
+        .button {
+            display: inline-block;
+            padding: 8px 16px; /* Adjust the padding to achieve the desired size */
+            text-align: center;
+            color: #ffffff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
 
+        .button:hover {
+            background-color: #eeeeee !important;
+        }
     </style>
-</head>
-<body>
 <div class="container-fluid">
     <div class="row">
         <?php include('includes/sidebar.php');?>
@@ -144,6 +160,7 @@ include('includes/nav.php');
                         <th>Submission ID</th>
                         <th>First Name</th>
                         <th>Last Name</th>
+                        <th>Status</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -154,8 +171,9 @@ include('includes/nav.php');
                         echo '<td>' . $row['verification_id'] . '</td>';
                         echo '<td>' . $row['first_name'] . '</td>';
                         echo '<td>' . $row['last_name'] . '</td>';
+                        echo '<td>' . $row['status'] . '</td>';
                         echo '<td>';
-                        echo '<a href="#" onclick="openUserDetailsModal(' . htmlspecialchars(json_encode($row), ENT_QUOTES, 'UTF-8') . ')">View User</a>';
+                        echo '<button type="button" class="button" onclick="openUserDetailsModal(' . htmlspecialchars(json_encode($row), ENT_QUOTES, 'UTF-8') . ')">View User</button>';
                         echo '</td>';
                         echo '</tr>';
                     }
@@ -179,11 +197,11 @@ include('includes/nav.php');
                         </div>
 
                         <div class="form-row">
-    <div class="form-group col-md-12">
-        <label for="status">Status:</label>
-        <input type="text" id="status" name="status" value="' + user['status'] + '" readonly>
-    </div>
-</div>
+                            <div class="form-group col-md-12">
+                                <label for="status">Status:</label>
+                                <input type="text" id="status" name="status" value="' + user['status'] + '" readonly>
+                            </div>
+                        </div>
 
                         <div class="form-row">
                             <div class="form-group col-md-6">
@@ -197,11 +215,11 @@ include('includes/nav.php');
                         </div>
 
                         <div class="form-row">
-    <div class="form-group col-md-12">
-        <label for="address">Address:</label>
-        <input type="text" id="address" name="address" value="' + user['address'] + '" readonly>
-    </div>
-</div>
+                            <div class="form-group col-md-12">
+                                <label for="address">Address:</label>
+                                <input type="text" id="address" name="address" value="' + user['address'] + '" readonly>
+                            </div>
+                        </div>
 
                         <div class="form-row">
                             <div class="form-group col-md-6">
@@ -216,17 +234,17 @@ include('includes/nav.php');
 
                         <div class="form-group">
                             <label for="verificationImage">Verification Image:</label>
-                            <a href="#" id="verificationImageLink" target="_blank">View Image</a>
+                            <a href="#" id="verificationImageLink" target="_blank" class="button">View Image</a>
                         </div>
 
                         <div class="form-group">
-                            <label for="documentLink">Document:</label>
-                            <a href="#" id="documentLink" target="_blank">View Document</a>
+                            <label for="documentLink">Verification Document:</label>
+                            <a href="#" id="documentLink" target="_blank" class="button">View Document</a>
                         </div>
 
-                        <div class="actions">
-                            <a href="#" id="approveLink">Approve</a>
-                            <a href="#" id="rejectLink">Reject</a>
+                        <div class="form-row actions">
+                            <a href="#" id="approveLink" class="button">Approve</a>
+                            <a href="#" id="rejectLink" class="button">Reject</a>
                         </div>
                     </form>
                 </div>
@@ -286,7 +304,7 @@ include('includes/nav.php');
         userDetailsHTML += '<input type="text" id="status" name="status" value="' + user['status'] + '" readonly>';
         userDetailsHTML += '</div>';
         userDetailsHTML += '</div>';
-        
+
         userDetailsHTML += '<div class="form-row">';
         userDetailsHTML += '<div class="form-group col-md-6">';
         userDetailsHTML += '<label for="firstName">First Name:</label>';
@@ -319,17 +337,19 @@ include('includes/nav.php');
         userDetailsHTML += '<div class="form-row">';
         userDetailsHTML += '<div class="form-group col-md-6">';
         userDetailsHTML += '<label for="verificationImage">Verification Image:</label>';
-        userDetailsHTML += '<a href="../uploads/' + user['image_filename'] + '" target="_blank">View Image</a>';
+        userDetailsHTML += '<a href="../uploads/' + user['image_filename'] + '" target="_blank" class="button" style="text-decoration: none;">View Image</a>';
         userDetailsHTML += '</div>';
         userDetailsHTML += '<div class="form-group col-md-6">';
-        userDetailsHTML += '<label for="documentLink">Document:</label>';
-        userDetailsHTML += '<a href="../uploads/' + user['document_filename'] + '" target="_blank">View Document: ' + user['document_filename'] + '</a>';
+        userDetailsHTML += '<label for="documentLink">Verification Document:</label>';
+        userDetailsHTML += '<a href="../uploads/' + user['document_filename'] + '" target="_blank" class="button" style="width: 125%; text-decoration: none;">View Document</a>';
         userDetailsHTML += '</div>';
         userDetailsHTML += '</div>';
-
-        userDetailsHTML += '<div class="actions">';
-        userDetailsHTML += '<a href="user_verification_approve.php?id=' + user['verification_id'] + '">Approve</a>';
-        userDetailsHTML += '<a href="user_verification_reject.php?id=' + user['verification_id'] + '">Reject</a>';
+        
+        userDetailsHTML += '<div class="form-row">';
+        userDetailsHTML += '<div class="form-group col-md-6 actions">';
+        userDetailsHTML += '<a href="user_verification_approve.php?id=' + user['verification_id'] + '" class="button" style="background-color: green; text-decoration: none;">Approve</a>';
+        userDetailsHTML += '<a href="user_verification_reject.php?id=' + user['verification_id'] + '" class="button" style="background-color: red; text-decoration: none;">Reject</a>';
+        userDetailsHTML += '</div>';
         userDetailsHTML += '</div>';
 
         // Display user details in the modal form
@@ -352,5 +372,3 @@ include('includes/nav.php');
         // Your implementation for opening the document modal
     }
 </script>
-</body>
-</html>
