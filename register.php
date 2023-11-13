@@ -1,13 +1,4 @@
-<!DOCTYPE html>
-<!-- Created By CodingLab - www.codinglabweb.com -->
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="UTF-8">
-    <title> Responsive Registration Form | CodingLab </title>
-    <link rel="stylesheet" href="style.css">
-     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   </head>
-   <!-- ******************** -->
+<!-- ******************** -->
 <!-- ***START SESSION**** -->
 <!-- ******************** -->
 
@@ -16,7 +7,6 @@ session_name("user_session");
 session_start();
 include('includes/dbconnection.php');
 ?>
-
 
 <!-- ******************** -->
 <!-- ***** PHP CODE ***** -->
@@ -104,6 +94,11 @@ if (isset($_POST['register'])) {
     }
 }
 ?>
+
+<?php
+include('includes/header.php');
+include('includes/nav.php');
+?>
    <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
 *{
@@ -118,7 +113,7 @@ body{
   justify-content: center;
   align-items: center;
   padding: 10px;
-  background: linear-gradient(135deg, #71b7e6, #9b59b6);
+  background: linear-gradient(135deg, #71b7e6, #393E46);
 }
 .container{
   max-width: 700px;
@@ -141,7 +136,7 @@ body{
   height: 3px;
   width: 30px;
   border-radius: 5px;
-  background: linear-gradient(135deg, #71b7e6, #9b59b6);
+  background: linear-gradient(135deg, #71b7e6, #393E46);
 }
 .content form .user-details{
   display: flex;
@@ -171,7 +166,7 @@ form .input-box span.details{
 }
 .user-details .input-box input:focus,
 .user-details .input-box input:valid{
-  border-color: #9b59b6;
+  border-color: #393E46;
 }
  form .use-details .use-title{
   font-size: 20px;
@@ -200,7 +195,7 @@ form .input-box span.details{
  #dot-1:checked ~ .category label .one,
  #dot-2:checked ~ .category label .two,
  #dot-3:checked ~ .category label .three{
-   background: #9b59b6;
+   background: #393E46;
    border-color: #d9d9d9;
  }
  form input[type="radio"]{
@@ -221,11 +216,11 @@ form .input-box span.details{
    letter-spacing: 1px;
    cursor: pointer;
    transition: all 0.3s ease;
-   background: linear-gradient(135deg, #71b7e6, #9b59b6);
+   background: linear-gradient(135deg, #71b7e6, #393E46);
  }
  form .button input:hover{
   /* transform: scale(0.99); */
-  background: linear-gradient(-135deg, #71b7e6, #9b59b6);
+  background: linear-gradient(-135deg, #71b7e6, #393E46);
   }
  @media(max-width: 584px){
  .container{
@@ -252,11 +247,6 @@ form .user-details .input-box{
   }
 }
    </style>
-<body>
-<?php
-include('includes/header.php');
-include('includes/nav.php');
-?>
   <div class="container" style="margin-top: 5%;">
     <div class="title">Registration</div>
     <div class="content">
@@ -292,9 +282,9 @@ include('includes/nav.php');
         </div>
         
         <div class="use-details">
-          <input type="radio" value="Owner" name="usertype" id="dot-1">
-          <input type="radio" value="Tenant" name="usertype" id="dot-2">
-          <input type="radio" value="Accountant" name="usertype" id="dot-3">
+          <input type="radio" value="Owner" name="usertype" id="dot-1" required>
+          <input type="radio" value="Tenant" name="usertype" id="dot-2" required>
+          <input type="radio" value="Accountant" name="usertype" id="dot-3" required>
           <span class="use-title">User Type</span>
           <div class="category">
             <label for="dot-1">
@@ -319,5 +309,4 @@ include('includes/nav.php');
     </div>
   </div>
 
-</body>
-</html>
+<?php include('includes/footer.php')?>
