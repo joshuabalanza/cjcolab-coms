@@ -19,7 +19,6 @@ if (!isset($_SESSION['aid'])) {
 
 // Include the necessary database connection file
 
-
 if (isset($_GET['action']) && isset($_GET['id'])) {
     $action = $_GET['action']; // "approve" or "reject"
     $verification_id = $_GET['id']; // Verification ID
@@ -52,8 +51,6 @@ $result = mysqli_query($con, $sql);
 <?php
 include('includes/header.php');
 include('includes/nav.php');
-// include('users/user_verify.php');
-
 ?>
     <style>
         /* Style for the User Details Modal */
@@ -185,67 +182,7 @@ include('includes/nav.php');
                 <div class="modal-content">
                     <span class="close" id="userDetailsClose">&times;</span>
                     <form id="userDetailsForm">
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label for="submissionId">Submission ID:</label>
-                                <input type="text" id="submissionId" name="submissionId" readonly>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="userId">User ID:</label>
-                                <input type="text" id="userId" name="userId" readonly>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group col-md-12">
-                                <label for="status">Status:</label>
-                                <input type="text" id="status" name="status" value="' + user['status'] + '" readonly>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label for="firstName">First Name:</label>
-                                <input type="text" id="firstName" name="firstName" readonly>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="lastName">Last Name:</label>
-                                <input type="text" id="lastName" name="lastName" readonly>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group col-md-12">
-                                <label for="address">Address:</label>
-                                <input type="text" id="address" name="address" value="' + user['address'] + '" readonly>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label for="gender">Gender:</label>
-                                <input type="text" id="gender" name="gender" readonly>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="birthday">Birthday:</label>
-                                <input type="text" id="birthday" name="birthday" readonly>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="verificationImage">Verification Image:</label>
-                            <a href="#" id="verificationImageLink" target="_blank" class="button">View Image</a>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="documentLink">Verification Document:</label>
-                            <a href="#" id="documentLink" target="_blank" class="button">View Document</a>
-                        </div>
-
-                        <div class="form-row actions">
-                            <a href="#" id="approveLink" class="button">Approve</a>
-                            <a href="#" id="rejectLink" class="button">Reject</a>
-                        </div>
+                        <!-- Form structure goes here -->
                     </form>
                 </div>
             </div>
@@ -344,12 +281,10 @@ include('includes/nav.php');
         userDetailsHTML += '<a href="../uploads/' + user['document_filename'] + '" target="_blank" class="button" style="width: 125%; text-decoration: none;">View Document</a>';
         userDetailsHTML += '</div>';
         userDetailsHTML += '</div>';
-        
-        userDetailsHTML += '<div class="form-row">';
-        userDetailsHTML += '<div class="form-group col-md-6 actions">';
+
+        userDetailsHTML += '<div class="form-row actions">';
         userDetailsHTML += '<a href="user_verification_approve.php?id=' + user['verification_id'] + '" class="button" style="background-color: green; text-decoration: none;">Approve</a>';
         userDetailsHTML += '<a href="user_verification_reject.php?id=' + user['verification_id'] + '" class="button" style="background-color: red; text-decoration: none;">Reject</a>';
-        userDetailsHTML += '</div>';
         userDetailsHTML += '</div>';
 
         // Display user details in the modal form
@@ -357,18 +292,8 @@ include('includes/nav.php');
         $('#userDetailsModal').css('display', 'block');
     }
 
-        // Close User Details Modal
-        $('#userDetailsClose').on('click', function() {
-            $('#userDetailsModal').css('display', 'none');
-        });
-
-    // Function to open image modal (Assuming you have this function defined)
-    function openImageModal(imagePath) {
-        // Your implementation for opening the image modal
-    }
-
-    // Function to open document modal (Assuming you have this function defined)
-    function openDocumentModal(documentPath) {
-        // Your implementation for opening the document modal
-    }
+    // Close User Details Modal
+    $('#userDetailsClose').on('click', function() {
+        $('#userDetailsModal').css('display', 'none');
+    });
 </script>
