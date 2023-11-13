@@ -109,6 +109,26 @@ include('includes/nav.php');
         th, td {
             word-wrap: break-word;
         }
+
+        /* Style for the User Details Modal Form */
+        #userDetailsForm {
+            display: grid;
+            gap: 10px;
+        }
+
+        /* Style for Form Rows and Columns */
+        .form-row {
+            display: grid;
+            gap: 10px;
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        /* Style for the Actions Section */
+        .actions {
+            display: flex;
+            justify-content: space-between;
+        }
+
     </style>
 </head>
 <body>
@@ -121,6 +141,7 @@ include('includes/nav.php');
             <table class="table table-bordered" id="datatable">
                 <thead>
                     <tr>
+                        <th>Submission ID</th>
                         <th>First Name</th>
                         <th>Last Name</th>
                         <th>Actions</th>
@@ -130,6 +151,7 @@ include('includes/nav.php');
                     <?php
                     while ($row = mysqli_fetch_assoc($result)) {
                         echo '<tr>';
+                        echo '<td>' . $row['verification_id'] . '</td>';
                         echo '<td>' . $row['first_name'] . '</td>';
                         echo '<td>' . $row['last_name'] . '</td>';
                         echo '<td>';
@@ -145,35 +167,62 @@ include('includes/nav.php');
                 <div class="modal-content">
                     <span class="close" id="userDetailsClose">&times;</span>
                     <form id="userDetailsForm">
-                        <label for="submissionId">Submission ID:</label>
-                        <input type="text" id="submissionId" name="submissionId" readonly>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="submissionId">Submission ID:</label>
+                                <input type="text" id="submissionId" name="submissionId" readonly>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="userId">User ID:</label>
+                                <input type="text" id="userId" name="userId" readonly>
+                            </div>
+                        </div>
 
-                        <label for="userId">User ID:</label>
-                        <input type="text" id="userId" name="userId" readonly>
+                        <div class="form-row">
+    <div class="form-group col-md-12">
+        <label for="status">Status:</label>
+        <input type="text" id="status" name="status" value="' + user['status'] + '" readonly>
+    </div>
+</div>
 
-                        <label for="status">Status:</label>
-                        <input type="text" id="status" name="status" readonly>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="firstName">First Name:</label>
+                                <input type="text" id="firstName" name="firstName" readonly>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="lastName">Last Name:</label>
+                                <input type="text" id="lastName" name="lastName" readonly>
+                            </div>
+                        </div>
 
-                        <label for="firstName">First Name:</label>
-                        <input type="text" id="firstName" name="firstName" readonly>
+                        <div class="form-row">
+    <div class="form-group col-md-12">
+        <label for="address">Address:</label>
+        <input type="text" id="address" name="address" value="' + user['address'] + '" readonly>
+    </div>
+</div>
 
-                        <label for="lastName">Last Name:</label>
-                        <input type="text" id="lastName" name="lastName" readonly>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="gender">Gender:</label>
+                                <input type="text" id="gender" name="gender" readonly>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="birthday">Birthday:</label>
+                                <input type="text" id="birthday" name="birthday" readonly>
+                            </div>
+                        </div>
 
-                        <label for="address">Address:</label>
-                        <input type="text" id="address" name="address" readonly>
+                        <div class="form-group">
+                            <label for="verificationImage">Verification Image:</label>
+                            <a href="#" id="verificationImageLink" target="_blank">View Image</a>
+                        </div>
 
-                        <label for="gender">Gender:</label>
-                        <input type="text" id="gender" name="gender" readonly>
-
-                        <label for="birthday">Birthday:</label>
-                        <input type="text" id="birthday" name="birthday" readonly>
-
-                        <label for="verificationImage">Verification Image:</label>
-                        <a href="#" id="verificationImageLink" target="_blank">View Image</a>
-
-                        <label for="documentLink">Document:</label>
-                        <a href="#" id="documentLink" target="_blank">View Document</a>
+                        <div class="form-group">
+                            <label for="documentLink">Document:</label>
+                            <a href="#" id="documentLink" target="_blank">View Document</a>
+                        </div>
 
                         <div class="actions">
                             <a href="#" id="approveLink">Approve</a>
@@ -219,35 +268,64 @@ include('includes/nav.php');
     function openUserDetailsModal(user) {
         // Dynamically generate HTML for user details
         var userDetailsHTML = '';
+
+        userDetailsHTML += '<div class="form-row">';
+        userDetailsHTML += '<div class="form-group col-md-6">';
         userDetailsHTML += '<label for="submissionId">Submission ID:</label>';
         userDetailsHTML += '<input type="text" id="submissionId" name="submissionId" value="' + user['verification_id'] + '" readonly>';
-
+        userDetailsHTML += '</div>';
+        userDetailsHTML += '<div class="form-group col-md-6">';
         userDetailsHTML += '<label for="userId">User ID:</label>';
         userDetailsHTML += '<input type="text" id="userId" name="userId" value="' + user['user_id'] + '" readonly>';
+        userDetailsHTML += '</div>';
+        userDetailsHTML += '</div>';
 
+        userDetailsHTML += '<div class="form-row">';
+        userDetailsHTML += '<div class="form-group col-md-6">';
         userDetailsHTML += '<label for="status">Status:</label>';
         userDetailsHTML += '<input type="text" id="status" name="status" value="' + user['status'] + '" readonly>';
-
+        userDetailsHTML += '</div>';
+        userDetailsHTML += '</div>';
+        
+        userDetailsHTML += '<div class="form-row">';
+        userDetailsHTML += '<div class="form-group col-md-6">';
         userDetailsHTML += '<label for="firstName">First Name:</label>';
         userDetailsHTML += '<input type="text" id="firstName" name="firstName" value="' + user['first_name'] + '" readonly>';
-
+        userDetailsHTML += '</div>';
+        userDetailsHTML += '<div class="form-group col-md-6">';
         userDetailsHTML += '<label for="lastName">Last Name:</label>';
         userDetailsHTML += '<input type="text" id="lastName" name="lastName" value="' + user['last_name'] + '" readonly>';
+        userDetailsHTML += '</div>';
+        userDetailsHTML += '</div>';
 
+        userDetailsHTML += '<div class="form-row">';
+        userDetailsHTML += '<div class="form-group col-md-6">';
         userDetailsHTML += '<label for="address">Address:</label>';
         userDetailsHTML += '<input type="text" id="address" name="address" value="' + user['address'] + '" readonly>';
+        userDetailsHTML += '</div>';
+        userDetailsHTML += '</div>';
 
+        userDetailsHTML += '<div class="form-row">';
+        userDetailsHTML += '<div class="form-group col-md-6">';
         userDetailsHTML += '<label for="gender">Gender:</label>';
         userDetailsHTML += '<input type="text" id="gender" name="gender" value="' + user['gender'] + '" readonly>';
-
+        userDetailsHTML += '</div>';
+        userDetailsHTML += '<div class="form-group col-md-6">';
         userDetailsHTML += '<label for="birthday">Birthday:</label>';
         userDetailsHTML += '<input type="text" id="birthday" name="birthday" value="' + user['birthday'] + '" readonly>';
+        userDetailsHTML += '</div>';
+        userDetailsHTML += '</div>';
 
+        userDetailsHTML += '<div class="form-row">';
+        userDetailsHTML += '<div class="form-group col-md-6">';
         userDetailsHTML += '<label for="verificationImage">Verification Image:</label>';
         userDetailsHTML += '<a href="../uploads/' + user['image_filename'] + '" target="_blank">View Image</a>';
-
+        userDetailsHTML += '</div>';
+        userDetailsHTML += '<div class="form-group col-md-6">';
         userDetailsHTML += '<label for="documentLink">Document:</label>';
         userDetailsHTML += '<a href="../uploads/' + user['document_filename'] + '" target="_blank">View Document: ' + user['document_filename'] + '</a>';
+        userDetailsHTML += '</div>';
+        userDetailsHTML += '</div>';
 
         userDetailsHTML += '<div class="actions">';
         userDetailsHTML += '<a href="user_verification_approve.php?id=' + user['verification_id'] + '">Approve</a>';
@@ -261,8 +339,8 @@ include('includes/nav.php');
 
         // Close User Details Modal
         $('#userDetailsClose').on('click', function() {
-        $('#userDetailsModal').css('display', 'none');
-    });
+            $('#userDetailsModal').css('display', 'none');
+        });
 
     // Function to open image modal (Assuming you have this function defined)
     function openImageModal(imagePath) {
