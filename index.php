@@ -19,103 +19,6 @@ session_start();
 include('includes/header.php');
 include('includes/nav.php');
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous"> -->
-    <title>COMS</title>
-    <link rel="icon" href="assets/images/Logo-9b593c.png">
-    <style>
-      .about-section{
-         width: 100%;
-         height: auto;
-         color: #fff;
-         position: relative;
-         background-color: #9b593c;
-         padding: 50px;
-      }
-
-      .about-section .par{
-         padding-left: 20px;
-         padding-bottom: 25px;
-         font-family: Arial;
-         letter-spacing: 1.2px;
-         line-height: 30px;
-      }
-
-      .about-section h1{
-         font-family: 'Times New Roman';
-         font-size: 50px;
-         padding-left: 20px;
-         letter-spacing: 2px;
-      }
-
-      .about-section .cn{
-         width: 160px;
-         height: 40px;
-         background: #ff7200;
-         border: none;
-         margin-bottom: 10px;
-         margin-left: 20px;
-         font-size: 18px;
-         border-radius: 10px;
-         cursor: pointer;
-         transition: .4s ease;
-         
-      }
-
-      .about-section .cn a{
-         text-decoration: none;
-         color: #000;
-         transition: .3s ease;
-      }
-
-      .cn:hover{
-         background-color: #fff;
-      }
-
-      .about-section span{
-         color: #ff7200;
-         font-size: 65px;
-      }
-
-   
-      .login-section {
-      padding: 50px;
-      opacity: 0;
-      animation: fadeIn 3s forwards;
-      }
-
-         /* Keyframes for fadeIn animation */
-         @keyframes fadeIn {
-            from {
-               opacity: 0;
-            }
-            to {
-               opacity: 1;
-            }
-         }
-
-      .login-section h1 {
-         font-family: 'Times New Roman';
-         font-size: 50px;
-         padding-left: 20px;
-         letter-spacing: 2px;
-      }
-      .card {
-      background-color: rgba(255, 255, 255, 0.8); /* Use rgba for opacity */
-      transition: background-color 0.3s ease; /* Smooth transition for background color */
-      }
-
-      /* Add hover effect for the card */
-      .card:hover {
-         background-color: rgba(255, 255, 255, 1); /* Change opacity on hover */
-      }
-   </style>
-</head>
-<body>
 <section class="vh-100" style="background-color: #9b593c;">
    <div class="container-fluid">
       <div class="row">
@@ -228,5 +131,3 @@ include('includes/nav.php');
         window.location.href = "register.php";
     }
 </script>
-</body>
-</html>
