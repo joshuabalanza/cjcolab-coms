@@ -1,9 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>COMS</title>
+
     <style>
     .transparent-nav {
         background-color: transparent !important; /* Set the background color to transparent */
@@ -25,8 +20,7 @@
         transition: background-color 0.3s ease;
     }
 </style>
-</head>
-<body>
+
 <!-- Start Navigation -->
 <nav class="navbar navbar-expand-sm navbar-light pl-5 fixed-top <?php echo isset($_SESSION['uid']) ? '' : 'transparent-nav'; ?>">
    <a href="index.php" class="navbar-brand coms-text">COMS</a>
@@ -78,73 +72,71 @@
                 echo '<a href="bills.php" class="nav-link">Bills</a>';
                 echo '</li>';
             }
-         ?>
+?>
          
          <?php
-            if (isset($_SESSION['uid'])) {
+   if (isset($_SESSION['uid'])) {
 
-                // include('get_notification_count.php');
+       // include('get_notification_count.php');
 
-                echo '<li class="nav-item dropdown ml-auto">';
-                echo '<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
-                if (isset($_SESSION['uimage']) && !empty($_SESSION['uimage'])) {
-                    echo '<img src="' . $_SESSION['uimage'] . '" class="user-image" alt="' . $_SESSION['uname'] . '">';
-                } else {
-                    echo 'Hi, ' . $_SESSION['uname'] . ' (' . $_SESSION['utype'] . ')';
-                }
-                echo '</a>';
-                echo '<div class="dropdown-menu" aria-labelledby="userDropdown">';
-                echo '<a class="dropdown-item" href="profile.php">
+       echo '<li class="nav-item dropdown ml-auto">';
+       echo '<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+       if (isset($_SESSION['uimage']) && !empty($_SESSION['uimage'])) {
+           echo '<img src="' . $_SESSION['uimage'] . '" class="user-image" alt="' . $_SESSION['uname'] . '">';
+       } else {
+           echo 'Hi, ' . $_SESSION['uname'] . ' (' . $_SESSION['utype'] . ')';
+       }
+       echo '</a>';
+       echo '<div class="dropdown-menu" aria-labelledby="userDropdown">';
+       echo '<a class="dropdown-item" href="profile.php">
                 <i class="fa-regular fa-user"></i>
                 My Profile</a>';
-                echo '<a class="dropdown-item" href="transactions.php">
+       echo '<a class="dropdown-item" href="transactions.php">
                 <i class="fa-solid fa-file-lines"></i>                              Transactions</a>';
-                echo '<a class="dropdown-item" href="logout.php">
+       echo '<a class="dropdown-item" href="logout.php">
                 <i class="fa-solid fa-power-off"></i>Logout</a>';
-                echo '</div>';
-                echo '</li>';
+       echo '</div>';
+       echo '</li>';
 
-                // *******************
-                // NOTIFICATIONS
-                // *******************
+       // *******************
+       // NOTIFICATIONS
+       // *******************
 
-                include('get_notification_count.php');
-                echo '<li class="nav-item">';
-                echo '<a href="notifications.php" class="nav-link"><i class="fa-solid fa-bell fa-xl" id="bell-count"></i></a>';
-                if ($notificationCount > 0) {
-                    echo '<div class="notification-circle">';
+       include('get_notification_count.php');
+       echo '<li class="nav-item">';
+       echo '<a href="notifications.php" class="nav-link"><i class="fa-solid fa-bell fa-xl" id="bell-count"></i></a>';
+       if ($notificationCount > 0) {
+           echo '<div class="notification-circle">';
 
-                    echo '<span id="notification-indicator" class="notification-indicator">' . $notificationCount . '</span>';
-                }
-                echo '</div>';
-                echo '</li>';
-
-
-            // echo '<li class="nav-item">';
-            // echo '<a href="notifications.php" class="nav-link "><i class="fa-solid fa-bell" id="bell-count"></i></a>';
-
-            // // Check if there are unread notifications
-            // if ($notificationCount > 0) {
-            //     echo '<div class="notification-indicator">' . $notificationCount . '</div>'; // Display the count
-            // }
-
-            // echo '</li>';
+           echo '<span id="notification-indicator" class="notification-indicator">' . $notificationCount . '</span>';
+       }
+       echo '</div>';
+       echo '</li>';
 
 
-            } else {
-                echo '<li class="nav-item">';
-                echo '<a href="login.php" class="nav-link">Login</a>';
-                echo '</li>';
-                echo '<li class="nav-item">';
-                echo '<a href="register.php" class="nav-link">Register</a>';
-                echo '</li>';
-            }
-         ?>
+   // echo '<li class="nav-item">';
+   // echo '<a href="notifications.php" class="nav-link "><i class="fa-solid fa-bell" id="bell-count"></i></a>';
+
+   // // Check if there are unread notifications
+   // if ($notificationCount > 0) {
+   //     echo '<div class="notification-indicator">' . $notificationCount . '</div>'; // Display the count
+   // }
+
+   // echo '</li>';
+
+
+   } else {
+       echo '<li class="nav-item">';
+       echo '<a href="login.php" class="nav-link">Login</a>';
+       echo '</li>';
+       echo '<li class="nav-item">';
+       echo '<a href="register.php" class="nav-link">Register</a>';
+       echo '</li>';
+   }
+?>
       </ul>
       
    </div>
 </nav>
 <!-- End Navigation -->
-</body>
-</html>
 
