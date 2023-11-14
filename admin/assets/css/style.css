@@ -189,7 +189,7 @@ input:focus {
 }
 .sidebar {
   /* background-color: red !important; */
-  height: 100vh;
+  height: inherit;
   width: 100vw !important;
   /* margin-top: 60px; */
 }
@@ -242,6 +242,7 @@ input:focus {
 .dashboard,
 .table-owners,
 .table-tenants {
+  height: 100vh;
   /* background-color: red; */
   /* display: none; */
 }

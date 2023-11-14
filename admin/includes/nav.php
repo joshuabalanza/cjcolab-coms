@@ -1,6 +1,16 @@
+<style>
+    .navbar-brand span {
+        color: #9b593c;
+        font-size: 30px;
+        font-weight: bold;
+    }
+</style>
 <!-- Start Navigation -->
-<nav class="navbar navbar-expand-sm navbar-light pl-5 fixed-top">
-    <a href="index.php" class="navbar-brand">COMS</a>
+<nav class="navbar navbar-expand-sm navbar-light pl-5 fixed-top" style="background-color: #ffffff;">
+    <a href="index.php" class="navbar-brand">
+        <img src="assets/images/Logo-9b593c.png" alt="Logo" width="50" height="40" class="d-inline-block align-text-top">
+        <span>COMS</span>
+    </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
