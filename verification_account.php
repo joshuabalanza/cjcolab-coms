@@ -24,7 +24,24 @@ if (!isset($_SESSION['uid'])) {
 include('includes/header.php');
 include('includes/nav.php');
 ?>
-<section class="account-verification pt-5">
+<style>
+    .form-group label {
+        text-align: left;
+    }
+    h2{
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    .btn{
+        margin-bottom: 10px;
+        background-color: #9b593c;
+        border: none;
+    }
+    .btn:hover{
+        background-color: #c19f90;
+    }
+</style>
+<section class="col-sm-8 col-md-9 bg-light p-2 mx-auto" style="border-radius: 10px; margin-top: 8%; max-width: 550px;">
     <div class="container">
         <h2>Account Verification</h2>
         <form action="verification_account_process.php" method="post" enctype="multipart/form-data">

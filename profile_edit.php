@@ -59,16 +59,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 include('includes/header.php');
 include('includes/nav.php');
 ?>
+<style>
+    .change-btn{
+        background-color: #9b593c;
+    }
+   .change-btn:hover{
+        background-color: #c19f90 !important;
+   }
+   h6, h3{
+        color: white;
+        opacity: 80%   ;
+   }
+   .btn{
+        margin-left: 10px;
+        background-color: #9b593c;
+        border: none;
+   }
+   .btn:hover{
+        background-color: #c19f90;
+   }
+   
+   .form {
+        max-width: 400px; /* Adjust the max-width as needed */
+        margin: 0 auto;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+</style>
 <section class="user-profile">
-    <div class="container-fluid p-4 shadow mx-auto" style="max-width: 1000px;">
+    <div class="container-fluid p-4 shadow mx-auto"  style="max-width: 1000px; margin-top: 10%; background-color: #b1765c; border-radius: 20px;">
         <div class="row">
             <div class="col-sm-4 col-md-3">
                 <form method="POST" enctype="multipart/form-data"> <!-- Add enctype attribute for file uploads -->
                 <!-- Display user profile image if available -->
                 <?php if (!empty($_SESSION['uimage'])): ?>
-                    <img src="<?php echo $_SESSION['uimage']; ?>" class="border border-primary d-block mx-auto rounded-circle" style="width:150px; height:150px">
+                    <img src="<?php echo $_SESSION['uimage']; ?>" class="border border-primary d-block mx-auto rounded-circle" style="width: 150px; height: 150px; background-color: white;">
                 <?php else: ?>
-                    <img src="default-image.jpg" class="border border-primary d-block mx-auto rounded-circle" style="width:150px; height:150px">
+                    <img src="default-image.jpg" class="border border-primary d-block mx-auto rounded-circle" style="width: 150px; height: 150px; background-color: white; opacity: 85   %;">
                 <?php endif; ?>              
                 <h6 class="text-center"><?php echo $_SESSION['utype']; ?>#<?php echo $_SESSION['uid']; ?></h6>
                 <h3 class="text-center"><?php echo $_SESSION['uname']; ?></h3> 
@@ -77,39 +106,40 @@ include('includes/nav.php');
                 <div class="text-center">
                 <div class="form-group">
 
-    <label for="profileImage"></label>
-    <input type="file" class="form-control-file" id="profileImage" name="profileImage" style="display: none;">
-    <label for="profileImage" class="custom-file-upload">
-        Change Photo
-    </label>
-</div>   
-                </div>
-            </div>
-            <div class="col-sm-8 col-md-9 bg-light p-2">
- <div class="form-group">
-                        <label for="newName">Name:</label>
-                        <input type="text" class="form-control" id="newName" name="newName" value="<?php echo isset($_SESSION['uname']) ? $_SESSION['uname'] : ''; ?>">
+                <label for="profileImage"></label>
+                <input type="file" class="form-control-file" id="profileImage" name="profileImage" style="display: none;">
+                <label for="profileImage" class="custom-file-upload change-btn">
+                    Change Photo
+                </label>
+            </div>   
+        </div>
+    </div>
+<div class="col-sm-8 col-md-9 bg-light p-2" style="border-radius: 10px; margin-top: 10px; margin-left: 125px; max-width: 400px;">
+    <div class="form" style="margin-left: 10px; margin-right: 10px;">
+        <div class="form-group">
+            <label for="newName" style="font-weight: bold;">Name:</label>
+            <input type="text" class="form-control" id="newName" name="newName" value="<?php echo isset($_SESSION['uname']) ? $_SESSION['uname'] : ''; ?>">
+        </div>
+        <div class="form-group">
+            <label for="newPhone" style="font-weight: bold;">Phone:</label>
+            <input type="text" class="form-control" id="newPhone" name="newPhone" value="<?php echo isset($_SESSION['uphone']) ? $_SESSION['uphone'] : ''; ?>">
 
-                    </div>
-                    <div class="form-group">
-                        <label for="newPhone">Phone:</label>
-                        <input type="text" class="form-control" id="newPhone" name="newPhone" value="<?php echo isset($_SESSION['uphone']) ? $_SESSION['uphone'] : ''; ?>">
-
-                        <!-- <input type="text" class="form-control" id="newPhone" name="newPhone" value="<?php echo $_SESSION['uphone']; ?>"> -->
-                    </div>
-                    <button type="submit" class="btn btn-primary">Save Changes</button>
-                </form>
+            <!-- <input type="text" class="form-control" id="newPhone" name="newPhone" value="<?php echo $_SESSION['uphone']; ?>"> -->
+        </div>
+    </div>
+        <button type="submit" class="btn btn-primary"  style="float: right; margin-right: 10px; margin-top: 10px;">Save Changes</button>
+            </form>
                 <?php
-                if (isset($message)) {
-                    echo "<div class='alert alert-success'>$message</div>";
-                }
-                if (isset($error)) {
-                    echo "<div class='alert alert-danger'>$error</div>";
-                }
-?>
+                    if (isset($message)) {
+                        echo "<div class='alert alert-success'>$message</div>";
+                    }
+                    if (isset($error)) {
+                        echo "<div class='alert alert-danger'>$error</div>";
+                    }
+                ?>
             </div>
         </div>
-        <br>
-    </div>
+    <br>
+</div>
 </section>
 <?php include('includes/footer.php'); ?>
