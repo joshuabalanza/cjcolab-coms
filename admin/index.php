@@ -20,15 +20,21 @@ if (isset($_SESSION['aid'])) {
 }
 
 if (isset($_POST['adminlogin'])) {
-    if (empty($_POST['aemail']) || empty($_POST['apassword'])) {
+    if (empty($_POST['aname_or_aemail']) || empty($_POST['apassword'])) {
         $error_message = "Both email and password are required";
     } else {
-        $aemail = $_POST['aemail'];
-        $apassword = $_POST['apassword'];
+      $aname_or_aemail = $_POST['aname_or_aemail'];
+      // $uname = $_POST['uname'];
+      $apassword = $_POST['apassword'];
 
-        // Query the database to check if the user exists
-        $loginQuery = "SELECT * FROM admin WHERE aemail = '$aemail'";
-        $result = $con->query($loginQuery);
+      // Query the database to check if the user exists
+      $is_aname_or_aemail= filter_var($aname_or_aemail, FILTER_VALIDATE_EMAIL);
+        // Prepare the login query
+      if ($is_aname_or_aemail) {
+        $loginQuery = "SELECT * FROM user WHERE uemail = '$aname_or_aemail'";
+      } else{
+        $loginQuery = "SELECT * FROM user WHERE uname = '$aname_or_aemail'";
+      }
 
         if (!$result) {
             die("Database error: " . $con->error); // Check for query errors
