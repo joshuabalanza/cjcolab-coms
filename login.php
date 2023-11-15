@@ -54,8 +54,8 @@ if (isset($_POST['login'])) {
 
 
                     // Redirect to a protected page or the user's profile
-                    // header('Location: dashboard.php'); // Change 'dashboard.php' to your desired protected page
-                    header('Location: index.php'); // Change 'dashboard.php' to your desired protected page
+                    header('Location: dashboard.php'); // Change 'dashboard.php' to your desired protected page
+                    // header('Location: index.php'); // Change 'dashboard.php' to your desired protected page
 
                     exit();
                 } else {

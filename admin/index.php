@@ -101,17 +101,16 @@ if (isset($_POST['adminlogin'])) {
           <input
     type="text"
     class="form-control form-input"
-    name="aemail"
+    name="aname_or_aemail"
     id="aemail"
     autocomplete="on"
     placeholder=""
     value="<?php echo isset($_POST['aemail']) ? htmlspecialchars($_POST['aemail']) : ''; ?>"
 />
 
-            <label for="aemail" class="form-label">
+            <label for="aname_or_aemail" class="form-label">
               <i class="fa-solid fa-envelope"></i>
-              Email</label
-            >
+              Email</label>
           </div>
           <div class="form-group form">
             <input
