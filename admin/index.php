@@ -28,17 +28,21 @@ if (isset($_POST['adminlogin'])) {
       $apassword = $_POST['apassword'];
 
       // Query the database to check if the user exists
-      $is_aname_or_aemail= filter_var($aname_or_aemail, FILTER_VALIDATE_EMAIL);
-        // Prepare the login query
+      $is_aname_or_aemail = filter_var($aname_or_aemail, FILTER_VALIDATE_EMAIL);
+
+      // Prepare the login query
       if ($is_aname_or_aemail) {
-        $loginQuery = "SELECT * FROM user WHERE uemail = '$aname_or_aemail'";
-      } else{
-        $loginQuery = "SELECT * FROM user WHERE uname = '$aname_or_aemail'";
+          $loginQuery = "SELECT * FROM admin WHERE aemail = '$aname_or_aemail'";
+      } else {
+          $loginQuery = "SELECT * FROM admin WHERE aname = '$aname_or_aemail'";
       }
 
-        if (!$result) {
-            die("Database error: " . $con->error); // Check for query errors
-        }
+      // Execute the query
+      $result = $con->query($loginQuery);
+
+      if (!$result) {
+          die("Database error: " . $con->error); // Check for query errors
+      }
 
         if ($result->num_rows == 1) {
             $row = $result->fetch_assoc();
@@ -94,44 +98,22 @@ if (isset($_POST['adminlogin'])) {
                         echo $error_message;
                     }
 ?></p>
-
-       
- 
-          <div class="form-group form">
-          <input
-    type="text"
-    class="form-control form-input"
-    name="aname_or_aemail"
-    id="aemail"
-    autocomplete="on"
-    placeholder=""
-    value="<?php echo isset($_POST['aemail']) ? htmlspecialchars($_POST['aemail']) : ''; ?>"
-/>
-
-            <label for="aname_or_aemail" class="form-label">
-              <i class="fa-solid fa-envelope"></i>
-              Email</label>
-          </div>
-          <div class="form-group form">
-            <input
-              type="password"
-              class="form-control form-input"
-              name="apassword"
-              id="password"
-              placeholder=""
-            />
-            <label for="apassword" class="form-label">
-            <i class="fas fa-lock"></i>              Password</label
-            >
-          </div>
+      <div class="form-group form">
+        <input type="text" class="form-control form-input" name="aname_or_aemail" id="aname_or_aemail" autocomplete="on" placeholder=""
+          value="<?php echo isset($_POST['aname_or_aemail']) ? htmlspecialchars($_POST['aname_or_aemail']) : ''; ?>"/>
+        <label for="aname_or_aemail" class="form-label">
+          <i class="fa-solid fa-envelope"></i>Email</label>
+      </div>
+      <div class="form-group form">
+        <input type="password" class="form-control form-input" name="apassword" id="password" placeholder=""/>
+        <label for="apassword" class="form-label">
+          <i class="fas fa-lock"></i>Password</label>
+        </div>
      
-          <button
-            type="submit"
-            class="btn border-danger text-danger mt-3 btn-block shadow-sm font-weight-bold"
-            name="adminlogin"
-          >
-            Login
-          </button>
+      <button type="submit"
+        class="btn border-danger text-danger mt-3 btn-block shadow-sm font-weight-bold"name="adminlogin">
+        Login
+      </button>
 
           <!-- <div class="text-center">
 

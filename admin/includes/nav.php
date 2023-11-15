@@ -4,6 +4,9 @@
         font-size: 30px;
         font-weight: bold;
     }
+    .navbar-nav .nav-link {
+            color: #9b593c !important; /* Set your desired text color */
+        }
 </style>
 <!-- Start Navigation -->
 <nav class="navbar navbar-expand-sm navbar-light pl-5 fixed-top" style="background-color: #ffffff;">
