@@ -145,7 +145,7 @@ include('includes/nav.php');
     }
 
     .button:hover {
-        background-color: #eeeeee !important;
+        background-color: #c19f90 !important;
     }
 </style>
 <div class="container-fluid">
@@ -154,7 +154,7 @@ include('includes/nav.php');
 
         <section class="col-sm-10 py-5 dashboard">
             <h4 style="color: white; opacity: 80%;">Concourse Verifications</h4>
-            <table class="table table-bordered" id="datatable">
+            <table class="table table-hover table-bordered" id="datatable">
                 <thead style="background-color: #c19f90;">
                     <tr>
                         <th>Concourse ID</th>

@@ -56,11 +56,9 @@ include('includes/nav.php');
   <div class="row">
 <?php include('includes/sidebar.php');?>
 <section class="col-sm-10 py-5 dashboard">
-<h4>
-    Owners
-</h4>
-<table class="table table-hover table-striped table-bordered" id='datatable'>
-<thead>
+<h4 style="color: white; opacity: 80%;">Owners</h4>
+<table class="table table-hover table-bordered" id='datatable'>
+<thead style="background-color: #c19f90;">
 
     <tr><th>User ID</th><th>Name</th><th>Email</th>
     <th>User Type</th>
