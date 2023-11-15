@@ -89,12 +89,14 @@
        echo '</a>';
        echo '<div class="dropdown-menu" aria-labelledby="userDropdown">';
        echo '<a class="dropdown-item" href="profile.php">
-                <i class="fa-regular fa-user"></i>
-                My Profile</a>';
+           <i class="fa-regular fa-user"></i>
+           My Profile</a>';
        echo '<a class="dropdown-item" href="transactions.php">
-                <i class="fa-solid fa-file-lines"></i>                              Transactions</a>';
-       echo '<a class="dropdown-item" href="logout.php">
-                <i class="fa-solid fa-power-off"></i>Logout</a>';
+           <i class="fa-solid fa-file-lines"></i> Transactions</a>';
+       echo '<a class="dropdown-item" href="#" onclick="event.preventDefault(); showLogoutModal();">
+           <i class="fa-solid fa-power-off"></i> Logout
+       </a>
+       ';
        echo '</div>';
        echo '</li>';
 
@@ -136,6 +138,48 @@
 ?>
       </ul>
       
+<!-- Add the modal HTML code at the end of your page -->
+<div class="modal" tabindex="-1" role="dialog" id="logoutModal" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Logout Confirmation</h5>
+                <button type="button" class="close" aria-label="Close" onclick="hideModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to logout?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="hideModal()">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showLogoutModal() {
+        // Display the modal
+        document.getElementById('logoutModal').style.display = 'block';
+        document.getElementById('modalOverlay').style.display = 'block';
+    }
+
+    function hideModal() {
+        // Hide the modal
+        document.getElementById('logoutModal').style.display = 'none';
+        document.getElementById('modalOverlay').style.display = 'none';
+    }
+
+    // Add a function to handle the actual logout action
+    function logout() {
+        // Add your logout logic here
+        // For example, you can redirect the user to the logout page
+        window.location.href = 'logout.php';
+    }
+</script>
+
    </div>
 </nav>
 <!-- End Navigation -->
