@@ -59,9 +59,14 @@ if (isset($_POST['register'])) {
 
                 // Insert data into the database
                 // $sql = "INSERT INTO user (uname, uemail, upassword, otp, activation_code, utype) VALUES ('$uname', '$uemail', '$hashedPassword', '$otp', '$activation_code','$usertype')";
-                $created_at = date("Y-m-d H:i:s"); // Get the current date and time
-                $sql = "INSERT INTO user (uname, uemail, upassword, otp, activation_code, utype, created_at) VALUES ('$uname', '$uemail', '$hashedPassword', '$otp', '$activation_code', '$usertype', '$created_at')";
+                // $created_at = date("Y-m-d H:i:s"); // Get the current date and time
+                // $sql = "INSERT INTO user (uname, uemail, upassword, otp, activation_code, utype, created_at) VALUES ('$uname', '$uemail', '$hashedPassword', '$otp', '$activation_code', '$usertype', '$created_at')";
+                // Set OTP expiration time (5 minutes)
+                $expiration_time = date("Y-m-d H:i:s", strtotime('+1 minutes'));
 
+                // Insert data into the database
+                $created_at = date("Y-m-d H:i:s");
+                $sql = "INSERT INTO user (uname, uemail, upassword, otp, activation_code, utype, created_at, otp_expiration) VALUES ('$uname', '$uemail', '$hashedPassword', '$otp', '$activation_code', '$usertype', '$created_at', '$expiration_time')";
                 $con->query($sql);
 
                 // Send OTP to the user's email
@@ -260,7 +265,7 @@ include('includes/nav.php');
           if (isset($error_message)) {
               echo $error_message;
           }
-        ?>
+?>
       </p>
 
         <div class="user-details">
