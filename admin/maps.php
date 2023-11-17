@@ -43,10 +43,7 @@ include('includes/nav.php');
 
 <section class="col-sm-10 py-5 dashboard">
     <!-- <div class="dashboard"> -->
-<h4>
-    Maps
-
-</h4>
+<h4 style="color: white; opacity: 80%;">Maps</h4>
     
     <!-- </div> -->
     </section>
