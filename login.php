@@ -232,6 +232,11 @@ include('includes/nav.php');
 <div class="container">
     <div class="title">Login</div>
     <div class="content">
+    <?php if(isset($error_message)) : ?>
+            <div class="error-message">
+                <?php echo $error_message; ?>
+            </div>
+        <?php endif; ?>
         <form action="" method="POST">
             <div class="user-details">  
                 <div class="input-box">
