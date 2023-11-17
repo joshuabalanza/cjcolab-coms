@@ -19,14 +19,21 @@ if (isset($_SESSION['uid'])) {
 }
 
 if (isset($_POST['login'])) {
-    if (empty($_POST['uemail']) || empty($_POST['upassword'])) {
+    if (empty($_POST['uname_or_uemail']) || empty($_POST['upassword'])) {
         $error_message = "Both email and password are required";
     } else {
-        $uemail = $_POST['uemail'];
+        $uname_or_uemail = $_POST['uname_or_uemail'];
+        // $uname = $_POST['uname'];
         $upassword = $_POST['upassword'];
 
         // Query the database to check if the user exists
-        $loginQuery = "SELECT * FROM user WHERE uemail = '$uemail'";
+        $is_uname_or_uemail = filter_var($uname_or_uemail, FILTER_VALIDATE_EMAIL);
+          // Prepare the login query
+        if ($is_uname_or_uemail) {
+          $loginQuery = "SELECT * FROM user WHERE uemail = '$uname_or_uemail'";
+        } else{
+          $loginQuery = "SELECT * FROM user WHERE uname = '$uname_or_uemail'";
+        }
         $result = $con->query($loginQuery);
 
         if ($result->num_rows == 1) {
@@ -47,8 +54,8 @@ if (isset($_POST['login'])) {
 
 
                     // Redirect to a protected page or the user's profile
-                    // header('Location: dashboard.php'); // Change 'dashboard.php' to your desired protected page
-                    header('Location: index.php'); // Change 'dashboard.php' to your desired protected page
+                    header('Location: dashboard.php'); // Change 'dashboard.php' to your desired protected page
+                    // header('Location: index.php'); // Change 'dashboard.php' to your desired protected page
 
                     exit();
                 } else {
@@ -225,16 +232,21 @@ include('includes/nav.php');
 <div class="container">
     <div class="title">Login</div>
     <div class="content">
+    <?php if(isset($error_message)) : ?>
+            <div class="error-message">
+                <?php echo $error_message; ?>
+            </div>
+        <?php endif; ?>
         <form action="" method="POST">
             <div class="user-details">  
                 <div class="input-box">
-                    <span class="details">Email</span>
+                    <span class="details">Username Or Email</span>
                     <input 
                         type="text" 
-                        name="uemail" 
+                        name="uname_or_uemail" 
                         id="uemail"
                         autocomplete="off"
-                        placeholder="Enter your email" 
+                        placeholder="Enter your username or email" 
                         required>
                 </div>
 
