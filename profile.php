@@ -21,8 +21,7 @@ if (!isset($_SESSION['uid'])) {
 
 $uid = $_SESSION['uid'];
 
-// Check the status in the user_verification table
-$verificationStatus = "Not approved"; // Default status
+$verificationStatus = ""; // Default status
 
 $verificationQuery = "SELECT status, first_name, last_name, address, gender, birthday FROM user_verification WHERE user_id = $uid";
 $verificationResult = mysqli_query($con, $verificationQuery);
@@ -99,16 +98,16 @@ include('includes/nav.php');
          <div class="col-sm-8 col-md-9 bg-light p-2"  style="border-radius: 10px; max-width: 600px; margin: 0 auto;">
             <table class="table" style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
                <tr>
+                  <th>User Type:</th>
+                  <td><?php echo $_SESSION['utype']; ?></td>
+               </tr>
+               <tr>
                   <th>Username:</th>
                   <td><?php echo $_SESSION['username']; ?></td>
                </tr>
                <tr>
                   <th>Email:</th>
                   <td><?php echo $_SESSION['uemail']; ?></td>
-               </tr>
-               <tr>
-                  <th>User Type:</th>
-                  <td><?php echo $_SESSION['utype']; ?></td>
                </tr>
                <tr>
                   <th>Phone:</th>
@@ -148,13 +147,12 @@ include('includes/nav.php');
                <?php elseif ($verificationStatus === 'rejected'): ?>
                   <p>Verification of account is rejected. Please fill up the form again:</p>
                   <form action="verification_account_process.php" method="post" enctype="multipart/form-data">
-        <!-- Your form fields for user verification -->
                <button type="submit" class="btn-sm" name="submit_verification" style="background-color: #9b593c;">Submit Verification</button>
                </form>
                   <?php elseif ($verificationStatus === 'pending'): ?>
                      <p>You have already submitted the verification. Please wait for approval.</p>
                   <?php else: ?>
-                     <p>Verification of account is still in process. Please wait for approval.</p>
+                     <p>Please, verify your account.</p>
                <?php endif; ?>
             </div>
          </div>

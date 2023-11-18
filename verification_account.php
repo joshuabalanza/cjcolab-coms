@@ -57,13 +57,8 @@ include('includes/nav.php');
 <section class="col-sm-8 col-md-9 bg-light p-2 mx-auto" style="border-radius: 10px; margin-top: 8%; max-width: 550px;">
     <div class="container">
         <h2>Account Verification</h2>
-
-        <?php if ($verificationStatus === 'approved'): ?>
-            <p>Verification of account is approved. Thank you for providing the necessary information.</p>
-        <?php elseif ($verificationStatus === 'rejected'):
-             ?>
-            <p>Verification of account is rejected. Please fill up the form again:</p>
-            <form action="verification_account_process.php" method="post" enctype="multipart/form-data">
+        <?php if ($verificationStatus === ''): ?>
+        <form action="verification_account_process.php" method="post" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="first_name">First Name:</label>
                     <input type="text" class="form-control" name="first_name" required>
@@ -94,6 +89,8 @@ include('includes/nav.php');
                     <input type="date" class="form-control" name="birthday" required>
                 </div>
 
+                <input type="hidden" name="status" value="pending">
+
                 <div class="form-group">
                     <label for="image">Upload Image (Passport/Driver's License):</label>
                     <input type="file" class="form-control-file" name="image" accept=".jpg, .jpeg, .png" required>
@@ -106,6 +103,8 @@ include('includes/nav.php');
 
                 <button type="submit" class="btn btn-primary" name="submit_verification">Submit Verification</button>
             </form>
+        <?php elseif ($verificationStatus === 'approved'): ?>
+            <p>Verification of account is approved. Thank you for providing the necessary information.</p>
         <?php elseif ($verificationStatus === 'pending'): ?>
             <p>You have already submitted the verification. Please wait for approval.</p>
         <?php else: ?>

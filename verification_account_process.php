@@ -1,7 +1,4 @@
-    <?php
-
-
-
+<?php
 session_name("user_session");
 session_start();
 
@@ -18,6 +15,8 @@ if (isset($_POST['submit_verification'])) {
     $address = mysqli_real_escape_string($con, $_POST['address']);
     $gender = mysqli_real_escape_string($con, $_POST['gender']);
     $birthday = mysqli_real_escape_string($con, $_POST['birthday']);
+    $status = mysqli_real_escape_string($con, $_POST['status']);
+
 
     // Check if the "uploads" directory exists, create it if not
     $upload_directory = 'uploads/';
@@ -76,7 +75,8 @@ if (isset($_POST['submit_verification'])) {
             gender = '$gender',
             birthday = '$birthday',
             image_filename = '$image_filename',
-            document_filename = '$document_filename'
+            document_filename = '$document_filename',
+            status = '$status'
             WHERE verification_id = $verification_id";
 
         if (mysqli_query($con, $update_query)) {
@@ -90,8 +90,8 @@ if (isset($_POST['submit_verification'])) {
         }
     } else {
         // No existing verification record found; insert a new one
-        $insert_query = "INSERT INTO user_verification (user_id, first_name, last_name, address, gender, birthday, image_filename, document_filename)
-                        VALUES ('$user_id', '$first_name', '$last_name', '$address', '$gender', '$birthday', '$image_filename', '$document_filename')";
+        $insert_query = "INSERT INTO user_verification (user_id, first_name, last_name, address, gender, birthday, image_filename, document_filename, status)
+                        VALUES ('$user_id', '$first_name', '$last_name', '$address', '$gender', '$birthday', '$image_filename', '$document_filename', '$status')";
 
         if (mysqli_query($con, $insert_query)) {
             // Verification data inserted successfully

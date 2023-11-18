@@ -284,8 +284,8 @@ form .user-details .input-box{
 </div>
 
 <script>
-    // Set the expiration time for the countdown timer
-    var expirationTime = <?php echo $expiration_time ? $expiration_time * 1000 : 0; ?>;
+    // Set the expiration time for the countdown timer to 3 minutes
+    var expirationTime = <?php echo time() + 3 * 60; ?> * 1000;
 
     if (expirationTime > 0) {
         // Update the countdown every second

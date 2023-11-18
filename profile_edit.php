@@ -35,9 +35,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
     // Update the user's name, phone, and profile image in the database
-    $sql = "UPDATE user SET uname = '$newName', uphone = '$newPhone', uimage = '$imagePath' WHERE uid = $uid";
+    $sql = "UPDATE user SET username = '$newName', uphone = '$newPhone', uimage = '$imagePath' WHERE uid = $uid";
     if (mysqli_query($con, $sql)) {
-        $_SESSION['uname'] = $newName;
+        $_SESSION['username'] = $newName;
         $_SESSION['uphone'] = $newPhone;
         if (!empty($imagePath)) {
             $_SESSION['uimage'] = $imagePath;
@@ -100,7 +100,7 @@ include('includes/nav.php');
                     <img src="default-image.jpg" class="border border-primary d-block mx-auto rounded-circle" style="width: 150px; height: 150px; background-color: white; opacity: 85   %;">
                 <?php endif; ?>              
                 <h6 class="text-center"><?php echo $_SESSION['utype']; ?>#<?php echo $_SESSION['uid']; ?></h6>
-                <h3 class="text-center"><?php echo $_SESSION['uname']; ?></h3> 
+                <h3 class="text-center"><?php echo $_SESSION['username']; ?></h3> 
                 <br>
                 
                 <div class="text-center">
@@ -117,8 +117,8 @@ include('includes/nav.php');
 <div class="col-sm-8 col-md-9 bg-light p-2" style="border-radius: 10px; margin-top: 10px; margin-left: 125px; max-width: 400px;">
     <div class="form" style="margin-left: 10px; margin-right: 10px;">
         <div class="form-group">
-            <label for="newName" style="font-weight: bold;">Name:</label>
-            <input type="text" class="form-control" id="newName" name="newName" value="<?php echo isset($_SESSION['uname']) ? $_SESSION['uname'] : ''; ?>">
+            <label for="newName" style="font-weight: bold;">Username:</label>
+            <input type="text" class="form-control" id="newName" name="newName" value="<?php echo isset($_SESSION['username']) ? $_SESSION['username'] : ''; ?>">
         </div>
         <div class="form-group">
             <label for="newPhone" style="font-weight: bold;">Phone:</label>
