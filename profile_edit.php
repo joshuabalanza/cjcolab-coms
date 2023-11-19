@@ -98,7 +98,7 @@ include('includes/nav.php');
 <section class="user-profile">
     <div class="container-fluid p-4 shadow mx-auto"  style="max-width: 1000px; margin-top: 10%; background-color: #b1765c; border-radius: 20px;">
         <div class="row">
-            <div class="col-sm-4 col-md-3">
+            <div class="col-sm-4 col-md-3" style="margin-left: 80px; margin-top: 15px;">
                 <form method="POST" enctype="multipart/form-data"> <!-- Add enctype attribute for file uploads -->
                 <!-- Display user profile image if available -->
                 <?php if (!empty($_SESSION['uimage'])): ?>
@@ -121,21 +121,21 @@ include('includes/nav.php');
             </div>   
         </div>
     </div>
-<div class="col-sm-8 col-md-9 bg-light p-2" style="border-radius: 10px; margin-top: 10px; margin-left: 125px; max-width: 400px;">
-    <div class="form" style="margin-left: 10px; margin-right: 10px;">
-        <div class="form-group">
-            <label for="newName" style="font-weight: bold;">Username:</label>
-            <input type="text" class="form-control" name="newName" id="newName" autocomplete="off" placeholder="Enter your username" required value="<?php echo isset($_SESSION['username']) ? $_SESSION['username'] : ''; ?>">
-            <div id="availability-message"></div>
-        </div>
-        <div class="form-group">
-            <label for="newPhone" style="font-weight: bold;">Phone:</label>
-            <input type="text" class="form-control" id="newPhone" name="newPhone" value="<?php echo isset($_SESSION['uphone']) ? $_SESSION['uphone'] : ''; ?>">
+    
+    <div class="col-sm-8 col-md-9 bg-light p-2" style="border-radius: 10px; margin-top: 15px; margin-left: 125px; max-width: 400px; margin-bottom: 20px;">
+        <div class="form" style="margin-left: 10px; margin-right: 10px;">
+            <div class="form-group">
+                <label for="newName" style="font-weight: bold;">Username:</label>
+                <input type="text" class="form-control" name="newName" id="newName" autocomplete="off" placeholder="Enter your username" required value="<?php echo isset($_SESSION['username']) ? $_SESSION['username'] : ''; ?>">
+                <div id="availability-message"></div>
+            </div>
+            <div class="form-group">
+                <label for="newPhone" style="font-weight: bold;">Phone:</label>
+                <input type="text" class="form-control" id="newPhone" name="newPhone" value="<?php echo isset($_SESSION['uphone']) ? $_SESSION['uphone'] : ''; ?>">
 
-            <!-- <input type="text" class="form-control" id="newPhone" name="newPhone" value="<?php echo $_SESSION['uphone']; ?>"> -->
+                <!-- <input type="text" class="form-control" id="newPhone" name="newPhone" value="<?php echo $_SESSION['uphone']; ?>"> -->
+            </div>
         </div>
-    </div>
-        <button type="submit" class="btn btn-primary"  style="float: right; margin-right: 10px; margin-top: 10px;">Save Changes</button>
             </form>
                 <?php
                     if (isset($message)) {
@@ -146,9 +146,15 @@ include('includes/nav.php');
                     }
                 ?>
             </div>
+          </div>
+                <div class="d-flex justify-content" style="margin-left: 620px;">
+                    <button type="submit" class="btn btn-primary" style="margin-top: 10px;">Save Changes</button>
+                    <a href="profile.php" class="btn btn-secondary" style="margin-top: 10px;">Cancel</a>
+                </div>
+                <br>
+            </div>
         </div>
-    <br>
-</div>
+    </div>
 </section>
 <script>
 document.getElementById('newName').addEventListener('input', function () {
