@@ -27,9 +27,10 @@
         transition: background-color 0.3s ease;
     }
     .navbar-brand span {
-        color: #9b593c;
+        color: white;
         font-size: 30px;
         font-weight: bold;
+        opacity: 80%;
     }
 
     /* Additional style for navigation bar when user is logged in as owner or tenant */
@@ -46,12 +47,21 @@
             background-color: rgba(255, 255, 255, 0.3);
             color: #9b593c !important;
         }
+        .navbar-brand span {
+        color: #9b593c;
+        font-size: 30px;
+        font-weight: bold;
+        }
     <?php endif; ?>
 </style>
 <!-- Start Navigation -->
 <nav class="navbar navbar-expand-sm navbar-light pl-5 fixed-top <?php echo isset($_SESSION['uid']) ? '' : 'transparent-nav'; ?>">
     <a href="index.php" class="navbar-brand">
+            <?php if (isset($_SESSION['uid']) && (($_SESSION['utype'] == 'Owner') || ($_SESSION['utype'] == 'Tenant'))) : ?>
             <img src="assets/images/Logo-9b593c.png" alt="Logo" width="50" height="40" class="d-inline-block align-text-top">
+            <?php else: ?>
+            <img src="assets/images/white-version-logo.png" alt="Logo" width="50" height="40" class="d-inline-block align-text-top" style="opacity: 80%;">
+            <?php endif; ?>
             <span>COMS</span>
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation">
