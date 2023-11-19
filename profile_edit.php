@@ -124,8 +124,8 @@ include('includes/nav.php');
 <div class="col-sm-8 col-md-9 bg-light p-2" style="border-radius: 10px; margin-top: 10px; margin-left: 125px; max-width: 400px;">
     <div class="form" style="margin-left: 10px; margin-right: 10px;">
         <div class="form-group">
-            <label for="newName"  style="font-weight: bold;">Username:</label>
-            <input type="text" class="form-control" name="newName" id="newName" autocomplete="off" placeholder="Enter your username" required>
+            <label for="newName" style="font-weight: bold;">Username:</label>
+            <input type="text" class="form-control" name="newName" id="newName" autocomplete="off" placeholder="Enter your username" required value="<?php echo isset($_SESSION['username']) ? $_SESSION['username'] : ''; ?>">
             <div id="availability-message"></div>
         </div>
         <div class="form-group">
