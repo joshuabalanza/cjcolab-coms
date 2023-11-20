@@ -136,7 +136,7 @@ include('includes/nav.php');
                 <!-- <input type="text" class="form-control" id="newPhone" name="newPhone" value="<?php echo $_SESSION['uphone']; ?>"> -->
             </div>
         </div>
-            </form>
+
                 <?php
                     if (isset($message)) {
                         echo "<div class='alert alert-success'>$message</div>";
@@ -152,6 +152,7 @@ include('includes/nav.php');
                     <a href="profile.php" class="btn btn-secondary" style="margin-top: 10px;">Cancel</a>
                 </div>
                 <br>
+                </form>
             </div>
         </div>
     </div>
@@ -164,7 +165,8 @@ document.getElementById('newName').addEventListener('input', function () {
     // Remove any existing messages
     availabilityMessage.innerHTML = '';
 
-    if (enteredUsername !== '') {
+    // Check availability only if the entered username is different from the current username
+    if (enteredUsername !== '<?php echo $_SESSION['username']; ?>') {
         const url = `check_username_availability.php?username=${enteredUsername}`;
 
         // Make an AJAX request to check username availability
