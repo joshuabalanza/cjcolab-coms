@@ -23,98 +23,100 @@ use PHPMailer\PHPMailer\Exception;
 
 require 'vendor/autoload.php';
 if (isset($_POST['register'])) {
-  if (empty($_POST['uname']) || empty($_POST['uemail']) || empty($_POST['upassword']) || empty($_POST['username'])) {
-      $error_message = "All fields are required";
-  } else {
-      $uname = $_POST['uname'];
-      $uemail = $_POST['uemail'];
-      $upassword = $_POST['upassword'];
-      $confirm_password = $_POST['confirm_password'];
-      $username = $_POST['username'];
-      $usertype = $_POST['usertype'];
+    if (empty($_POST['uname']) || empty($_POST['uemail']) || empty($_POST['upassword']) || empty($_POST['username'])) {
+        $error_message = "<span style='color: red;'>All fields are required</span>";
+    } else {
+        $uname = $_POST['uname'];
+        $uemail = $_POST['uemail'];
+        $upassword = $_POST['upassword'];
+        $confirm_password = $_POST['confirm_password'];
+        $username = $_POST['username'];
+        $usertype = $_POST['usertype'];
 
-      if ($upassword !== $confirm_password) {
-          $error_message = "Passwords do not match. Please confirm your password correctly.";
-      } else {
-          // Check if the email is already registered
-          $emailExists = false;
-          $emailNotVerified = false;
+        if ($upassword !== $confirm_password) {
+            $error_message = "<span style='color: red;'>Passwords do not match. Please confirm your password properly.</span>";
+        } else {
+            // Check if the email is already registered
+            $emailExists = false;
+            $emailNotVerified = false;
 
-          $checkEmailQuery = "SELECT uemail, verified FROM user WHERE uemail = '$uemail'";
-          $result = $con->query($checkEmailQuery);
+            $checkEmailQuery = "SELECT uemail, verified FROM user WHERE uemail = '$uemail'";
+            $result = $con->query($checkEmailQuery);
 
-          if ($result->num_rows > 0) {
-              $row = $result->fetch_assoc();
+            if ($result->num_rows > 0) {
+                $row = $result->fetch_assoc();
 
-              if ($row['verified'] == 0) {
-                  // Account not verified, redirect to OTP page
-                  header('Location: otp.php?email=' . $uemail);
-                  exit();
-              }
+                if ($row['verified'] == 0) {
+                    // Account not verified, redirect to OTP page
+                    header('Location: otp.php?email=' . $uemail);
+                    exit();
+                }
 
-              $emailExists = true;
-          }
+                $emailExists = true;
+            }
 
-          // Check if the username is already taken
-          $usernameExists = false;
-          $checkUsernameQuery = "SELECT username FROM user WHERE username = '$username'";
-          $result = $con->query($checkUsernameQuery);
+            // Check if the username is already taken
+            $usernameExists = false;
+            $checkUsernameQuery = "SELECT username FROM user WHERE username = '$username'";
+            $result = $con->query($checkUsernameQuery);
 
-          if ($result->num_rows > 0) {
-              $usernameExists = true;
-          }
+            if ($result->num_rows > 0) {
+                $usernameExists = true;
+            }
 
-          if ($emailExists) {
-              $error_message = "Email is already registered. Please use a different email.";
-          } elseif ($usernameExists) {
-              $error_message = "Username is already taken. Please choose a different username.";
-          } else {
-              $hashedPassword = password_hash($upassword, PASSWORD_DEFAULT);
+            if ($emailExists) {
+                $error_message = "<span style='color: red;'>Email is already registered. Please use a different email.</span>";
+            } elseif ($usernameExists) {
+                $error_message = "<span style='color: red;'>Username is already taken. Please choose a different username.</span>";
+            } else {
+                $hashedPassword = password_hash($upassword, PASSWORD_DEFAULT);
 
-              // Generate OTP
-              $otp_str = str_shuffle('0123456789');
-              $otp = substr($otp_str, 0, 5);
+                // Generate OTP
+                $otp_str = str_shuffle('0123456789');
+                $otp = substr($otp_str, 0, 5);
 
-              // Generate Activation Code
-              $act_str = rand(100000, 10000000);
-              $activation_code = str_shuffle('abcdefghijklmno' . $act_str);
+                // Generate Activation Code
+                $act_str = rand(100000, 10000000);
+                $activation_code = str_shuffle('abcdefghijklmno' . $act_str);
 
-              // Insert data into the database
-              $expiration_time = date("Y-m-d H:i:s", strtotime('+1 minutes'));
-              $created_at = date("Y-m-d H:i:s");
-              $sql = "INSERT INTO user (uname, uemail, upassword, otp, activation_code, utype, created_at, otp_expiration, username) VALUES ('$uname', '$uemail', '$hashedPassword', '$otp', '$activation_code', '$usertype', '$created_at', '$expiration_time', '$username')";
-              $con->query($sql);
+                // Insert data into the database
+                $expiration_time = date("Y-m-d H:i:s", strtotime('+1 minutes'));
+                $created_at = date("Y-m-d H:i:s");
+                $sql = "INSERT INTO user (uname, uemail, upassword, otp, activation_code, utype, created_at, otp_expiration, username) VALUES ('$uname', '$uemail', '$hashedPassword', '$otp', '$activation_code', '$usertype', '$created_at', '$expiration_time', '$username')";
+                $con->query($sql);
 
-              // Send OTP to the user's email
-              $mail = new PHPMailer(true);
-              try {
-                  $mail->isSMTP();
-                  $mail->Host = 'smtp.gmail.com'; // Your SMTP server
-                  $mail->SMTPAuth = true;
-                  $mail->Username = 'coms.system.adm@gmail.com'; // Your Gmail email address
-                  $mail->Password = 'wdcbquevxahkehla'; // Your Gmail password
-                  $mail->SMTPSecure = 'tls';
-                  $mail->Port = 587;
+                // Send OTP to the user's email
+                $mail = new PHPMailer(true);
+                try {
+                    $mail->isSMTP();
+                    $mail->Host = 'smtp.gmail.com'; // Your SMTP server
+                    $mail->SMTPAuth = true;
+                    $mail->Username = 'coms.system.adm@gmail.com'; // Your Gmail email address
+                    $mail->Password = 'wdcbquevxahkehla'; // Your Gmail password
+                    $mail->SMTPSecure = 'tls';
+                    $mail->Port = 587;
 
-                  $mail->setFrom('coms.system.adm@gmail.com', 'Concessionaire Monitoring Operation System');
-                  $mail->addAddress($uemail); // User's email address
-                  $mail->isHTML(true);
-                  $mail->Subject = 'Email Verification';
-                  $mail->Body = 'Your OTP is: ' . $otp;
+                    $mail->setFrom('coms.system.adm@gmail.com', 'Concessionaire Monitoring Operation System');
+                    $mail->addAddress($uemail); // User's email address
+                    $mail->isHTML(true);
+                    $mail->Subject = 'Email Verification';
+                    $mail->Body = 'Your OTP is: ' . $otp;
 
-                  $mail->send();
-              } catch (Exception $e) {
-                  echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
-              }
+                    $mail->send();
+                } catch (Exception $e) {
+                    echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+                }
 
-              // Redirect to OTP verification page
-              header('Location: otp.php?email=' . $uemail);
-              exit();
-          }
-      }
-  }
+                // Redirect to OTP verification page
+                header('Location: otp.php?email=' . $uemail);
+                exit();
+            }
+        }
+    }
 }
 ?>
+
+<!-- ... (rest of the code remains unchanged) ... -->
 
 <?php
 include('includes/header.php');
@@ -330,12 +332,22 @@ include('includes/nav.php');
                 </div>
             </div>
 
+            <br>
+            <div class="input-box">
+                <input type="checkbox" name="agree_terms" id="agree_terms" required>
+                <label for="agree_terms" class="details" id="termsLabel">
+                    By signing up, you agree to the <a href="javascript:void(0);" id="termsLink">Terms and Conditions</a>
+                    of the system
+                </label>
+            </div>
+
             <div class="button">
                 <input type="submit" name="register">
             </div>
         </form>
     </div>
 </div>
+
 <script>
 document.getElementById('username').addEventListener('input', function () {
     const enteredUsername = this.value.trim();
@@ -374,6 +386,37 @@ document.getElementById('username').addEventListener('input', function () {
             .catch(error => console.error('Error:', error));
     }
 });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var termsLink = document.getElementById("termsLink");
+        var termsLabel = document.getElementById("termsLabel");
+        var agreeTermsCheckbox = document.getElementById("agree_terms");
+
+        termsLink.addEventListener("click", function () {
+            // You can replace the placeholder with the actual path to your terms and conditions document
+            var termsAndConditionsURL = "uploads/terms_and_conditions.pdf";
+            window.open(termsAndConditionsURL, "_blank");
+        });
+
+        // Add event listener for form submission
+        var registrationForm = document.querySelector('form');
+        registrationForm.addEventListener('submit', function (event) {
+            if (!agreeTermsCheckbox.checked) {
+                // If the checkbox is not checked, add red color to the checkbox and text
+                agreeTermsCheckbox.style.outline = '1px solid red';
+                termsLabel.style.color = 'red';
+
+                // Prevent form submission
+                event.preventDefault();
+            } else {
+                // Reset styles if the checkbox is checked
+                agreeTermsCheckbox.style.outline = 'none';
+                termsLabel.style.color = '';
+            }
+        });
+    });
 </script>
 
 <?php include('includes/footer.php')?>
