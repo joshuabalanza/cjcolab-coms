@@ -21,8 +21,7 @@ if (!isset($_SESSION['uid'])) {
 
 $uid = $_SESSION['uid'];
 
-// Check the status in the user_verification table
-$verificationStatus = "Not approved"; // Default status
+$verificationStatus = ""; // Default status
 
 $verificationQuery = "SELECT status, first_name, last_name, address, gender, birthday FROM user_verification WHERE user_id = $uid";
 $verificationResult = mysqli_query($con, $verificationQuery);
@@ -83,7 +82,7 @@ include('includes/nav.php');
                <img src="default-image.jpg" class="border border-primary d-block mx-auto rounded-circle" style="width: 150px; height: 150px; background-color: white; opacity: 85%;">
             <?php endif; ?>
             <h6 class="text-center"><?php echo $_SESSION['utype']; ?>#<?php echo $_SESSION['uid']; ?></h6>
-            <h3 class="text-center"><?php echo $_SESSION['uname']; ?></h3>
+            <h3 class="text-center"><?php echo $_SESSION['username']; ?></h3>
             <br>
             <div class="text-center">
                <a href="profile_edit.php"><button class="btn-sm" style="background-color: #9b593c;">Edit Profile</button></a>
@@ -99,16 +98,16 @@ include('includes/nav.php');
          <div class="col-sm-8 col-md-9 bg-light p-2"  style="border-radius: 10px; max-width: 600px; margin: 0 auto;">
             <table class="table" style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
                <tr>
-                  <th>Name:</th>
-                  <td><?php echo $_SESSION['uname']; ?></td>
+                  <th>User Type:</th>
+                  <td><?php echo $_SESSION['utype']; ?></td>
+               </tr>
+               <tr>
+                  <th>Username:</th>
+                  <td><?php echo $_SESSION['username']; ?></td>
                </tr>
                <tr>
                   <th>Email:</th>
                   <td><?php echo $_SESSION['uemail']; ?></td>
-               </tr>
-               <tr>
-                  <th>User Type:</th>
-                  <td><?php echo $_SESSION['utype']; ?></td>
                </tr>
                <tr>
                   <th>Phone:</th>
@@ -142,6 +141,20 @@ include('includes/nav.php');
                <!-- Add other verification fields as needed -->
                <?php endif; ?>
             </table>
+            <div class="col-sm-8 col-md-9 bg-light p-2" style="border-radius: 10px; max-width: 600px; margin: 0 auto;">
+               <?php if ($verificationStatus === 'approved'): ?>
+                  <!-- No message when the account is approved -->
+               <?php elseif ($verificationStatus === 'rejected'): ?>
+                  <p>Verification of account is rejected. Please fill up the form again:</p>
+                  <form action="verification_account_process.php" method="post" enctype="multipart/form-data">
+               <button type="submit" class="btn-sm" name="submit_verification" style="background-color: #9b593c;">Submit Verification</button>
+               </form>
+                  <?php elseif ($verificationStatus === 'pending'): ?>
+                     <p>You have already submitted the verification. Please wait for approval.</p>
+                  <?php else: ?>
+                     <p>Please, verify your account.</p>
+               <?php endif; ?>
+            </div>
          </div>
       </div>
       <br>

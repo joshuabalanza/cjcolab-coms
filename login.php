@@ -2,9 +2,9 @@
 <!-- ***START SESSION**** -->
 <!-- ******************** -->
 <?php
-   session_name("user_session");
-session_start();
-include('includes/dbconnection.php');
+    session_name("user_session");
+    session_start();
+    include('includes/dbconnection.php');
 ?>
 <!-- ******************** -->
 <!-- ***** PHP CODE ***** -->
@@ -19,20 +19,20 @@ if (isset($_SESSION['uid'])) {
 }
 
 if (isset($_POST['login'])) {
-    if (empty($_POST['uname_or_uemail']) || empty($_POST['upassword'])) {
+    if (empty($_POST['username_or_uemail']) || empty($_POST['upassword'])) {
         $error_message = "Both email and password are required";
     } else {
-        $uname_or_uemail = $_POST['uname_or_uemail'];
-        // $uname = $_POST['uname'];
+        $username_or_uemail = $_POST['username_or_uemail'];
+        // $username = $_POST['username'];
         $upassword = $_POST['upassword'];
 
         // Query the database to check if the user exists
-        $is_uname_or_uemail = filter_var($uname_or_uemail, FILTER_VALIDATE_EMAIL);
+        $is_username_or_uemail = filter_var($username_or_uemail, FILTER_VALIDATE_EMAIL);
           // Prepare the login query
-        if ($is_uname_or_uemail) {
-          $loginQuery = "SELECT * FROM user WHERE uemail = '$uname_or_uemail'";
+        if ($is_username_or_uemail) {
+          $loginQuery = "SELECT * FROM user WHERE uemail = '$username_or_uemail'";
         } else{
-          $loginQuery = "SELECT * FROM user WHERE uname = '$uname_or_uemail'";
+          $loginQuery = "SELECT * FROM user WHERE username = '$username_or_uemail'";
         }
         $result = $con->query($loginQuery);
 
@@ -46,8 +46,9 @@ if (isset($_POST['login'])) {
                 if (password_verify($upassword, $row['upassword'])) {
                     // Password is correct, so create session variables
                     $_SESSION['uid'] = $row['uid'];
-                    $_SESSION['uemail'] = $row['uemail'];
                     $_SESSION['uname'] = $row['uname'];
+                    $_SESSION['uemail'] = $row['uemail'];
+                    $_SESSION['username'] = $row['username'];
                     $_SESSION['utype'] = $row['utype'];
                     $_SESSION['uphone'] = $row['uphone'];
                     $_SESSION['uimage'] = $row['uimage']; // Add this line to set the uimage session variable
@@ -228,13 +229,22 @@ include('includes/nav.php');
       flex-direction: column;
     }
   }
+  .error-message {
+        color: red;
+    }
 </style>
 <div class="container">
     <div class="title">Login</div>
     <div class="content">
     <?php if(isset($error_message)) : ?>
             <div class="error-message">
-                <?php echo $error_message; ?>
+                <?php
+                echo $error_message;
+                // Check if the error message contains "Account not verified"
+                if (strpos($error_message, "Account not verified") !== false) {
+                    echo ' <a href="otp-resend.php">Verify Now</a>'; // Add the links to otp.php and otp-resend.php
+                }
+                ?>
             </div>
         <?php endif; ?>
         <form action="" method="POST">
@@ -243,7 +253,7 @@ include('includes/nav.php');
                     <span class="details">Username Or Email</span>
                     <input 
                         type="text" 
-                        name="uname_or_uemail" 
+                        name="username_or_uemail" 
                         id="uemail"
                         autocomplete="off"
                         placeholder="Enter your username or email" 

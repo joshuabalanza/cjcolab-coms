@@ -24,21 +24,37 @@ function verifyOTP($con, $email, $otp)
 if (isset($_POST['verify_otp'])) {
     $email = $_GET['email'];
     $otp = $_POST['otp'];
-    if (verifyOTP($con, $email, $otp)) {
-        $successMessage = "Registration successful! You can now log in.";
 
-        // Update user verification status
-        $sql = "UPDATE user SET verified = 1 WHERE uemail = '$email'";
-        $con->query($sql);
+    // Fetch the user's data from the database based on the email
+    $query = "SELECT * FROM user WHERE uemail = '$email'";
+    $result = $con->query($query);
 
-        // Redirect to success page or login page
-        header('Location: login.php');
-        exit();
+    if ($result->num_rows > 0) {
+        $user = $result->fetch_assoc();
+        $expiration_time = strtotime($user['otp_expiration']);
+
+        // Check if the timer has expired
+        if ($expiration_time > time()) {
+            if (verifyOTP($con, $email, $otp)) {
+                $successMessage = "Registration successful! You can now log in.";
+
+                // Update user verification status
+                $sql = "UPDATE user SET verified = 1 WHERE uemail = '$email'";
+                $con->query($sql);
+
+                // Redirect to success page or login page
+                header('Location: login.php');
+                exit();
+            } else {
+                $errorMessage = "Invalid OTP. Please try again.";
+            }
+        } else {
+            $errorMessage = "The OTP has expired. Please request a new OTP.";
+        }
     } else {
-        $errorMessage = "Invalid OTP. Please try again.";
+        $errorMessage = "User not found.";
     }
 }
-
 
 // Fetch the user's data from the database based on the email
 $email = $_GET['email'];
@@ -268,8 +284,8 @@ form .user-details .input-box{
 </div>
 
 <script>
-    // Set the expiration time for the countdown timer
-    var expirationTime = <?php echo $expiration_time ? $expiration_time * 1000 : 0; ?>;
+    // Set the expiration time for the countdown timer to 3 minutes
+    var expirationTime = <?php echo time() + 3 * 60; ?> * 1000;
 
     if (expirationTime > 0) {
         // Update the countdown every second
