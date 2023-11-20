@@ -52,8 +52,6 @@ if (isset($_SESSION['uid'])) {
     }
 
 }
-
-
 ?>
 
 <!-- ******************** -->
@@ -64,14 +62,13 @@ if (isset($_SESSION['uid'])) {
 include('includes/header.php');
 include('includes/nav.php');
 ?>
-<section style= "margin-top:75px;">
+<section style= "margin-top:90px;">
     <div class="container">
-        <h2>Notifications</h2>
-        <table class="table table-bordered">
-            <thead>
+        <h2 style="color: #c19f90;">Notifications</h2>
+        <table class="table table-hover table-bordered">
+            <thead style="background-color: #c19f90;">
                 <tr>
-                <th>From</th>
-
+                    <th>From</th>
                     <th>Subject</th>
                     <th>Message</th>
                     <th>Date</th>
@@ -79,48 +76,48 @@ include('includes/nav.php');
                     <th class= "action-cell">Actions</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody style="background-color: #fff;">
                 <?php
                 // Fetch and display notifications from the database
                 $uid = $_SESSION['uid'];
-$notificationsQuery = "SELECT * FROM notifications WHERE user_id = $uid ORDER BY timestamp DESC";
-// $notificationsQuery = "SELECT notification_id, notification_type, message, timestamp, from_user FROM notifications WHERE user_id = $uid ORDER BY timestamp DESC";
+                $notificationsQuery = "SELECT * FROM notifications WHERE user_id = $uid ORDER BY timestamp DESC";
+                // $notificationsQuery = "SELECT notification_id, notification_type, message, timestamp, from_user FROM notifications WHERE user_id = $uid ORDER BY timestamp DESC";
 
-// $notificationsQuery = "SELECT notification_id, notification_type, message, timestamp FROM notifications WHERE user_id = $uid ORDER BY timestamp DESC";
+                // $notificationsQuery = "SELECT notification_id, notification_type, message, timestamp FROM notifications WHERE user_id = $uid ORDER BY timestamp DESC";
 
-$notificationsResult = mysqli_query($con, $notificationsQuery);
+                $notificationsResult = mysqli_query($con, $notificationsQuery);
 
-while ($notification = mysqli_fetch_assoc($notificationsResult)) {
-    echo '<tr class="' . ($notification['active'] ? 'bold' : '') . '">';
-    echo '<td>' . $notification['from_user'] . '</td>';
+                while ($notification = mysqli_fetch_assoc($notificationsResult)) {
+                    echo '<tr class="' . ($notification['active'] ? 'bold' : '') . '">';
+                    echo '<td>' . $notification['from_user'] . '</td>';
 
-    echo '<td>' . $notification['notification_type'] . '</td>';
-    echo '<td>' . $notification['message'] . '</td>';
-    // echo '<td>' . $notification['timestamp'] . '</td>';
-    echo '<td>' . date('M, d Y', strtotime($notification['timestamp'])) . '</td>';
+                    echo '<td>' . $notification['notification_type'] . '</td>';
+                    echo '<td>' . $notification['message'] . '</td>';
+                    // echo '<td>' . $notification['timestamp'] . '</td>';
+                    echo '<td>' . date('M, d Y', strtotime($notification['timestamp'])) . '</td>';
 
-    echo '<td>' . date('h:i A', strtotime($notification['timestamp'])) . '</td>';
+                    echo '<td>' . date('h:i A', strtotime($notification['timestamp'])) . '</td>';
 
-    // echo '<td class = "action-cell">';
-    // echo '<a href="#" class="read-notification" data-notification-id="' . $notification['notification_id'] . '"><i class="fa-solid fa-envelope"></i></a>';
-    // echo ' <span class="action-divider"></span> ';
-    // echo '<a href="#" class="delete-notification" data-notification-id="' . $notification['notification_id'] . '"><i class="fa-solid fa-trash-can"></i></a>';
+                    // echo '<td class = "action-cell">';
+                    // echo '<a href="#" class="read-notification" data-notification-id="' . $notification['notification_id'] . '"><i class="fa-solid fa-envelope"></i></a>';
+                    // echo ' <span class="action-divider"></span> ';
+                    // echo '<a href="#" class="delete-notification" data-notification-id="' . $notification['notification_id'] . '"><i class="fa-solid fa-trash-can"></i></a>';
 
-    echo '<td class="action-cell">';
-    if ($notification['active']) {
-        echo '<a href="#" class="read-notification active" data-notification-id="' . $notification['notification_id'] . '"><i class="fa-solid fa-envelope"></i></a>';
-    } else {
-        echo '<a href="#" class="read-notification inactive" data-notification-id="' . $notification['notification_id'] . '"><i class="fa-solid fa-envelope-open"></i></a>';
-    }
-    echo ' <span class="action-divider"></span>';
-    echo '<a href="#" class="delete-notification" data-notification-id="' . $notification['notification_id'] . '"><i class="fa-solid fa-trash-can"></i></a>';
-    echo '</td>';
+                    echo '<td class="action-cell">';
+                    if ($notification['active']) {
+                        echo '<a href="#" class="read-notification active" data-notification-id="' . $notification['notification_id'] . '"><i class="fa-solid fa-envelope"></i></a>';
+                    } else {
+                        echo '<a href="#" class="read-notification inactive" data-notification-id="' . $notification['notification_id'] . '"><i class="fa-solid fa-envelope-open"></i></a>';
+                    }
+                    echo ' <span class="action-divider"></span>';
+                    echo '<a href="#" class="delete-notification" data-notification-id="' . $notification['notification_id'] . '"><i class="fa-solid fa-trash-can"></i></a>';
+                    echo '</td>';
 
 
-    echo '</td>';
-    echo '</tr>';
-}
-?>
+                    echo '</td>';
+                    echo '</tr>';
+                }
+                ?>
             </tbody>
         </table>
     </div>
