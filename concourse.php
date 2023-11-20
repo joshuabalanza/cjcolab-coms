@@ -129,7 +129,7 @@ include('includes/nav.php');
         echo '<img src="/COMS/uploads/' . $concourseData['concourse_map'] . '" id="concourseImage" class="card-img-top smaller-image" alt="Concourse Map" style="width: 200px; height: 200px;">';
     }
 ?>
-        <form method="post" action="concourse_configuration.php?concourse_id=<?php echo $concourse_id; ?>" enctype="multipart/form-data">
+        <form method="post" action="concourse.php?concourse_id=<?php echo $concourse_id; ?>" enctype="multipart/form-data">
     <input type="hidden" name="concourse_id" value="<?php echo $concourse_id; ?>">
     
     <!-- ... other input fields ... -->
