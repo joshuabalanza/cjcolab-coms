@@ -57,35 +57,21 @@ $approvedMapResult = mysqli_query($con, $approvedMapQuery);
 <!-- ******************** -->
 <?php
 include('includes/header.php');
-
 include('includes/nav.php');
 ?>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    function loadConcourses(page) {
-        $.ajax({
-            type: 'GET',
-            url: 'get_concourse.php',
-            data: { page: page },
-            success: function (data) {
-                $('#concourse-list').html(data);
-            }
-        });
+
+<style>
+   h3{
+        color: #c19f90;
     }
-
-    $(document).ready(function () {
-        loadConcourses(1); // Load the first page by default
-
-        // Pagination click event handler
-        $(document).on('click', '.page-link', function (event) {
-            event.preventDefault(); // Prevent the default link behavior
-            var page = $(this).data('page');
-            loadConcourses(page);
-        });
-    });
-</script>
-
-
+    .btn{
+        border: none;
+        margin-bottom: 10px;
+   }
+    .btn:hover{
+        background-color: #c19f90;
+   }
+</style>
 <section style= "margin-top:90px;">
    <?php
    //    echo 'Hi, ' . $_SESSION['uname'] . ' (' . $_SESSION['utype'] . ')';
@@ -98,29 +84,30 @@ include('includes/nav.php');
       <!-- OWNER -->
       <?php if ($verificationStatus === 'approved' && $utype === 'Owner'): ?>
          
-      <h3>Your Concourse</h3>
-      <button id="openAddConcourseModal" class="btn-sm btn btn-success">Add a Concourse</button>
+      <h3 style="text-align: center;">Your Concourse</h3>
+      <button id="openAddConcourseModal" class="btn-sm btn btn-success" style="display: block; margin: 0 auto; margin-bottom: 10px;">Add Concourse</button>
       <!-- <a href="concourse_add.php">
          <button class="btn-sm btn btn-success">Add a Concourse</button>
          </a> -->
          <?php
-$checkApprovedMapsQuery = "SELECT * FROM concourse_verification WHERE owner_id = '$uid' AND status = 'approved'";
-          $checkApprovedMapsResult = mysqli_query($con, $checkApprovedMapsQuery);
+            $checkApprovedMapsQuery = "SELECT * FROM concourse_verification WHERE owner_id = '$uid' AND status = 'approved'";
+            $checkApprovedMapsResult = mysqli_query($con, $checkApprovedMapsQuery);
 
           if ($checkApprovedMapsResult && mysqli_num_rows($checkApprovedMapsResult) > 0) {
 
               echo '<div class="row">';
               while ($mapData = mysqli_fetch_assoc($checkApprovedMapsResult)) {
-                  echo '<div class="col-lg-4 col-md-4 col-sm-6 col-12 mb-4">';
-                  echo '<div class="card">';
+                  echo '<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-2">';
+                  echo '<div class="card" style="width: 100%; height: 100%; padding: 10px; margin: 0 auto;">';
+
                   echo '<a href="concourse_configuration.php?concourse_id=' . $mapData['concourse_id'] . '">';
                   echo '<div class="image-container">';
                   if (!empty($mapData['concourse_image'])) {
                       // Display the concourse_image if it exists
-                      echo '<img src="/COMS/uploads/featured-concourse/' . $mapData['concourse_image'] . '" id="concourseImage" class="card-img-top smaller-image" alt="Concourse Image" style="width:100%; height: 300px;">';
+                      echo '<img src="/COMS-GENERIC/uploads/featured-concourse/' . $mapData['concourse_image'] . '" id="concourseImage" class="card-img-top smaller-image" alt="Concourse Image" style="width:100%; height: 300px;">';
                   } elseif (!empty($mapData['concourse_map'])) {
                       // Display the concourse_map if concourse_image is not available
-                      echo '<img src="/COMS/uploads/' . $mapData['concourse_map'] . '" id="concourseImage" class="card-img-top smaller-image" alt="Concourse Map" style="width:100%; height: 300px;">';
+                      echo '<img src="/COMS-GENERIC/uploads/' . $mapData['concourse_map'] . '" id="concourseImage" class="card-img-top smaller-image" alt="Concourse Map" style="width:100%; height: 300px;">';
                   } else {
                       // Handle the case when both concourse_image and concourse_map are empty, e.g., display a placeholder image
                       echo '<img src="path_to_placeholder_image.jpg" id="concourseImage" class="card-img-top smaller-image" alt="Placeholder Image" style="width:100%; height: 300px;">';
@@ -172,8 +159,8 @@ echo '</div>';
    <!-- ******DISPLAYED FEATURED CONCOURSE****** -->
    <!-- **************************************** -->
    <div class="container-fluid">
-      <h3>Concourses</h3>
-      <div id="concourse-list" class="row">
+      <h3 style="margin-top: 15px; text-align: center;">Concourses</h3>
+      <div id="concourse-list" class="row" style="width: 80%; margin: 0 auto;">
          <!-- This div will be populated with the fetched data -->
       </div>
    </div>
@@ -216,4 +203,28 @@ echo '</div>';
    // echo $_SESSION['uemail'];
    // echo $_SESSION['approved_concourse'];
 ?>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function loadConcourses(page) {
+        $.ajax({
+            type: 'GET',
+            url: 'get_concourse.php',
+            data: { page: page },
+            success: function (data) {
+                $('#concourse-list').html(data);
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        loadConcourses(1); // Load the first page by default
+
+        // Pagination click event handler
+        $(document).on('click', '.page-link', function (event) {
+            event.preventDefault(); // Prevent the default link behavior
+            var page = $(this).data('page');
+            loadConcourses(page);
+        });
+    });
+</script>
 <?php include('includes/footer.php'); ?>
