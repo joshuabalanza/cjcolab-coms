@@ -11,7 +11,15 @@
     .nav-link{
         color: white !important;
     }
-
+    
+    .logout-btn{
+        background-color: #c19f90;
+        color: #fff;
+    }
+    .logout-btn:hover {
+        background-color: #9b593c;
+        color: #fff;
+    }
     /* Hover effect for navigation links */
     .nav-link:hover{
         background-color: rgba(255, 255, 255, 0.3);
@@ -19,9 +27,10 @@
         transition: background-color 0.3s ease;
     }
     .navbar-brand span {
-        color: #9b593c;
+        color: white;
         font-size: 30px;
         font-weight: bold;
+        opacity: 80%;
     }
 
     /* Additional style for navigation bar when user is logged in as owner or tenant */
@@ -38,12 +47,21 @@
             background-color: rgba(255, 255, 255, 0.3);
             color: #9b593c !important;
         }
+        .navbar-brand span {
+        color: #9b593c;
+        font-size: 30px;
+        font-weight: bold;
+        }
     <?php endif; ?>
 </style>
 <!-- Start Navigation -->
 <nav class="navbar navbar-expand-sm navbar-light pl-5 fixed-top <?php echo isset($_SESSION['uid']) ? '' : 'transparent-nav'; ?>">
     <a href="index.php" class="navbar-brand">
+            <?php if (isset($_SESSION['uid']) && (($_SESSION['utype'] == 'Owner') || ($_SESSION['utype'] == 'Tenant'))) : ?>
             <img src="assets/images/Logo-9b593c.png" alt="Logo" width="50" height="40" class="d-inline-block align-text-top">
+            <?php else: ?>
+            <img src="assets/images/white-version-logo.png" alt="Logo" width="50" height="40" class="d-inline-block align-text-top" style="opacity: 80%;">
+            <?php endif; ?>
             <span>COMS</span>
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation">
@@ -162,24 +180,17 @@
       
 <!-- Add the modal HTML code at the end of your page -->
 <div class="modal" tabindex="-1" role="dialog" id="logoutModal" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Logout Confirmation</h5>
-                <button type="button" class="close" aria-label="Close" onclick="hideModal()">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p>Are you sure you want to logout?</p>
-            </div>
-            <div class="modal-footer">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" style="background-color: #b1765c;">
+            <div class="text-center">
+                <p style="font-weight: bold; color: #fff;">Are you sure you want to logout?</p>
                 <button type="button" class="btn btn-secondary" onclick="hideModal()">Cancel</button>
-                <button type="button" class="btn btn-primary" onclick="logout()">Logout</button>
+                <button type="button" class="btn logout-btn" onclick="logout()">Logout</button>
             </div>
         </div>
     </div>
 </div>
+
 
 <script>
     function showLogoutModal() {

@@ -25,7 +25,7 @@ if (isset($_POST['resend_otp'])) {
         // // Update the OTP in the database
         // $update_sql = "UPDATE user SET otp = '$new_otp' WHERE uemail = '$uemail'";
         // Set OTP expiration time (5 minutes)
-        $expiration_time = date("Y-m-d H:i:s", strtotime('+1 minutes'));
+        $expiration_time = date("Y-m-d H:i:s", strtotime('+3 minutes'));
 
         // Update the OTP in the database
         $update_sql = "UPDATE user SET otp = '$new_otp',otp_expiration='$expiration_time' WHERE uemail = '$uemail'";

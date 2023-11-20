@@ -22,81 +22,97 @@ use PHPMailer\PHPMailer\Exception;
 // }
 
 require 'vendor/autoload.php';
-
 if (isset($_POST['register'])) {
-    if (empty($_POST['uname']) || empty($_POST['uemail']) || empty($_POST['upassword'])) {
-        $error_message = "All fields are required";
-    } else {
-        $uname = $_POST['uname'];
-        $uemail = $_POST['uemail'];
-        $upassword = $_POST['upassword'];
-        $confirm_password = $_POST['confirm_password'];
-        $usertype = $_POST['usertype'];
+  if (empty($_POST['uname']) || empty($_POST['uemail']) || empty($_POST['upassword']) || empty($_POST['username'])) {
+      $error_message = "All fields are required";
+  } else {
+      $uname = $_POST['uname'];
+      $uemail = $_POST['uemail'];
+      $upassword = $_POST['upassword'];
+      $confirm_password = $_POST['confirm_password'];
+      $username = $_POST['username'];
+      $usertype = $_POST['usertype'];
 
-        if ($upassword !== $confirm_password) {
-            $error_message = "Passwords do not match. Please confirm your password correctly.";
-        } else {
-            // Check if the email is already registered
-            $emailExists = false;
-            $checkEmailQuery = "SELECT uemail FROM user WHERE uemail = '$uemail'";
-            $result = $con->query($checkEmailQuery);
-            if ($result->num_rows > 0) {
-                $emailExists = true;
-            }
+      if ($upassword !== $confirm_password) {
+          $error_message = "Passwords do not match. Please confirm your password correctly.";
+      } else {
+          // Check if the email is already registered
+          $emailExists = false;
+          $emailNotVerified = false;
 
-            if ($emailExists) {
-                $error_message = "Email is already registered. Please use a different email.";
-            } else {
-                $hashedPassword = password_hash($upassword, PASSWORD_DEFAULT);
+          $checkEmailQuery = "SELECT uemail, verified FROM user WHERE uemail = '$uemail'";
+          $result = $con->query($checkEmailQuery);
 
-                // Generate OTP
-                $otp_str = str_shuffle('0123456789');
-                $otp = substr($otp_str, 0, 5);
+          if ($result->num_rows > 0) {
+              $row = $result->fetch_assoc();
 
-                // Generate Activation Code
-                $act_str = rand(100000, 10000000);
-                $activation_code = str_shuffle('abcdefghijklmno' . $act_str);
+              if ($row['verified'] == 0) {
+                  // Account not verified, redirect to OTP page
+                  header('Location: otp.php?email=' . $uemail);
+                  exit();
+              }
 
-                // Insert data into the database
-                // $sql = "INSERT INTO user (uname, uemail, upassword, otp, activation_code, utype) VALUES ('$uname', '$uemail', '$hashedPassword', '$otp', '$activation_code','$usertype')";
-                // $created_at = date("Y-m-d H:i:s"); // Get the current date and time
-                // $sql = "INSERT INTO user (uname, uemail, upassword, otp, activation_code, utype, created_at) VALUES ('$uname', '$uemail', '$hashedPassword', '$otp', '$activation_code', '$usertype', '$created_at')";
-                // Set OTP expiration time (5 minutes)
-                $expiration_time = date("Y-m-d H:i:s", strtotime('+1 minutes'));
+              $emailExists = true;
+          }
 
-                // Insert data into the database
-                $created_at = date("Y-m-d H:i:s");
-                $sql = "INSERT INTO user (uname, uemail, upassword, otp, activation_code, utype, created_at, otp_expiration) VALUES ('$uname', '$uemail', '$hashedPassword', '$otp', '$activation_code', '$usertype', '$created_at', '$expiration_time')";
-                $con->query($sql);
+          // Check if the username is already taken
+          $usernameExists = false;
+          $checkUsernameQuery = "SELECT username FROM user WHERE username = '$username'";
+          $result = $con->query($checkUsernameQuery);
 
-                // Send OTP to the user's email
-                $mail = new PHPMailer(true);
-                try {
-                    $mail->isSMTP();
-                    $mail->Host = 'smtp.gmail.com'; // Your SMTP server
-                    $mail->SMTPAuth = true;
-                    $mail->Username = 'coms.system.adm@gmail.com'; // Your Gmail email address
-                    $mail->Password = 'wdcbquevxahkehla'; // Your Gmail password
-                    $mail->SMTPSecure = 'tls';
-                    $mail->Port = 587;
+          if ($result->num_rows > 0) {
+              $usernameExists = true;
+          }
 
-                    $mail->setFrom('coms.system.adm@gmail.com', 'Concessionaire Monitoring Operation System');
-                    $mail->addAddress($uemail); // User's email address
-                    $mail->isHTML(true);
-                    $mail->Subject = 'Email Verification';
-                    $mail->Body = 'Your OTP is: ' . $otp;
+          if ($emailExists) {
+              $error_message = "Email is already registered. Please use a different email.";
+          } elseif ($usernameExists) {
+              $error_message = "Username is already taken. Please choose a different username.";
+          } else {
+              $hashedPassword = password_hash($upassword, PASSWORD_DEFAULT);
 
-                    $mail->send();
-                } catch (Exception $e) {
-                    echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
-                }
+              // Generate OTP
+              $otp_str = str_shuffle('0123456789');
+              $otp = substr($otp_str, 0, 5);
 
-                // Redirect to OTP verification page
-                header('Location: otp.php?email=' . $uemail);
-                exit();
-            }
-        }
-    }
+              // Generate Activation Code
+              $act_str = rand(100000, 10000000);
+              $activation_code = str_shuffle('abcdefghijklmno' . $act_str);
+
+              // Insert data into the database
+              $expiration_time = date("Y-m-d H:i:s", strtotime('+1 minutes'));
+              $created_at = date("Y-m-d H:i:s");
+              $sql = "INSERT INTO user (uname, uemail, upassword, otp, activation_code, utype, created_at, otp_expiration, username) VALUES ('$uname', '$uemail', '$hashedPassword', '$otp', '$activation_code', '$usertype', '$created_at', '$expiration_time', '$username')";
+              $con->query($sql);
+
+              // Send OTP to the user's email
+              $mail = new PHPMailer(true);
+              try {
+                  $mail->isSMTP();
+                  $mail->Host = 'smtp.gmail.com'; // Your SMTP server
+                  $mail->SMTPAuth = true;
+                  $mail->Username = 'coms.system.adm@gmail.com'; // Your Gmail email address
+                  $mail->Password = 'wdcbquevxahkehla'; // Your Gmail password
+                  $mail->SMTPSecure = 'tls';
+                  $mail->Port = 587;
+
+                  $mail->setFrom('coms.system.adm@gmail.com', 'Concessionaire Monitoring Operation System');
+                  $mail->addAddress($uemail); // User's email address
+                  $mail->isHTML(true);
+                  $mail->Subject = 'Email Verification';
+                  $mail->Body = 'Your OTP is: ' . $otp;
+
+                  $mail->send();
+              } catch (Exception $e) {
+                  echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+              }
+
+              // Redirect to OTP verification page
+              header('Location: otp.php?email=' . $uemail);
+              exit();
+          }
+      }
+  }
 }
 ?>
 
@@ -256,66 +272,108 @@ include('includes/nav.php');
     }
   }
 </style>
-  <div class="container" style="margin-top: 5%;">
+<div class="container" style="margin-top: 5%;">
     <div class="title">Registration</div>
     <div class="content">
-      <form action="" method="POST">
-      <p>
-        <?php
-          if (isset($error_message)) {
-              echo $error_message;
-          }
-?>
-      </p>
+        <form action="" method="POST">
+            <p>
+                <?php
+                if (isset($error_message)) {
+                    echo $error_message;
+                }
+                ?>
+            </p>
 
-        <div class="user-details">
-          <div class="input-box">
-            <span for="uname" class="details">Full Name</span>
-            <input type="text" name="uname"id="uname" autocomplete="off" placeholder="Enter your name" required>
-          </div>
-          
-          <div class="input-box">
-            <span for="uemail" class="details">Email</span>
-            <input type="text" name="uemail"id="uemail" autocomplete="off" placeholder="Enter your email" required>
-          </div>
-          
-          <div class="input-box">
-            <span for="upassword" class="details">Password</span>
-            <input type="password" name="upassword"id="upassword" placeholder="Enter your password" required>
-          </div>
-          
-          <div class="input-box">
-            <span for="upassword" class="details">Confirm Password</span>
-            <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm your password" required>
-          </div>
-        </div>
-        
-        <div class="use-details">
-          <input type="radio" value="Owner" name="usertype" id="dot-1" required>
-          <input type="radio" value="Tenant" name="usertype" id="dot-2" required>
-          <input type="radio" value="Accountant" name="usertype" id="dot-3" required>
-          <span class="use-title">User Type</span>
-          <div class="category">
-            <label for="dot-1">
-              <span class="dot one"></span>
-              <span class="use">Owner</span>
-            </label>
-            <label for="dot-2">
-              <span class="dot two"></span>
-              <span class="use">Tenant</span>
-            </label>
-            <label for="dot-3">
-              <span class="dot three"></span>
-              <span class="use">Accountant</span>
-            </label>
-          </div>
-        </div>
-        
-        <div class="button">
-          <input type="submit" name="register">
-        </div>
-      </form>
+            <div class="user-details">
+                <div class="input-box">
+                    <span for="uname" class="details">Full Name</span>
+                    <input type="text" name="uname" id="uname" autocomplete="off" placeholder="Enter your name" required>
+                </div>
+
+                <div class="input-box">
+                    <span for="uemail" class="details">Email</span>
+                    <input type="text" name="uemail" id="uemail" autocomplete="off" placeholder="Enter your email" required>
+                </div>
+
+                <div class="input-box">
+                    <span for="upassword" class="details">Password</span>
+                    <input type="password" name="upassword" id="upassword" placeholder="Enter your password" required>
+                </div>
+
+                <div class="input-box">
+                    <span for="confirm_password" class="details">Confirm Password</span>
+                    <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm your password" required>
+                </div>
+
+                <div class="input-box">
+                    <span for="username" class="details">Username</span>
+                    <input type="text" name="username" id="username" autocomplete="off" placeholder="Enter your username" required>
+                    <!-- Suggested username based on the entered full name -->
+                    <div class="suggested-username" id="suggested-username"></div>
+                </div>
+            </div>
+
+            <div class="use-details">
+                <input type="radio" value="Owner" name="usertype" id="dot-1" required>
+                <input type="radio" value="Tenant" name="usertype" id="dot-2" required>
+                <input type="radio" value="Accountant" name="usertype" id="dot-3" required>
+                <span class="use-title">User Type</span>
+                <div class="category">
+                    <label for="dot-1">
+                        <span class="dot one"></span>
+                        <span class="use">Owner</span>
+                    </label>
+                    <label for="dot-2">
+                        <span class="dot two"></span>
+                        <span class="use">Tenant</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="button">
+                <input type="submit" name="register">
+            </div>
+        </form>
     </div>
-  </div>
+</div>
+<script>
+document.getElementById('username').addEventListener('input', function () {
+    const enteredUsername = this.value.trim();
+    const suggestedUsername = document.getElementById('suggested-username');
+
+    // Remove any existing suggestions
+    suggestedUsername.innerHTML = '';
+
+    if (enteredUsername !== '') {
+        const url = `check_username_availability.php?username=${enteredUsername}`;
+
+        // Make an AJAX request to check username availability
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                if (data.available) {
+                    // Display "Available" message
+                    suggestedUsername.innerHTML = '<span style="color: green;">Username is available!</span>';
+                } else {
+                    // Get alternative suggestions if username is taken
+                    fetch(`get_alternative_usernames.php?username=${enteredUsername}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.suggestions.length > 0) {
+                                const suggestionsList = data.suggestions.map(suggestion => {
+                                    return `<a href="javascript:void(0);" onclick="fillUsername('${suggestion}')">${suggestion}</a>`;
+                                }).join(', ');
+                                suggestedUsername.innerHTML = `<span style="color: red;">Username is already taken. Try one of the following:</span><br>${suggestionsList}`;
+                            } else {
+                                suggestedUsername.innerHTML = '<span style="color: red;">Username is already taken.</span>';
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+});
+</script>
 
 <?php include('includes/footer.php')?>

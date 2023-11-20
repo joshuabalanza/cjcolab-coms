@@ -33,20 +33,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $imagePath = ''; // If no new image is uploaded, use the existing image path
     }
 
-
     // Update the user's name, phone, and profile image in the database
-    $sql = "UPDATE user SET uname = '$newName', uphone = '$newPhone', uimage = '$imagePath' WHERE uid = $uid";
-    if (mysqli_query($con, $sql)) {
-        $_SESSION['uname'] = $newName;
-        $_SESSION['uphone'] = $newPhone;
-        if (!empty($imagePath)) {
-            $_SESSION['uimage'] = $imagePath;
-        }
-        $message = "Profile updated successfully!";
-        header('Location: profile.php'); // Redirect to the profile page
+    $checkUsernameQuery = "SELECT username FROM user WHERE username = '$newName' AND uid != $uid";
+    $result = mysqli_query($con, $checkUsernameQuery);
 
+    if (mysqli_num_rows($result) > 0) {
+        $error = "Username '$newName' is already taken. Please choose a different username.";
     } else {
-        $error = "Error updating profile: " . mysqli_error($con);
+        // Update the user's name, phone, and profile image in the database
+        $sql = "UPDATE user SET username = '$newName', uphone = '$newPhone', uimage = '$imagePath' WHERE uid = $uid";
+        if (mysqli_query($con, $sql)) {
+            $_SESSION['username'] = $newName;
+            $_SESSION['uphone'] = $newPhone;
+            if (!empty($imagePath)) {
+                $_SESSION['uimage'] = $imagePath;
+            }
+            $message = "Profile updated successfully!";
+            header('Location: profile.php'); // Redirect to the profile page
+
+        } else {
+            $error = "Error updating profile: " . mysqli_error($con);
+        }
     }
 }
 
@@ -91,7 +98,7 @@ include('includes/nav.php');
 <section class="user-profile">
     <div class="container-fluid p-4 shadow mx-auto"  style="max-width: 1000px; margin-top: 10%; background-color: #b1765c; border-radius: 20px;">
         <div class="row">
-            <div class="col-sm-4 col-md-3">
+            <div class="col-sm-4 col-md-3" style="margin-left: 80px; margin-top: 15px;">
                 <form method="POST" enctype="multipart/form-data"> <!-- Add enctype attribute for file uploads -->
                 <!-- Display user profile image if available -->
                 <?php if (!empty($_SESSION['uimage'])): ?>
@@ -100,7 +107,7 @@ include('includes/nav.php');
                     <img src="default-image.jpg" class="border border-primary d-block mx-auto rounded-circle" style="width: 150px; height: 150px; background-color: white; opacity: 85   %;">
                 <?php endif; ?>              
                 <h6 class="text-center"><?php echo $_SESSION['utype']; ?>#<?php echo $_SESSION['uid']; ?></h6>
-                <h3 class="text-center"><?php echo $_SESSION['uname']; ?></h3> 
+                <h3 class="text-center"><?php echo $_SESSION['username']; ?></h3> 
                 <br>
                 
                 <div class="text-center">
@@ -114,20 +121,21 @@ include('includes/nav.php');
             </div>   
         </div>
     </div>
-<div class="col-sm-8 col-md-9 bg-light p-2" style="border-radius: 10px; margin-top: 10px; margin-left: 125px; max-width: 400px;">
-    <div class="form" style="margin-left: 10px; margin-right: 10px;">
-        <div class="form-group">
-            <label for="newName" style="font-weight: bold;">Name:</label>
-            <input type="text" class="form-control" id="newName" name="newName" value="<?php echo isset($_SESSION['uname']) ? $_SESSION['uname'] : ''; ?>">
-        </div>
-        <div class="form-group">
-            <label for="newPhone" style="font-weight: bold;">Phone:</label>
-            <input type="text" class="form-control" id="newPhone" name="newPhone" value="<?php echo isset($_SESSION['uphone']) ? $_SESSION['uphone'] : ''; ?>">
+    
+    <div class="col-sm-8 col-md-9 bg-light p-2" style="border-radius: 10px; margin-top: 15px; margin-left: 125px; max-width: 400px; margin-bottom: 20px;">
+        <div class="form" style="margin-left: 10px; margin-right: 10px;">
+            <div class="form-group">
+                <label for="newName" style="font-weight: bold;">Username:</label>
+                <input type="text" class="form-control" name="newName" id="newName" autocomplete="off" placeholder="Enter your username" required value="<?php echo isset($_SESSION['username']) ? $_SESSION['username'] : ''; ?>">
+                <div id="availability-message"></div>
+            </div>
+            <div class="form-group">
+                <label for="newPhone" style="font-weight: bold;">Phone:</label>
+                <input type="text" class="form-control" id="newPhone" name="newPhone" value="<?php echo isset($_SESSION['uphone']) ? $_SESSION['uphone'] : ''; ?>">
 
-            <!-- <input type="text" class="form-control" id="newPhone" name="newPhone" value="<?php echo $_SESSION['uphone']; ?>"> -->
+                <!-- <input type="text" class="form-control" id="newPhone" name="newPhone" value="<?php echo $_SESSION['uphone']; ?>"> -->
+            </div>
         </div>
-    </div>
-        <button type="submit" class="btn btn-primary"  style="float: right; margin-right: 10px; margin-top: 10px;">Save Changes</button>
             </form>
                 <?php
                     if (isset($message)) {
@@ -138,8 +146,40 @@ include('includes/nav.php');
                     }
                 ?>
             </div>
+          </div>
+                <div class="d-flex justify-content" style="margin-left: 620px;">
+                    <button type="submit" class="btn btn-primary" style="margin-top: 10px;">Save Changes</button>
+                    <a href="profile.php" class="btn btn-secondary" style="margin-top: 10px;">Cancel</a>
+                </div>
+                <br>
+            </div>
         </div>
-    <br>
-</div>
+    </div>
 </section>
+<script>
+document.getElementById('newName').addEventListener('input', function () {
+    const enteredUsername = this.value.trim();
+    const availabilityMessage = document.getElementById('availability-message');
+
+    // Remove any existing messages
+    availabilityMessage.innerHTML = '';
+
+    if (enteredUsername !== '') {
+        const url = `check_username_availability.php?username=${enteredUsername}`;
+
+        // Make an AJAX request to check username availability
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                if (data.available) {
+                    // Display "Available" message
+                    availabilityMessage.innerHTML = '<span style="color: green;">Username is available!</span>';
+                } else {
+                    availabilityMessage.innerHTML = '<span style="color: red;">Username is already taken. Please choose a different username.</span>';
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+});
+</script>
 <?php include('includes/footer.php'); ?>
