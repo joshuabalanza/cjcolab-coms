@@ -5,11 +5,11 @@
         font-weight: bold;
     }
     .navbar-nav .nav-link {
-            color: #9b593c !important; /* Set your desired text color */
-        }
+        color: #9b593c !important; /* Set your desired text color */
+    }
 </style>
 <!-- Start Navigation -->
-<nav class="navbar navbar-expand-sm navbar-light pl-5 fixed-top" style="background-color: #ffffff;">
+<nav class="navbar navbar-expand-sm navbar-light pl-5 fixed-top">
     <a href="index.php" class="navbar-brand">
         <img src="assets/images/Logo-9b593c.png" alt="Logo" width="50" height="40" class="d-inline-block align-text-top">
         <span>COMS</span>
