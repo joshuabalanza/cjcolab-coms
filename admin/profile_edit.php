@@ -4,6 +4,8 @@
 <?php
 session_name("admin_session");
 session_start();
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 include('../includes/dbconnection.php');
 ?>
 
@@ -25,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Handle image upload
     if (isset($_FILES['adminProfileImage']) && $_FILES['adminProfileImage']['error'] === 0) {
-        $imagePath = '../uploads/profile/' . $_FILES['profileImage']['name']; // Define the path where the image will be saved
+        $imagePath = '../uploads/profile/' . $_FILES['adminProfileImage']['name']; // Define the path where the image will be saved
         move_uploaded_file($_FILES['adminProfileImage']['tmp_name'], $imagePath); // Move the uploaded image to the defined path
     } else {
         $imagePath = ''; // If no new image is uploaded, use the existing image path
@@ -38,19 +40,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (mysqli_num_rows($result) > 0) {
         $error = "Username '$newAdminName' is already taken. Please choose a different username.";
     } else {
-        // Update the admin's name, email, and profile image in the database
-        $sql = "UPDATE admin SET ausername = '$newAdminName', aemail = '$newAdminEmail', aimage = '$imagePath' WHERE aid = $aid";
-        if (mysqli_query($con, $sql)) {
-            $_SESSION['ausername'] = $newAdminName;
-            $_SESSION['aemail'] = $newAdminEmail;
-            if (!empty($imagePath)) {
-                $_SESSION['aimage'] = $imagePath;
-            }
-            $message = "Profile updated successfully!";
-            header('Location: profile.php'); // Redirect to the admin profile page
-        } else {
-            $error = "Error updating profile: " . mysqli_error($con);
-        }
+// Update the admin's name, email, and profile image in the database
+$sql = "UPDATE admin SET ausername = '$newAdminName', aemail = '$newAdminEmail', aimage = '$imagePath' WHERE aid = $aid";
+if (mysqli_query($con, $sql)) {
+    // Update session variables
+    $_SESSION['ausername'] = $newAdminName;
+    $_SESSION['aemail'] = $newAdminEmail;
+    if (!empty($imagePath)) {
+        $_SESSION['aimage'] = $imagePath;
+    }
+    $message = "Profile updated successfully!";
+    header('Location: profile.php'); // Redirect to the admin profile page
+} else {
+    $error = "Error updating profile: " . mysqli_error($con);
+}
+
     }
 }
 
@@ -108,8 +112,9 @@ include('includes/nav.php');
                     <?php else: ?>
                         <img src="default-image.jpg" class="border border-primary d-block mx-auto rounded-circle" style="width: 150px; height: 150px; background-color: white; opacity: 85%;">
                     <?php endif; ?>
-                    <h6 class="text-center"><?php echo $_SESSION['aemail']; ?>#<?php echo $_SESSION['aid']; ?></h6>
-                    <h3 class="text-center"><?php echo $_SESSION['ausername']; ?></h3>
+                    <h6 class="text-center"><?php echo isset($_SESSION['aemail']) ? $_SESSION['aemail'] : ''; ?></h6>
+                    <h3 class="text-center"><?php echo isset($_SESSION['ausername']) ? $_SESSION['ausername'] : ''; ?></h3>
+
                     <br>
                     <div class="text-center">
                         <div class="form-group">
@@ -162,7 +167,7 @@ document.getElementById('newAdminName').addEventListener('input', function () {
     adminAvailabilityMessage.innerHTML = '';
 
     // Check availability only if the entered username is different from the current username
-    if (enteredAdminUsername !== '<?php echo $_SESSION['ausername']; ?>') {
+    if (isset($_SESSION['ausername']) && enteredAdminUsername !== $_SESSION['ausername']) {
         const adminUrl = `check_admin_username_availability.php?username=${enteredAdminUsername}`;
 
         // Make an AJAX request to check admin username availability
