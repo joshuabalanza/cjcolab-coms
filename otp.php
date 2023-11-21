@@ -40,17 +40,19 @@ if (isset($_POST['verify_otp'])) {
         $expiration_time = strtotime($user['otp_expiration']);
 
         if ($expiration_time > time()) {
-            if (verifyOTP($con, $email, $otp)) {
-                $successMessage = "Registration successful! You can now log in.";
+// Inside the if (verifyOTP($con, $email, $otp)) block
+if (verifyOTP($con, $email, $otp)) {
+  $successMessage = "Registration successful! You can now log in.";
 
-                $sql = "UPDATE user SET verified = 1 WHERE uemail = ?";
-                $stmt = $con->prepare($sql);
-                $stmt->bind_param("s", $email);
-                $stmt->execute();
+  $sql = "UPDATE user SET verified = 1 WHERE uemail = ?";
+  $stmt = $con->prepare($sql);
+  $stmt->bind_param("s", $email);
+  $stmt->execute();
 
-                header('Location: login.php');
-                exit();
-            } else {
+  // Set a flag to indicate successful OTP verification
+  $showSuccessModal = true;
+}
+else {
                 $errorMessage = "Invalid OTP. Please try again.";
             }
         } else {
@@ -347,6 +349,18 @@ if ($result->num_rows > 0) {
     }
 </style>
 
+<!-- Modal for OTP Verification Success -->
+<div id="successModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeSuccessModal()">&times;</span>
+        <h2>OTP Verification Successful!</h2>
+        <p>Congratulations! Your Account has been successfully verified.</p>
+        <div class="button-modal">
+            <button class="yes" onclick="redirectToLogin()">Go To Login</button>
+        </div>
+    </div>
+</div>
+
 <!-- Modal Structure -->
 <div id="confirmationModal" class="modal">
     <div class="modal-content">
@@ -415,48 +429,28 @@ function closeModal() {
     modal.style.display = 'none';
 }
 
-// Check if coming from otp-resend.php and reset the timer
-var resetTimer = <?php echo json_encode(isset($_GET['reset_timer'])); ?>;
+// Set the expiration time for the countdown timer to 3.04 minutes
+var expirationTime = <?php echo time() + 3.04 * 60; ?> * 1000;
 
-if (resetTimer) {
-    var expirationTime = <?php echo time() + 3.04 * 60; ?> * 1000;
-} else {
-    var expirationTime = sessionStorage.getItem('otpExpiration') || <?php echo time() + 3.04 * 60; ?> * 1000;
+if (expirationTime > 0) {
+    var x = setInterval(function () {
+        var now = new Date().getTime();
+        var distance = expirationTime - now;
+
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        document.getElementById("timer").innerHTML = "Time Remaining: " + minutes + "m " + seconds + "s ";
+
+        if (distance < 0) {
+            clearInterval(x);
+            document.getElementById("timer").innerHTML = "";
+            document.getElementById("countdownMessage").innerHTML = "OTP validity has expired. Please click 'Resend OTP' for a new one.";
+            document.getElementById("resendButton").style.display = "block"; // Show Resend OTP button
+        }
+    }, 1000);
 }
 
-// Display the timer
-function displayTimer() {
-    if (expirationTime > 0) {
-        var x = setInterval(function () {
-            var now = new Date().getTime();
-            var distance = expirationTime - now;
-
-            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            document.getElementById("timer").innerHTML = "Time Remaining: " + minutes + "m " + seconds + "s ";
-
-            if (distance < 0) {
-                clearInterval(x);
-                displayExpirationMessage();
-            }
-        }, 1000);
-    } else {
-        displayExpirationMessage();
-    }
-}
-
-// Display expiration message
-function displayExpirationMessage() {
-    document.getElementById("timer").innerHTML = "";
-    document.getElementById("countdownMessage").innerHTML = "OTP validity has expired. Please click 'Resend OTP' for a new one.";
-    document.getElementById("resendButton").style.display = "block"; // Show Resend OTP button
-}
-
-// Call the displayTimer function
-displayTimer();
-
-// Function to handle the Resend OTP button
 function resendOTP() {
     var countdownMessage = document.getElementById("countdownMessage").innerHTML.trim();
 
@@ -468,12 +462,35 @@ function resendOTP() {
     }
 }
 
-// Function to handle the actual Resend action
 function handleResend() {
-    sessionStorage.removeItem('otpExpiration'); // Remove expiration time from storage
-    window.location.href = "otp-resend.php?email=" + encodeURIComponent("<?php echo $email; ?>&reset_timer=true");
+    window.location.href = "otp-resend.php?email=" + encodeURIComponent("<?php echo $email; ?>");
     closeModal(); // Close the modal after clicking "Yes"
 }
+
+// Function to open the success modal
+function openSuccessModal() {
+    var modal = document.getElementById('successModal');
+    modal.style.display = 'block';
+}
+
+// Function to close the success modal
+function closeSuccessModal() {
+    var modal = document.getElementById('successModal');
+    modal.style.display = 'none';
+}
+
+// Function to redirect to login after OTP verification success
+function redirectToLogin() {
+    window.location.href = "login.php";
+}
+
+// Check if the success modal flag is set and show the modal
+<?php if (isset($showSuccessModal) && $showSuccessModal) : ?>
+    window.onload = function() {
+        openSuccessModal();
+    };
+<?php endif; ?>
+
 </script>
 
 
