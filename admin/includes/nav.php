@@ -40,9 +40,9 @@
                 echo '<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
                 // Check if the user has uploaded an image
                 if (isset($_SESSION['aimage']) && !empty($_SESSION['aimage'])) {
-                    echo '<img src="' . $_SESSION['aimage'] . '" class="user-image" alt="' . $_SESSION['aname'] . '">';
+                    echo '<img src="' . $_SESSION['aimage'] . '" class="user-image" alt="' . $_SESSION['ausername'] . '">';
                 } else {
-                    echo 'Hi, ' . $_SESSION['aname'] . '';
+                    echo 'Hi, ' . $_SESSION['ausername'] . '';
                 }
 
                 echo '</a>';
