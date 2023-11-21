@@ -7,6 +7,20 @@
     .navbar-nav .nav-link {
         color: #9b593c !important; /* Set your desired text color */
     }
+    .navbar-nav .nav-link {
+        color: #9b593c !important; /* Set your desired text color */
+    }
+
+    .dropdown-menu {
+        /* Adjust the position as needed */
+        right: 0;
+        left: auto;
+    }
+
+    .dropdown-item:hover {
+        background-color: #c19f90 !important; /* Set your desired hover background color */
+    }
+
 </style>
 <!-- Start Navigation -->
 <nav class="navbar navbar-expand-sm navbar-light pl-5 fixed-top">

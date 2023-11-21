@@ -32,6 +32,9 @@
         font-weight: bold;
         opacity: 80%;
     }
+    .dropdown-item:hover {
+        background-color: #c19f90 !important; /* Set your desired hover background color */
+    }
 
     /* Additional style for navigation bar when user is logged in as owner or tenant */
     <?php if (isset($_SESSION['uid']) && (($_SESSION['utype'] == 'Owner') || ($_SESSION['utype'] == 'Tenant'))) : ?>
