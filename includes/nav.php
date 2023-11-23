@@ -164,24 +164,23 @@
     //    }
        
 // Check if 'acname' and 'actype' are set before accessing them
-if (isset($_SESSION['acname']) && isset($_SESSION['actype']) && isset($_SESSION['act_id'])) {
-    if (isset($_SESSION['acimage']) && !empty($_SESSION['acimage'])) {
-        echo '<img src="' . $_SESSION['acimage'] . '" class="user-image" alt="' . $_SESSION['acname'] . '">';
-    } elseif (isset($_SESSION['act_id']) && !empty($_SESSION['act_id'])) {
-        echo 'Hi, ' . $_SESSION['acname'] . ' (' . $_SESSION['actype'] . ')';
-    } else {
-        echo 'Hi, ' . $_SESSION['acname'] . ' (' . $_SESSION['actype'] . ')';
-    }
-} elseif (isset($_SESSION['uname']) && isset($_SESSION['utype'])) {
-    if (isset($_SESSION['uimage']) && !empty($_SESSION['uimage'])) {
-        echo '<img src="' . $_SESSION['uimage'] . '" class="user-image" alt="' . $_SESSION['uname'] . '">';
-    } else {
-        echo 'Hi, ' . $_SESSION['uname'] . ' (' . $_SESSION['utype'] . ')';
-    }
-} else {
-    // Handle the case when neither 'acname' nor 'actype' are set
-    echo 'Hi, User';
-}
+        if (isset($_SESSION['acusername']) && isset($_SESSION['actype'])) {
+            if (isset($_SESSION['acimage']) && !empty($_SESSION['acimage'])) {
+                echo '<img src="' . $_SESSION['acimage'] . '" class="user-image" alt="' . $_SESSION['acusername'] . '">';
+            
+            } else {
+                echo 'Hi, ' . $_SESSION['acusername'] . ' (' . $_SESSION['actype'] . ')';
+            }
+        } elseif (isset($_SESSION['uname']) && isset($_SESSION['utype'])) {
+            if (isset($_SESSION['uimage']) && !empty($_SESSION['uimage'])) {
+                echo '<img src="' . $_SESSION['uimage'] . '" class="user-image" alt="' . $_SESSION['uname'] . '">';
+            } else {
+                echo 'Hi, ' . $_SESSION['uname'] . ' (' . $_SESSION['utype'] . ')';
+            }
+        } else {
+            // Handle the case when neither 'acname' nor 'actype' are set
+            echo 'Hi, User';
+        }
        echo '</a>';
        echo '<div class="dropdown-menu" aria-labelledby="userDropdown">';
        echo '<a class="dropdown-item" href="profile.php">

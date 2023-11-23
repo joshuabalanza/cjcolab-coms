@@ -41,9 +41,9 @@ if(isset($_POST['acclogin_btn'])){
           
           // Prepare the login query
           if ($is_acemail) {
-              $sql = "SELECT act_id, acusername, acemail, acpassword FROM accountant WHERE acemail = ? and actype = 'accountant'";
+              $sql = "SELECT act_id, acname, acusername, acemail, acpassword FROM accountant WHERE acemail = ? and actype = 'accountant'";
           } else {
-              $sql = "SELECT act_id, acusername, acemail, acpassword FROM accountant WHERE acusername = ? and actype = 'accountant'";
+             $sql = "SELECT act_id, acname, acusername, acemail, acpassword FROM accountant WHERE acusername = ? and actype = 'accountant'";
           }
           
           if($stmt = $con->prepare($sql)){
@@ -61,7 +61,7 @@ if(isset($_POST['acclogin_btn'])){
                   // Check if username_or_acemail exists, if yes then verify password
                   if($stmt->num_rows == 1){                    
                       // Bind result variables
-                      $stmt->bind_result($acid, $acusername, $acemail, $hashed_acpassword);
+                      $stmt->bind_result($acid, $acname, $acusername, $acemail, $hashed_acpassword);
                       if($stmt->fetch()){
                           if(password_verify($acpassword, $hashed_acpassword)){
                               // acPassword is correct, so start a new session
@@ -70,6 +70,7 @@ if(isset($_POST['acclogin_btn'])){
                               // Store data in session variables
                               $_SESSION["loggedin"] = true;
                               $_SESSION["act_id"] = $acid;
+                              $_SESSION["acname"] = $acname;
                               $_SESSION["acusername"] = $acusername;
                               $_SESSION["actype"] = 'accountant';                            
                               

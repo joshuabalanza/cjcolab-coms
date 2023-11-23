@@ -1,5 +1,5 @@
 <?php
-//    session_name("user_session");
+   session_name("user_session");
 session_start();
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
@@ -20,6 +20,6 @@ if (!isset($_SESSION['act_id'])) {
 include('includes/header.php');
 include('includes/nav.php');
 ?>
-dash
+
 
 <?php include('includes/footer.php'); ?>

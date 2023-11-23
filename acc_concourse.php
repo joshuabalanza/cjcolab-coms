@@ -35,7 +35,7 @@ if (isset($_SESSION['act_id'])) {
             echo '<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-2">';
             echo '<div class="card" style="width: 100%; height: 100%; padding: 10px; margin: 0 auto;">';
 
-            echo '<a href="concourse.php?concourse_id=' . $row['concourse_id'] . '">';
+            echo '<a href="view_concourse.php?concourse_id=' . $row['concourse_id'] . '">';
             echo '<div class="image-container">';
             if (!empty($row['concourse_image'])) {
                 // Display the concourse_image if it exists
