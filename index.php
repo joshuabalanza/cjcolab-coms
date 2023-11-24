@@ -140,7 +140,14 @@ include('includes/nav.php');
 </section>
 <!-- End About -->
 <!-- Start Concourses -->
-<section id="concourses"></section>
+<section id="concourses">
+<div class="container-fluid">
+      <h3 style="margin-top: 15px; text-align: center;">Concourses</h3>
+      <div id="concourse-list" class="row" style="width: 80%; margin: 0 auto;">
+         <!-- This div will be populated with the fetched data -->
+      </div>
+   </div>
+</section>
 <!-- End Concourses -->
 <!-- Start How It Works/Process -->
 <!-- <section id="processs">
@@ -203,6 +210,30 @@ include('includes/nav.php');
 <!-- modal notificatio -->
 <!-- Add JavaScript to automatically hide the modal when closed -->
 <!-- In any section where you want to open the modal -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function loadConcourses(page) {
+        $.ajax({
+            type: 'GET',
+            url: 'get_concourse.php',
+            data: { page: page },
+            success: function (data) {
+                $('#concourse-list').html(data);
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        loadConcourses(1); // Load the first page by default
+
+        // Pagination click event handler
+        $(document).on('click', '.page-link', function (event) {
+            event.preventDefault(); // Prevent the default link behavior
+            var page = $(this).data('page');
+            loadConcourses(page);
+        });
+    });
+</script>
 <?php include('includes/footer.php')?>
 <script>
     function redirectToLogin() {
