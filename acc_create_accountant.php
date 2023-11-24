@@ -53,22 +53,22 @@ if (isset($_POST['register']) &&  isset($_SESSION['uid']) && $_SESSION['utype'] 
             if ($emailExists) {
                 $error_message = "<span style='color: red;'>Email is already registered. Please use a different email.</span>";
             } elseif ($acusernameExists) {
-                $error_message = "<span style='color: red;'>acUsername is already taken. Please choose a different acusername.</span>";
+                $error_message = "<span style='color: red;'>Username is already taken. Please choose a different username.</span>";
             } else {
                 $hashedPassword = password_hash($acpassword, PASSWORD_DEFAULT);
 
                 $created_at = date("Y-m-d H:i:s");
                 // Insert data into the database
-// Prepare and bind the SQL statement
-$sql = "INSERT INTO accountant (acname, acemail, acusername, acpassword, actype, owner_id, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)";
-$stmt = $con->prepare($sql);
-$stmt->bind_param("sssssis", $acname, $acemail, $acusername, $hashedPassword, $usertype, $ownerId, $created_at);
+                // Prepare and bind the SQL statement
+                $sql = "INSERT INTO accountant (acname, acemail, acusername, acpassword, actype, owner_id, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                $stmt = $con->prepare($sql);
+                $stmt->bind_param("sssssis", $acname, $acemail, $acusername, $hashedPassword, $usertype, $ownerId, $created_at);
 
-// Execute the statement
-$stmt->execute();
+                // Execute the statement
+                $stmt->execute();
 
-// Close the statement
-$stmt->close();
+                // Close the statement
+                $stmt->close();
                 // Display the modal
                 echo '<script>openModal();</script>';
             }
@@ -305,7 +305,7 @@ include('includes/nav.php');
         <span for="username" class="details">Username</span>
         <input type="text" name="acusername" id="acusername" autocomplete="off" placeholder="Enter your acusername" required value="<?php echo isset($acusername_value) ? $acusername_value : ''; ?>">
         <!-- Suggested acusername based on the entered full name -->
-        <div class="suggested-acusername" id="suggested-acusername"></div>
+        <div class="suggested-username" id="suggested-username"></div>
     </div>
 </div>
 <input type="hidden" name="owner_id" value="<?php echo $ownerId; ?>">
@@ -328,13 +328,13 @@ include('includes/nav.php');
             </div> -->
 
             <br>
-            <div class="input-box">
+            <!-- <div class="input-box">
                 <input type="checkbox" name="agree_terms" id="agree_terms" required>
                 <label for="agree_terms" class="details" id="termsLabel">
                     By signing up, you agree to the <a href="javascript:void(0);" id="termsLink">Terms and Conditions</a>
                     of the system
                 </label>
-            </div>
+            </div> -->
 
             <div class="button">
                 <input type="submit" name="register">
@@ -352,13 +352,13 @@ include('includes/nav.php');
 <script>
 document.getElementById('acusername').addEventListener('input', function () {
     const enteredacUsername = this.value.trim();
-    const suggestedacUsername = document.getElementById('suggested-acusername');
+    const suggestedacUsername = document.getElementById('suggested-username');
 
     // Remove any existing suggestions
     suggestedacUsername.innerHTML = '';
 
     if (enteredacUsername !== '') {
-        const url = `check_acusername_availability.php?acusername=${enteredacUsername}`;
+        const url = `check_username_availability.php?acusername=${enteredacUsername}`;
 
         // Make an AJAX request to check acusername availability
         fetch(url)
@@ -366,19 +366,19 @@ document.getElementById('acusername').addEventListener('input', function () {
             .then(data => {
                 if (data.available) {
                     // Display "Available" message
-                    suggestedacUsername.innerHTML = '<span style="color: green;">acUsername is available!</span>';
+                    suggestedacUsername.innerHTML = '<span style="color: green;">Username is available!</span>';
                 } else {
                     // Get alternative suggestions if acusername is taken
-                    fetch(`get_alternative_acusernames.php?acusername=${enteredacUsername}`)
+                    fetch(`get_alternative_usernames.php?acusername=${enteredacUsername}`)
                         .then(response => response.json())
                         .then(data => {
                             if (data.suggestions.length > 0) {
                                 const suggestionsList = data.suggestions.map(suggestion => {
                                     return `<a href="javascript:void(0);" onclick="fillacUsername('${suggestion}')">${suggestion}</a>`;
                                 }).join(', ');
-                                suggestedacUsername.innerHTML = `<span style="color: red;">acUsername is already taken. Try one of the following:</span><br>${suggestionsList}`;
+                                suggestedacUsername.innerHTML = `<span style="color: red;">Username is already taken. Try one of the following:</span><br>${suggestionsList}`;
                             } else {
-                                suggestedacUsername.innerHTML = '<span style="color: red;">acUsername is already taken.</span>';
+                                suggestedacUsername.innerHTML = '<span style="color: red;">Username is already taken.</span>';
                             }
                         })
                         .catch(error => console.error('Error:', error));
@@ -387,34 +387,34 @@ document.getElementById('acusername').addEventListener('input', function () {
             .catch(error => console.error('Error:', error));
     }
 });
-    document.addEventListener("DOMContentLoaded", function () {
-        var termsLink = document.getElementById("termsLink");
-        var termsLabel = document.getElementById("termsLabel");
-        var agreeTermsCheckbox = document.getElementById("agree_terms");
+    // document.addEventListener("DOMContentLoaded", function () {
+    //     var termsLink = document.getElementById("termsLink");
+    //     var termsLabel = document.getElementById("termsLabel");
+    //     var agreeTermsCheckbox = document.getElementById("agree_terms");
 
-        termsLink.addEventListener("click", function () {
-            // You can replace the placeholder with the actual path to your terms and conditions document
-            var termsAndConditionsURL = "uploads/terms_and_conditions.pdf";
-            window.open(termsAndConditionsURL, "_blank");
-        });
+    //     termsLink.addEventListener("click", function () {
+    //         // You can replace the placeholder with the actual path to your terms and conditions document
+    //         var termsAndConditionsURL = "uploads/terms_and_conditions.pdf";
+    //         window.open(termsAndConditionsURL, "_blank");
+    //     });
 
-        // Add event listener for form submission
-        var registrationForm = document.querySelector('form');
-        registrationForm.addEventListener('submit', function (event) {
-            if (!agreeTermsCheckbox.checked) {
-                // If the checkbox is not checked, add red color to the checkbox and text
-                agreeTermsCheckbox.style.outline = '1px solid red';
-                termsLabel.style.color = 'red';
+    //     // Add event listener for form submission
+    //     var registrationForm = document.querySelector('form');
+    //     registrationForm.addEventListener('submit', function (event) {
+    //         if (!agreeTermsCheckbox.checked) {
+    //             // If the checkbox is not checked, add red color to the checkbox and text
+    //             agreeTermsCheckbox.style.outline = '1px solid red';
+    //             termsLabel.style.color = 'red';
 
-                // Prevent form submission
-                event.preventDefault();
-            } else {
-                // Reset styles if the checkbox is checked
-                agreeTermsCheckbox.style.outline = 'none';
-                termsLabel.style.color = '';
-            }
-        });
-    });
+    //             // Prevent form submission
+    //             event.preventDefault();
+    //         } else {
+    //             // Reset styles if the checkbox is checked
+    //             agreeTermsCheckbox.style.outline = 'none';
+    //             termsLabel.style.color = '';
+    //         }
+    //     });
+    // });
         // Function to display the modal
         function openModal() {
         document.getElementById('accountCreatedModal').style.display = 'block';
