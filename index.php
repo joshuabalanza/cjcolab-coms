@@ -20,53 +20,66 @@ include('includes/header.php');
 include('includes/nav.php');
 ?>
   <style>
-      .about-section{
-         width: 100%;
-         height: auto;
-         color: #fff;
-         position: relative;
-         background-color: #9b593c;
-         padding: 50px;
-      }
-      .about-section .par{
-         padding-left: 20px;
-         padding-bottom: 25px;
-         font-family: Arial;
-         letter-spacing: 1.2px;
-         line-height: 30px;
-      }
-      .about-section h1{
-         font-family: 'Times New Roman';
-         font-size: 50px;
-         padding-left: 20px;
-         letter-spacing: 2px;
-      }
-      .about-section .cn{
-         width: 160px;
-         height: 40px;
-         background: #ff7200;
-         border: none;
-         margin-bottom: 10px;
-         margin-left: 20px;
-         font-size: 18px;
-         border-radius: 10px;
-         cursor: pointer;
-         transition: .4s ease;
-         
-      }
-      .about-section .cn a{
-         text-decoration: none;
-         color: #000;
-         transition: .3s ease;
-      }
-      .cn:hover{
-         background-color: #fff;
-      }
-      .about-section span{
-         color: #ff7200;
-         font-size: 65px;
-      }
+    .about-wrapper {
+        width: 80%; /* Adjust the width as needed */
+        margin: 0 auto; /* Center the wrapper horizontally */
+    }
 
+    .about-section {
+    width: 100%;
+    height: 100vh; /* Set height to 100% of the viewport height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    position: relative;
+    background-color: #9b593c;
+    text-align: center;
+}
+
+    .about-section h1 {
+        font-family: 'Times New Roman';
+        font-size: 50px;
+        padding-left: 20px;
+        letter-spacing: 2px;
+        margin-bottom: 20px; /* Add some space below the heading */
+    }
+
+    .about-section .par {
+        padding-left: 20px;
+        padding-bottom: 25px;
+        font-family: Arial;
+        letter-spacing: 1.2px;
+        line-height: 30px;
+    }
+
+    .about-section .cn {
+        width: 160px;
+        height: 40px;
+        background: #ff7200;
+        border: none;
+        margin-bottom: 10px;
+        margin-left: 20px;
+        font-size: 18px;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: .4s ease;
+    }
+
+    .about-section .cn a {
+        text-decoration: none;
+        color: #000;
+        transition: .3s ease;
+    }
+
+    .cn:hover {
+        background-color: #fff;
+    }
+
+    .about-section span {
+        color: #ff7200;
+        font-size: 65px;
+    }
 
       .login-section {
          padding: 50px;
@@ -92,55 +105,183 @@ include('includes/nav.php');
          letter-spacing: 2px;
       }
       .card {
-      background-color: rgba(255, 255, 255, 0.8); /* Use rgba for opacity */
-      transition: background-color 0.3s ease; /* Smooth transition for background color */
+         background-color: rgba(255, 255, 255, 0.8); /* Use rgba for opacity */
+         transition: background-color 0.3s ease; /* Smooth transition for background color */
       }
 
       /* Add hover effect for the card */
       .card:hover {
          background-color: rgba(255, 255, 255, 1); /* Change opacity on hover */
       }
+      
+      .white-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: justify;
+    width: 80%;
+}
+
+    @media only screen and (max-width: 768px) {
+        .white-container {
+            width: 90%; /* Adjust the width for smaller screens */
+        }
+    }
+
+    .rounded-square {
+        border-radius: 8px;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        color: #fff;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        color: #fff;
+    }
+
+    .black-text {
+        color: black;
+    }
+
+    .text-center {
+    margin: 0 auto;
+}
+
+.contact-us {
+        margin-top: 20px; /* Adjust the margin as needed */
+        cursor: pointer;
+        display: inline-block;
+    }
+
+    .contact-text {
+        color: #fff;
+        background-color: #8B4513; /* Brown color */
+        padding: 10px 20px;
+        border-radius: 5px;
+        display: inline-block;
+        transition: background-color 0.3s ease;
+    }
+
+    .contact-text:hover {
+        background-color: #6A3D15; /* Darker brown on hover */
+    }
+
+    /* Add animation keyframes */
+    @keyframes bounce {
+        0%, 20%, 50%, 80%, 100% {
+            transform: translateY(0);
+        }
+        40% {
+            transform: translateY(-20px);
+        }
+        60% {
+            transform: translateY(-10px);
+        }
+    }
+
+    /* Apply animation to the contact text */
+    .contact-text:hover {
+        animation: bounce 1s ease infinite;
+    }
+    
    </style>
 <section class="vh-100" style="background-color: #9b593c;">
-   <div class="container-fluid">
-      <div class="row">
-         <div class="col-md-6 about-section" style="margin-top: 20em;">
-            <h1>About Us</h1>
-            <p class="par">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt neque 
-               expedita atque eveniet <br> quis nesciunt. Quos nulla vero consequuntur, fugit nemo ad delectus 
-            <br> a quae totam ipsa illum minus laudantium?</p>
-            <button class="cn"><a href="#">Contact Us</a></button>
-         </div>
-         <!-- Login Section-->
-         <div class="col-md-6 login-section">
-            <div class="card" style="border-radius: 1rem;">
-               <div class="row g-0">
-                  <div class="col-md-6 col-lg-5 d-flex align-items-center justify-content-center">
-                     <img src="assets/images/Logo-9b593c.png" alt="Login Form" class="img-fluid">
-                  </div>
-                  <div class="col-md-6 col-lg-7 d-flex align-items-center" >
-                     <div class="card-body p-4 p-lg-5 text-black">
-                        <form>
-                           <div class="d-flex align-items-center mb-3 pb-1">
-                              <span class="h1 fw-bold mb-0">Welcome to COMS</span>
-                           </div>
-                        </form>
-                        <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px; font-style: italic;">Concessionaire Operations Monitoring System</h5>
-                        <div class="d-grid gap-2 col-6 mx-auto">
-                              <button class="btn btn-dark btn-lg btn-block" style="background-color: #9b593c;" type="button" onclick="redirectToLogin()">Login</button>
-                              <button class="btn btn-dark btn-lg btn-block" style="background-color: #3C7E9B;" type="button" onclick="redirectToSignUp()">Sign Up</button>
-                        </div>
-                     </div>
-                  </div>
-               </div>
+    <div class="container-fluid">
+        <!-- Login Section -->
+        <div class="col-md-8 mx-auto">
+            <div class="login-section">
+    <div class="card" style="border-radius: 1rem; width: 100%;">
+        <div class="row g-0">
+            <div class="col-md-6 col-lg-5 d-flex align-items-center justify-content-center">
+                <img src="assets/images/Logo-9b593c.png" alt="Login Form" class="img-fluid">
             </div>
-         </div>
+            <div class="col-md-6 col-lg-7 d-flex align-items-center">
+                <div class="card-body p-6 p-lg-5 text-black">
+                    <form>
+                        <div class="mb-4">
+                            <h1 class="fw-bold mb-0 text-center" style="font-size: 2.5rem;"><br>Concessionaire Operations Monitoring System</h1>
+                            <p class="fw-normal mb-0 text-center" style="font-size: 1.5rem;">Modernized Monitoring of Operations</p>
+                        </div>
+                    </form>
+                    <!-- Project Description -->
+                    <p class="fw-normal mb-4 text-justify">
+                        The goal of the project is to provide an online system monitoring operations for business spaces. The system helps track payments for electricity, water, and rent bills. It also automatically notifies the owner of contract dates and tenant changes. Tenants receive notifications about due dates, especially for contracts. The Concessionaire Operations Monitoring in the Philippines is often either hassle-ridden or outdated, according to relevant literature. Many owners are not visible to tenants and lack insights into tenant operations around the business area.
+                    </p>
+                    <!-- End Project Description -->
+                    <div class="d-grid gap-2 col-6 mx-auto">
+                        <button class="btn btn-dark btn-lg btn-block" style="background-color: #9b593c;" type="button" onclick="redirectToLogin()">Login</button>
+                        <button class="btn btn-dark btn-lg btn-block" style="background-color: #3C7E9B;" type="button" onclick="redirectToSignUp()">Sign Up</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    </div>
+<!-- About Us Section -->
+<div id="about-us" class="col-md-10 about-section text-center">
+    <div class="white-container" style="width: 80%;">
+        <div class="d-flex justify-content-between align-items-center">
+            <h1 style="color: black;">About Us: The Developers</h1>
+            <div class="contact-us">
+                <p class="contact-text" id="contact-text">Contact Us</p>
+            </div>
+        </div>
+        <p class="par" style="color: black; text-align: justify;">
+            We are students from Polytechnic University of the Philippines. This project is a requirement for Capstone Research. Its goal is to provide a Concessionaire Operations Monitoring System for owners wanting to monitor their tenants the modern way.
+            <br>
+        </p>
+
+<!-- Example row of columns -->
+<div class="row">
+    <div class="col-12 col-md-3">
+        <img src="/assets/images/mayki.jpg" class="rounded-square mx-auto d-block" alt="Mikee" width="150" height="150">
+        <p class="text-center black-text"><b>Mikee Estanislao</b></p>
+        <p class="text-center black-text"><a class="btn btn-info" href="mailto:mikeenestanislao@iskolarngbayan.pup.edu.ph">E-Mail</a></p>
+        <p class="text-center black-text"><a class="btn btn-primary" href="https://www.facebook.com/xMaykiNerix" role="button">Facebook</a></p>
+        <p class="text-center black-text"><a class="btn btn-secondary" href="https://github.com/maykinerii" role="button">Github</a></p>
+    </div>
+    <div class="col-md-3">
+        <img src="/assets/images/ced.jpg" class="rounded-square mx-auto d-block" alt="Ced" width="150" height="150">
+        <p class="text-center black-text"><b>John Cedrick Garcia</b></p>
+        <p class="text-center black-text"><a class="btn btn-info" href="mailto:jcmgarcia@iskolarngbayan.pup.edu.ph">E-Mail</a></p>
+        <p class="text-center black-text"><a class="btn btn-primary" href="https://www.facebook.com/lcedgarcia" role="button">Facebook</a></p>
+        <p class="text-center black-text"><a class="btn btn-secondary" href="https://github.com/cedgarcia" role="button">Github</a></p>
+    </div>
+    <div class="col-md-3">
+        <img src="/assets/images/rk.png" class="rounded-square mx-auto d-block" alt="RK" width="150" height="150">
+        <p class="text-center black-text"><b>Rei Kristian Panelo</b></p>
+        <p class="text-center black-text"><a class="btn btn-info" href="mailto:reikristianapanelo@iskolarngbayan.pup.edu.ph">E-Mail</a></p>
+        <p class="text-center black-text"><a class="btn btn-primary" href="https://www.facebook.com/rkpanelo" role="button">Facebook</a></p>
+        <p class="text-center black-text"><a class="btn btn-secondary" href="https://github.com/reikristianpanelo" role="button">Github</a></p>
+    </div>
+    <div class="col-md-3">
+        <img src="/assets/images/roland.jpg" class="rounded-square mx-auto d-block" alt="Roland" width="150" height="150">
+        <p class="text-center black-text"><b>Roland Angelo Tugaoen</b></p>
+        <p class="text-center black-text"><a class="btn btn-info" href="mailto:rabtugaoen@iskolarngbayan.pup.edu.ph">E-Mail</a></p>
+        <p class="text-center black-text"><a class="btn btn-primary" href="https://www.facebook.com/rolandtugaoen2016" role="button">Facebook</a></p>
+        <p class="text-center black-text"><a class="btn btn-secondary" href="https://github.com/TugaGelo" role="button">Github</a></p>
+    </div>
+</div>
+    </div>
+    </div>
+</div>
+
+<section>
+<!-- Start Concourses -->
+<section id="concourses" class="vh-100" style="background-color: #9b593c;">
+   <div class="container-fluid">
+      <h3 style="margin-top: 15px; text-align: center;">Concourses</h3>
+      <div id="concourse-list" class="row" style="width: 80%; margin: 0 auto;">
+         <!-- This div will be populated with the fetched data -->
       </div>
    </div>
 </section>
-<!-- End About -->
-<!-- Start Concourses -->
-<section id="concourses"></section>
 <!-- End Concourses -->
 <!-- Start How It Works/Process -->
 <!-- <section id="processs">
@@ -203,6 +344,30 @@ include('includes/nav.php');
 <!-- modal notificatio -->
 <!-- Add JavaScript to automatically hide the modal when closed -->
 <!-- In any section where you want to open the modal -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function loadConcourses(page) {
+        $.ajax({
+            type: 'GET',
+            url: 'get_concourse.php',
+            data: { page: page },
+            success: function (data) {
+                $('#concourse-list').html(data);
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        loadConcourses(1); // Load the first page by default
+
+        // Pagination click event handler
+        $(document).on('click', '.page-link', function (event) {
+            event.preventDefault(); // Prevent the default link behavior
+            var page = $(this).data('page');
+            loadConcourses(page);
+        });
+    });
+</script>
 <?php include('includes/footer.php')?>
 <script>
     function redirectToLogin() {

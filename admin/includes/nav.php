@@ -5,11 +5,25 @@
         font-weight: bold;
     }
     .navbar-nav .nav-link {
-            color: #9b593c !important; /* Set your desired text color */
-        }
+        color: #9b593c !important; /* Set your desired text color */
+    }
+    .navbar-nav .nav-link {
+        color: #9b593c !important; /* Set your desired text color */
+    }
+
+    .dropdown-menu {
+        /* Adjust the position as needed */
+        right: 0;
+        left: auto;
+    }
+
+    .dropdown-item:hover {
+        background-color: #c19f90 !important; /* Set your desired hover background color */
+    }
+
 </style>
 <!-- Start Navigation -->
-<nav class="navbar navbar-expand-sm navbar-light pl-5 fixed-top" style="background-color: #ffffff;">
+<nav class="navbar navbar-expand-sm navbar-light pl-5 fixed-top">
     <a href="index.php" class="navbar-brand">
         <img src="assets/images/Logo-9b593c.png" alt="Logo" width="50" height="40" class="d-inline-block align-text-top">
         <span>COMS</span>
@@ -40,9 +54,9 @@
                 echo '<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
                 // Check if the user has uploaded an image
                 if (isset($_SESSION['aimage']) && !empty($_SESSION['aimage'])) {
-                    echo '<img src="' . $_SESSION['aimage'] . '" class="user-image" alt="' . $_SESSION['aname'] . '">';
+                    echo '<img src="' . $_SESSION['aimage'] . '" class="user-image" alt="' . $_SESSION['ausername'] . '">';
                 } else {
-                    echo 'Hi, ' . $_SESSION['aname'] . '';
+                    echo 'Hi, ' . $_SESSION['ausername'] . '';
                 }
 
                 echo '</a>';

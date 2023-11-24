@@ -160,19 +160,19 @@ include('includes/nav.php');
                         <th>Concourse ID</th>
                         <th>Owner Name</th>
                         <th>Status</th>
-                        <th>Actions</th>
+                        <!-- <th>Actions</th> -->
                     </tr>
                 </thead>
                 <tbody>
                     <?php
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        echo '<tr>';
+    while ($row = mysqli_fetch_assoc($result)) {
+        echo '<tr class="concourse-row" data-concourse="' . htmlspecialchars(json_encode($row), ENT_QUOTES, 'UTF-8') . '">';
                         echo '<td>' . $row['concourse_id'] . '</td>';
                         echo '<td>' . $row['owner_name'] . '</td>';
                         echo '<td>' . $row['status'] . '</td>';
-                        echo '<td>';
-                        echo '<button type="button" class="button" onclick="openConcourseDetailsModal(' . htmlspecialchars(json_encode($row), ENT_QUOTES, 'UTF-8') . ')">View Owner</button>';
-                        echo '</td>';
+                        // echo '<td>';
+                        // echo '<button type="button" class="button" onclick="openConcourseDetailsModal(' . htmlspecialchars(json_encode($row), ENT_QUOTES, 'UTF-8') . ')">View Owner</button>';
+                        // echo '</td>';
                         echo '</tr>';
                     }
                     ?>
@@ -276,4 +276,19 @@ include('includes/nav.php');
     $('#concourseDetailsClose').on('click', function () {
         $('#concourseDetailsModal').css('display', 'none');
     });
+    document.addEventListener('DOMContentLoaded', function () {
+        const concourseTable = document.getElementById('datatable');
+
+        concourseTable.addEventListener('click', function (event) {
+            const target = event.target.closest('.concourse-row');
+            if (target) {
+                // Extract concourse data from the data attribute
+                const concourseData = JSON.parse(target.getAttribute('data-concourse'));
+
+                // Open the concourse details modal
+                openConcourseDetailsModal(concourseData);
+            }
+        });
+    });
+
 </script>

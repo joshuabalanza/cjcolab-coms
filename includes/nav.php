@@ -32,6 +32,9 @@
         font-weight: bold;
         opacity: 80%;
     }
+    .dropdown-item:hover {
+        background-color: #c19f90 !important; /* Set your desired hover background color */
+    }
 
     /* Additional style for navigation bar when user is logged in as owner or tenant */
     <?php if (isset($_SESSION['uid'])) : ?>
@@ -104,7 +107,7 @@
                 echo '<a href="index.php" class="nav-link ' . $linkClass . '">Home</a>';
                 echo '</li>';
                 echo '<li class="nav-item">';
-                echo '<a href="index.php" class="nav-link ' . $linkClass . '">About</a>';
+                echo '<a href="#about-us" class="nav-link ' . $linkClass . '">About</a>';
                 echo '</li>';
                 echo '<li class="nav-item">';
                 echo '<a href="index.php" class="nav-link ' . $linkClass . '">Contact</a>';
@@ -248,6 +251,22 @@
     </div>
 </div>
 
+<!-- Add jQuery at the end of your page -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    // Smooth scrolling for navigation links
+    $(document).ready(function () {
+        $('a[href^="#"]').on('click', function (event) {
+            var target = $($(this).attr('href'));
+            if (target.length) {
+                event.preventDefault();
+                $('html, body').animate({
+                    scrollTop: target.offset().top
+                }, 1000);
+            }
+        });
+    });
+</script>
 
 <script>
     function showLogoutModal() {

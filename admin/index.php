@@ -20,21 +20,21 @@ if (isset($_SESSION['aid'])) {
 }
 
 if (isset($_POST['adminlogin'])) {
-    if (empty($_POST['aname_or_aemail']) || empty($_POST['apassword'])) {
+    if (empty($_POST['ausername_or_aemail']) || empty($_POST['apassword'])) {
         $error_message = "Both email and password are required";
     } else {
-      $aname_or_aemail = $_POST['aname_or_aemail'];
+      $ausername_or_aemail = $_POST['ausername_or_aemail'];
       // $uname = $_POST['uname'];
       $apassword = $_POST['apassword'];
 
       // Query the database to check if the user exists
-      $is_aname_or_aemail = filter_var($aname_or_aemail, FILTER_VALIDATE_EMAIL);
+      $is_ausername_or_aemail = filter_var($ausername_or_aemail, FILTER_VALIDATE_EMAIL);
 
       // Prepare the login query
-      if ($is_aname_or_aemail) {
-          $loginQuery = "SELECT * FROM admin WHERE aemail = '$aname_or_aemail'";
+      if ($is_ausername_or_aemail) {
+          $loginQuery = "SELECT * FROM admin WHERE aemail = '$ausername_or_aemail'";
       } else {
-          $loginQuery = "SELECT * FROM admin WHERE aname = '$aname_or_aemail'";
+          $loginQuery = "SELECT * FROM admin WHERE ausername = '$ausername_or_aemail'";
       }
 
       // Execute the query
@@ -52,7 +52,8 @@ if (isset($_POST['adminlogin'])) {
                 // Password is correct, so create session variables
                 $_SESSION['aid'] = $row['aid'];
                 $_SESSION['aemail'] = $row['aemail'];
-                $_SESSION['aname'] = $row['aname'];
+                $_SESSION['ausername'] = $row['ausername'];
+                $_SESSION['aimage'] = $row['aimage'];
                 // $_SESSION['utype'] = $row['utype'];
                 // $_SESSION['uphone'] = $row['uphone'];
                 // $_SESSION['uimage'] = $row['uimage']; // Add this line to set the uimage session variable
@@ -99,9 +100,9 @@ if (isset($_POST['adminlogin'])) {
                     }
 ?></p>
       <div class="form-group form">
-        <input type="text" class="form-control form-input" name="aname_or_aemail" id="aname_or_aemail" autocomplete="on" placeholder=""
-          value="<?php echo isset($_POST['aname_or_aemail']) ? htmlspecialchars($_POST['aname_or_aemail']) : ''; ?>"/>
-        <label for="aname_or_aemail" class="form-label">
+        <input type="text" class="form-control form-input" name="ausername_or_aemail" id="ausername_or_aemail" autocomplete="on" placeholder=""
+          value="<?php echo isset($_POST['ausername_or_aemail']) ? htmlspecialchars($_POST['ausername_or_aemail']) : ''; ?>"/>
+        <label for="ausername_or_aemail" class="form-label">
           <i class="fa-solid fa-envelope"></i>Email</label>
       </div>
       <div class="form-group form">
