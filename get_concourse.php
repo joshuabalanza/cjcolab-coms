@@ -16,9 +16,12 @@ $approvedConcoursesResult = mysqli_query($con, $approvedConcoursesQuery);
 if ($approvedConcoursesResult && mysqli_num_rows($approvedConcoursesResult) > 0) {
     while ($concourseData = mysqli_fetch_assoc($approvedConcoursesResult)) {
         // Generate the HTML for each concourse and echo it
+
+
         echo '<div class="col-lg-4 col-md-4 col-sm-6 col-12 mb-4">';
         echo '<div class="card">';
         echo '<div class="image-container">';
+        echo '<a href="concourse_view.php?concourse_id=' . $concourseData['concourse_id'] . '">';
 
         echo '<img src="/COMS/uploads/' . $concourseData['concourse_map'] . '" class="card-img-top" style="width:100%; height: 300px;" alt="Concourse Map">';
         echo '</div>';
@@ -43,6 +46,7 @@ if ($approvedConcoursesResult && mysqli_num_rows($approvedConcoursesResult) > 0)
         echo '<p class="card-text">By: ' . $concourseData['owner_name'] . '</p>';
         // echo '<p class="card-text">: ' . $concourseData['owner_name'] . '</p>';
         echo '<p class="card-text"><i class="fa-solid fa-calendar-days"></i> ' . date('Y-m-d', strtotime($concourseData['created_at'])) . '</p>';
+        echo '</a>';
         echo '</div>';
         echo '</div>';
         echo '</div>';
