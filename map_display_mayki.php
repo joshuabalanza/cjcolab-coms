@@ -18,24 +18,29 @@ if (isset($_GET['concourse_id'])) {
     echo 'Concourse ID not provided.';
 }
 
-    // Check if the form is submitted
-    if (isset($_POST['submit_space'])) {
-        // Get the form data
-        $space_name = $_POST['space_name'];
-        $space_width = $_POST['space_width'];
-        $space_length = $_POST['space_length'];
-        $space_height = $_POST['space_height'];
-        $space_status = $_POST['space_status'];
 
-        // Insert data into the space table
-        $insertQuery = "INSERT INTO space (space_name, space_width, space_length, space_height, space_status) VALUES ('$space_name', $space_width, $space_length, $space_height, '$space_status')";
-        
-        if (mysqli_query($con, $insertQuery)) {
-            echo "Space inserted successfully.";
-        } else {
-            echo "Error: " . mysqli_error($con);
-        }
+// Check if the form is submitted
+if (isset($_POST['submit_space'])) {
+    // Get the form data
+    $space_name = $_POST['space_name'];
+    $space_width = $_POST['space_width'];
+    $space_length = $_POST['space_length'];
+    $space_height = $_POST['space_height'];
+    $space_status = $_POST['space_status'];
+
+    $concourse_id = $_POST['concourse_id']; // Make sure this line is present
+
+
+    // Insert data into the space table
+    // $insertQuery = "INSERT INTO space (space_name, space_width, space_length, space_height, space_status) VALUES ('$space_name', $space_width, $space_length, $space_height, '$space_status')";
+    $insertQuery = "INSERT INTO space (concourse_id, space_name, space_width, space_length, space_height, space_status) VALUES ('$concourse_id', '$space_name', $space_width, $space_length, $space_height, '$space_status')";
+
+    if (mysqli_query($con, $insertQuery)) {
+        echo "Space inserted successfully.";
+    } else {
+        echo "Error: " . mysqli_error($con);
     }
+}
 
 ?>
 <?php
@@ -145,6 +150,9 @@ include('includes/nav.php');
             <div class="col-md-4 space-sidebar-form">
             <h3><?php echo isset($concourseData['concourse_name']) ? $concourseData['concourse_name'] : "Concourse"; ?></h3>
             <form id="space-form" class='form' action="" method="post">
+            <input type="hidden" name="concourse_id" value="<?php echo $concourse_id; ?>">
+            <!-- <input type="hidden" name="concourse_id" value="<?php echo $_GET['concourse_id']; ?>"> -->
+
                 <h3>Space Details</h3>
                 <label for="space_name">Space Name:</label>
                 <input type="text" id="space_name" name="space_name" required>
@@ -167,6 +175,10 @@ include('includes/nav.php');
     </div>
 </div>
 </div>
+<?php
+// Add debugging statements
+echo "concourse_id from form: " . $_POST['concourse_id'] . "<br>";
+?>
 </section>
 <?php
 $sql = "SELECT * FROM `space` order by space_id asc";
