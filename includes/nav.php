@@ -123,6 +123,9 @@
                 echo '<a href="tenants.php" class="nav-link">Tenants</a>';
                 echo '</li>';
                 echo '<li class="nav-item">';
+                echo '<a href="bills.php" class="nav-link">Bills</a>';
+                echo '</li>';
+                echo '<li class="nav-item">';
                 echo '<a href="reservations.php" class="nav-link">Reservations</a>';
                 echo '</li>';
 
