@@ -27,28 +27,28 @@ if (isset($_SESSION['act_id'])) {
 
     if ($result->num_rows > 0) {
         // Display concourses horizontally
-        echo '<div class="container" style="margin-top: 100px;">';
-        echo '<div class="title">Concourses</div>';
+        echo '<div class="container" style="margin-top: 100px; max-width: 1500px;">';
+        echo '<h3 class="title" style="font-weight: bold;color:#c19f90;">Concourses</h3>';
         echo '<div class="row">';
 
         while ($row = $result->fetch_assoc()) {
-            echo '<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-2">';
+            echo '<div class="col-lg-3 col-md-3 col-sm-6 col-12 mb-2">';
             echo '<div class="card" style="width: 100%; height: 100%; padding: 10px; margin: 0 auto;">';
 
-            echo '<a href="view_concourse.php?concourse_id=' . $row['concourse_id'] . '">';
+            echo '<a href="view_concourse.php?concourse_id=' . $row['concourse_id'] . '" style="text-decoration: none; color: black;">';
             echo '<div class="image-container">';
             if (!empty($row['concourse_image'])) {
                 // Display the concourse_image if it exists
-                echo '<img src="/COMS-GENERIC/uploads/featured-concourse/' . $row['concourse_image'] . '" id="concourseImage" class="card-img-top smaller-image" alt="Concourse Image" style="width:100%; height: 300px;">';
+                echo '<img src="/COMS/uploads/featured-concourse/' . $row['concourse_image'] . '" id="concourseImage" class="card-img-top smaller-image" alt="Concourse Image" style="width:100%; height: 300px;">';
             } elseif (!empty($row['concourse_map'])) {
                 // Display the concourse_map if concourse_image is not available
-                echo '<img src="/COMS-GENERIC/uploads/' . $row['concourse_map'] . '" id="concourseImage" class="card-img-top smaller-image" alt="Concourse Map" style="width:100%; height: 300px;">';
+                echo '<img src="/COMS/uploads/' . $row['concourse_map'] . '" id="concourseImage" class="card-img-top smaller-image" alt="Concourse Map" style="width:100%; height: 300px;">';
             } else {
                 // Handle the case when both concourse_image and concourse_map are empty, e.g., display a placeholder image
                 echo '<img src="path_to_placeholder_image.jpg" id="concourseImage" class="card-img-top smaller-image" alt="Placeholder Image" style="width:100%; height: 300px;">';
             }
             echo '</div>';
-            echo '</a>';
+            
             echo '<div class="card-body">';
             echo '<h5 class="card-title">' . $row['concourse_name'] . '</h5>';
             echo '<p class="card-text">Concourse ID: ' . $row['concourse_id'] . '</p>';
@@ -57,6 +57,7 @@ if (isset($_SESSION['act_id'])) {
             echo '</div>';
             echo '</div>';
             echo '</div>';
+            echo '</a>';
         }
 
         echo '</div>';
