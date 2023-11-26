@@ -349,22 +349,22 @@ function openModal(spaceName, spaceStatus, spaceDetails) {
         var modal = document.getElementById("myModal");
         modal.style.display = "none";
     }
-
     function openAppModal() {
-        // Close the first modal
-        closeModal();
+    // Close the first modal
+    closeModal();
 
-        var appModal = document.getElementById("appModal");
-        var appSpacename = document.getElementById("appSpacename");
+    var appModal = document.getElementById("appModal");
+    var appSpacename = document.getElementById("appSpacename");
+    
+    // Get the spacename from the modalContent
+    var selectedSpaceName = document.getElementById("modalContent").querySelector('h2').innerText;
 
-        // Assuming you have a variable storing the selected space name
-        var selectedSpaceName = "Example Space";
+    // Set the spacename in the application form
+    appSpacename.value = selectedSpaceName;
 
-        // Set the spacename in the application form
-        appSpacename.value = selectedSpaceName;
+    appModal.style.display = "flex";
+}
 
-        appModal.style.display = "flex";
-    }
 
     function closeAppModal() {
         var appModal = document.getElementById("appModal");
