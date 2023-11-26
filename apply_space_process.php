@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['apply'])) {
     $insertResult = $con->query($insertApplicationQuery);
 
     // Update status in space table to 'reserved'
-    $updateSpaceStatusQuery = "UPDATE space SET status = 'reserved' WHERE space_name = '$spaceName'";
+    $updateSpaceStatusQuery = "UPDATE space SET status = 'reserved', space_tenant = '$tenantName' WHERE space_name = '$spaceName'";
     $updateResult = $con->query($updateSpaceStatusQuery);
 
     // Check if both queries were successful
