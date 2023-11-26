@@ -37,7 +37,7 @@
     }
 
     /* Additional style for navigation bar when user is logged in as owner or tenant */
-    <?php if (isset($_SESSION['uid']) && (($_SESSION['utype'] == 'Owner') || ($_SESSION['utype'] == 'Tenant'))) : ?>
+    <?php if (isset($_SESSION['uid'])) : ?>
         .navbar {
             background-color: #ffffff; /* Set your desired background color */
         }
@@ -56,26 +56,52 @@
         font-weight: bold;
         }
     <?php endif; ?>
+    <?php
+        // Check if the user is logged in and is an accountant
+        if (isset($_SESSION['act_id'])) :
+        ?>
+            /* Additional style for navigation bar when user is logged in as an accountant */
+            .navbar {
+                background-color: #ffffff; /* Set your desired background color */
+            }
+
+            .navbar-nav .nav-link {
+                color: #9b593c !important; /* Set your desired text color */
+            }
+
+            .navbar-nav .nav-link:hover {
+                background-color: rgba(255, 255, 255, 0.3);
+                color: #9b593c !important;
+            }
+
+            .navbar-brand span {
+                color: #9b593c;
+                font-size: 30px;
+                font-weight: bold;
+            }
+    <?php endif; ?>
 </style>
 <!-- Start Navigation -->
-<nav class="navbar navbar-expand-sm navbar-light pl-5 fixed-top <?php echo isset($_SESSION['uid']) ? '' : 'transparent-nav'; ?>">
+<nav class="navbar navbar-expand-sm navbar-light pl-5 fixed-top <?php echo (isset($_SESSION['uid']) || isset($_SESSION['act_id'])) ? '' : 'transparent-nav'; ?>">
     <a href="index.php" class="navbar-brand">
-            <?php if (isset($_SESSION['uid']) && (($_SESSION['utype'] == 'Owner') || ($_SESSION['utype'] == 'Tenant'))) : ?>
-            <img src="assets/images/Logo-9b593c.png" alt="Logo" width="50" height="40" class="d-inline-block align-text-top">
-            <?php else: ?>
-            <img src="assets/images/white-version-logo.png" alt="Logo" width="50" height="40" class="d-inline-block align-text-top" style="opacity: 80%;">
-            <?php endif; ?>
-            <span>COMS</span>
-        </a>
+    <?php if (isset($_SESSION['uid'])) : ?>
+        <img src="assets/images/Logo-9b593c.png" alt="Logo" width="50" height="40" class="d-inline-block align-text-top">
+    <?php elseif (isset($_SESSION['act_id'])) : ?>
+        <img src="assets/images/Logo-9b593c.png" alt="Logo" width="50" height="40" class="d-inline-block align-text-top">
+    <?php else : ?>
+        <img src="assets/images/white-version-logo.png" alt="Logo" width="50" height="40" class="d-inline-block align-text-top" style="opacity: 80%;">
+    <?php endif; ?>
+    <span>COMS</span>
+    </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
    <div id="navigation" class="collapse navbar-collapse justify-content-end">
       <ul class="navbar-nav pl-5">
          <?php
-            if (!isset($_SESSION['uid'])) {
+            if (!isset($_SESSION['uid']) && !isset($_SESSION['act_id'])) {
                 // Display these links when no one is logged in
-                $linkClass = isset($_SESSION['uid']) ? '' : 'nav-link-white'; // Add a custom class for white color
+                $linkClass = isset($_SESSION['uid']) && isset($_SESSION['act_id'])? '' : 'nav-link-white'; // Add a custom class for white color
 
                 echo '<li class="nav-item">';
                 echo '<a href="index.php" class="nav-link ' . $linkClass . '">Home</a>';
@@ -100,6 +126,9 @@
                 echo '<a href="tenants.php" class="nav-link">Tenants</a>';
                 echo '</li>';
                 echo '<li class="nav-item">';
+                echo '<a href="bills.php" class="nav-link">Bills</a>';
+                echo '</li>';
+                echo '<li class="nav-item">';
                 echo '<a href="reservations.php" class="nav-link">Reservations</a>';
                 echo '</li>';
 
@@ -114,21 +143,50 @@
                 echo '<li class="nav-item">';
                 echo '<a href="bills.php" class="nav-link">Bills</a>';
                 echo '</li>';
-            }
-?>
+            } elseif (isset($_SESSION['actype'])) {
+                echo '<li class="nav-item">';
+                echo '<a href="index.php" class="nav-link">Home</a>';
+                echo '</li>';
+                echo '<li class="nav-item">';
+                echo '<a href="acc_dashboard.php" class="nav-link">Dashboard</a>';
+                echo '</li>';
+                echo '<li class="nav-item">';
+                echo '<a href="acc_concourse.php" class="nav-link">Concourses</a>';
+                echo '</li>';
+            }            
+        ?>
+
          
-         <?php
-   if (isset($_SESSION['uid'])) {
+         <?php if (isset($_SESSION['uid']) || isset($_SESSION['act_id'])) {
 
        // include('get_notification_count.php');
 
        echo '<li class="nav-item dropdown ml-auto">';
        echo '<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
-       if (isset($_SESSION['uimage']) && !empty($_SESSION['uimage'])) {
-           echo '<img src="' . $_SESSION['uimage'] . '" class="user-image" alt="' . $_SESSION['uname'] . '">';
-       } else {
-           echo 'Hi, ' . $_SESSION['uname'] . ' (' . $_SESSION['utype'] . ')';
-       }
+    //    if (isset($_SESSION['uimage']) && !empty($_SESSION['uimage'])) {
+    //        echo '<img src="' . $_SESSION['uimage'] . '" class="user-image" alt="' . $_SESSION['uname'] . '">';
+    //    } else {
+    //        echo 'Hi, ' . $_SESSION['uname'] . ' (' . $_SESSION['utype'] . ')';
+    //    }
+       
+// Check if 'acname' and 'actype' are set before accessing them
+        if (isset($_SESSION['acusername']) && isset($_SESSION['actype'])) {
+            if (isset($_SESSION['acimage']) && !empty($_SESSION['acimage'])) {
+                echo '<img src="' . $_SESSION['acimage'] . '" class="user-image" alt="' . $_SESSION['acusername'] . '">';
+            
+            } else {
+                echo 'Hi, ' . $_SESSION['acusername'] . ' (' . $_SESSION['actype'] . ')';
+            }
+        } elseif (isset($_SESSION['uname']) && isset($_SESSION['utype'])) {
+            if (isset($_SESSION['uimage']) && !empty($_SESSION['uimage'])) {
+                echo '<img src="' . $_SESSION['uimage'] . '" class="user-image" alt="' . $_SESSION['uname'] . '">';
+            } else {
+                echo 'Hi, ' . $_SESSION['uname'] . ' (' . $_SESSION['utype'] . ')';
+            }
+        } else {
+            // Handle the case when neither 'acname' nor 'actype' are set
+            echo 'Hi, User';
+        }
        echo '</a>';
        echo '<div class="dropdown-menu" aria-labelledby="userDropdown">';
        echo '<a class="dropdown-item" href="profile.php">
@@ -146,18 +204,18 @@
        // *******************
        // NOTIFICATIONS
        // *******************
+    if(!isset($_SESSION['act_id'])){
+        include('get_notification_count.php');
+        echo '<li class="nav-item">';
+        echo '<a href="notifications.php" class="nav-link"><i class="fa-solid fa-bell fa-xl" id="bell-count"></i></a>';
+        if ($notificationCount > 0) {
+            echo '<div class="notification-circle">';
 
-       include('get_notification_count.php');
-       echo '<li class="nav-item">';
-       echo '<a href="notifications.php" class="nav-link"><i class="fa-solid fa-bell fa-xl" id="bell-count"></i></a>';
-       if ($notificationCount > 0) {
-           echo '<div class="notification-circle">';
-
-           echo '<span id="notification-indicator" class="notification-indicator">' . $notificationCount . '</span>';
-       }
-       echo '</div>';
-       echo '</li>';
-
+            echo '<span id="notification-indicator" class="notification-indicator">' . $notificationCount . '</span>';
+        }
+        echo '</div>';
+        echo '</li>';
+        }
 
    // echo '<li class="nav-item">';
    // echo '<a href="notifications.php" class="nav-link "><i class="fa-solid fa-bell" id="bell-count"></i></a>';
@@ -170,17 +228,16 @@
    // echo '</li>';
 
 
-   } else {
-       echo '<li class="nav-item">';
-       echo '<a href="login.php" class="nav-link">Login</a>';
-       echo '</li>';
-       echo '<li class="nav-item">';
-       echo '<a href="register.php" class="nav-link">Register</a>';
-       echo '</li>';
-   }
-?>
-      </ul>
-      
+        } else {
+            echo '<li class="nav-item">';
+            echo '<a href="login.php" class="nav-link">Login</a>';
+            echo '</li>';
+            echo '<li class="nav-item">';
+            echo '<a href="register.php" class="nav-link">Register</a>';
+            echo '</li>';
+        }
+        ?>
+</ul>      
 <!-- Add the modal HTML code at the end of your page -->
 <div class="modal" tabindex="-1" role="dialog" id="logoutModal" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered" role="document">

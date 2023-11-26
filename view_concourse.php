@@ -28,13 +28,13 @@ if (isset($_GET['concourse_id'])) {
                     <?php
                     // Display concourse image or map (similar to how you did in the previous code)
                     if (!empty($concourseDetails['concourse_image'])) {
-                        echo '<img src="/COMS/uploads/featured-concourse/' . $concourseDetails['concourse_image'] . '" id="concourseImage" class="card-img-top" alt="Concourse Image" style="width:100%; height: 300px;">';
+                        echo '<img src="/COMS-GENERIC/uploads/featured-concourse/' . $concourseDetails['concourse_image'] . '" id="concourseImage" class="card-img-top" alt="Concourse Image" style="width:100%; height: 300px;">';
                     } elseif (!empty($concourseDetails['concourse_map'])) {
-                        echo '<img src="/COMS/uploads/' . $concourseDetails['concourse_map'] . '" id="concourseImage" class="card-img-top" alt="Concourse Map" style="width:100%; height: 300px;">';
+                        echo '<img src="/COMS-GENERIC/uploads/' . $concourseDetails['concourse_map'] . '" id="concourseImage" class="card-img-top" alt="Concourse Map" style="width:100%; height: 300px;">';
                     } else {
                         echo '<img src="path_to_placeholder_image.jpg" id="concourseImage" class="card-img-top" alt="Placeholder Image" style="width:100%; height: 300px;">';
                     }
-        ?>
+                    ?>
                 </div>
                 <div class="card-body">
                     <h5 class="card-title"><?php echo $concourseDetails['concourse_name']; ?></h5>
