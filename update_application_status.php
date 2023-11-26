@@ -14,10 +14,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($action === 'approve') {
         $status = 'approved';
 
+        // Get the tenant_name from space_application
+        $getTenantNameQuery = "SELECT tenant_name, spacename FROM space_application WHERE app_id = ?";
+        $getTenantNameStmt = $con->prepare($getTenantNameQuery);
+        $getTenantNameStmt->bind_param('i', $applicationId);
+        $getTenantNameStmt->execute();
+        $getTenantNameResult = $getTenantNameStmt->get_result();
+        $tenantNameRow = $getTenantNameResult->fetch_assoc();
+        $tenantName = $tenantNameRow['tenant_name'];
+        $spaceName = $tenantNameRow['spacename'];
+
         // Update the space table if approved
-        $updateSpaceQuery = "UPDATE space SET status = 'occupied' WHERE space_name IN (SELECT spacename FROM space_application WHERE app_id = ?)";
+        $updateSpaceQuery = "UPDATE space SET status = 'occupied', space_tenant = ? WHERE space_name = ?";
         $updateSpaceStmt = $con->prepare($updateSpaceQuery);
-        $updateSpaceStmt->bind_param('i', $applicationId);
+        $updateSpaceStmt->bind_param('ss', $tenantName, $spaceName);
     } elseif ($action === 'reject') {
         $status = 'rejected';
 
