@@ -104,10 +104,10 @@ include('includes/nav.php');
                   echo '<div class="image-container">';
                   if (!empty($mapData['concourse_image'])) {
                       // Display the concourse_image if it exists
-                      echo '<img src="/COMS-GENERIC/uploads/featured-concourse/' . $mapData['concourse_image'] . '" id="concourseImage" class="card-img-top smaller-image" alt="Concourse Image" style="width:100%; height: 300px;">';
+                      echo '<img src="/COMS/uploads/featured-concourse/' . $mapData['concourse_image'] . '" id="concourseImage" class="card-img-top smaller-image" alt="Concourse Image" style="width:100%; height: 300px;">';
                   } elseif (!empty($mapData['concourse_map'])) {
                       // Display the concourse_map if concourse_image is not available
-                      echo '<img src="/COMS-GENERIC/uploads/' . $mapData['concourse_map'] . '" id="concourseImage" class="card-img-top smaller-image" alt="Concourse Map" style="width:100%; height: 300px;">';
+                      echo '<img src="/COMS/uploads/' . $mapData['concourse_map'] . '" id="concourseImage" class="card-img-top smaller-image" alt="Concourse Map" style="width:100%; height: 300px;">';
                   } else {
                       // Handle the case when both concourse_image and concourse_map are empty, e.g., display a placeholder image
                       echo '<img src="path_to_placeholder_image.jpg" id="concourseImage" class="card-img-top smaller-image" alt="Placeholder Image" style="width:100%; height: 300px;">';
