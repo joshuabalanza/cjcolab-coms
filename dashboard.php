@@ -128,10 +128,12 @@ include('includes/nav.php');
       <?php elseif ($verificationStatus === 'approved' && $utype === 'Tenant'): ?>
         <h1>Dashboard</h1>
         <?php
-        $sql = "SELECT * FROM space WHERE status = 'available'";
-$result = $con->query($sql);
+            $sql = "SELECT * FROM space";
+            $result = mysqli_query($con, $sql);
 
-$con->close();?>
+            $con->close();
+            ?>
+
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -205,80 +207,91 @@ $con->close();?>
         border-radius: 4px;
         cursor: pointer;
     }
-    #appModal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            justify-content: center;
-            align-items: center;
-        }
 
-        #appModalContent {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            max-width: 400px;
-            width: 100%;
-        }
+    #appModal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+    }
+
+    #appModalContent {
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        max-width: 400px;
+        width: 100%;
+    }
 </style>
-    <h1>Available Spaces</h1>
-    <div class="container">
+
+<h1>Available Spaces</h1>
+
+<div class="container">
+<?php
+if ($result && mysqli_num_rows($result) > 0) {
+    while ($row = $result->fetch_assoc()) {
+        echo "<div class='card' onclick='openModal(\"{$row['space_name']}\", \"{$row['status']}\", " . json_encode($row) . ")'>";
+        echo "<h2>{$row['space_name']}</h2>";
+        echo "<h6>{$row['status']}</h6>";
+
+        echo "<div class='details' style='display: none;'>";
+        echo "<ul>";
+        echo "<li><strong>Space ID:</strong> {$row['space_id']}</li>";
+        echo "<li><strong>Concourse ID:</strong> {$row['concourse_id']}</li>";
+        echo "<li><strong>Status:</strong> {$row['status']}</li>";
+        echo "<li><strong>Space Width:</strong> {$row['space_width']}</li>";
+        echo "<li><strong>Space Length:</strong> {$row['space_length']}</li>";
+        echo "<li><strong>Space Height:</strong> {$row['space_height']}</li>";
+        echo "<li><strong>Space Area:</strong> {$row['space_area']}</li>";
+        echo "<li><strong>Space Dimension:</strong> {$row['space_dimension']}</li>";
+        // echo "<li><strong>Space Status:</strong> {$row['space_status']}</li>";
+        echo "<li><strong>Space Tenant:</strong> {$row['space_tenant']}</li>";
+        echo "</ul>";
+        echo "</div>";
+        echo "</div>";
+    }
+} else {
+    echo "<p>No available spaces</p>";
+}
+?>
+
+<!-- Modal for space details -->
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <div id="modalContent">
+            <!-- Space information will be dynamically loaded here -->
+        </div>
         <?php
-        if ($result && $result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                echo "<div class='card' onclick='openModal(\"{$row['space_name']}\")'>";
-                echo "<h2>{$row['space_name']}</h2>";
-                echo "<div class='details' style='display: none;'>";
-                echo "<ul>";
-                echo "<li><strong>Space ID:</strong> {$row['space_id']}</li>";
-                echo "<li><strong>Concourse ID:</strong> {$row['concourse_id']}</li>";
-                echo "<li><strong>Status:</strong> {$row['status']}</li>";
-                echo "<li><strong>Space Width:</strong> {$row['space_width']}</li>";
-                echo "<li><strong>Space Length:</strong> {$row['space_length']}</li>";
-                echo "<li><strong>Space Height:</strong> {$row['space_height']}</li>";
-                echo "<li><strong>Space Area:</strong> {$row['space_area']}</li>";
-                echo "<li><strong>Space Dimension:</strong> {$row['space_dimension']}</li>";
-                echo "<li><strong>Space Status:</strong> {$row['space_status']}</li>";
-                echo "<li><strong>Space Tenant:</strong> {$row['space_tenant']}</li>";
-                echo "</ul>";
-                echo "</div>";
-                echo "</div>";
-            }
-        } else {
-            echo "<p>No available spaces</p>";
+        // Assuming you have a variable storing the selected space name
+        // $selectedSpaceName = "Example Space";
+        if (isset($_SESSION['status']) !== 'reserved' && isset($_SESSION['status']) !== 'occupied') {
+            echo '<button id="applyButton" onclick="openAppModal()">Apply</button>';
         }
         ?>
+    </div>
+</div>
 
-                <!-- Modal for space details -->
-                <div id="myModal" class="modal">
-            <div class="modal-content">
-                <span class="close-btn" onclick="closeModal()">&times;</span>
-                <div id="modalContent">
-                    <!-- Space information will be dynamically loaded here -->
-                </div>
-                <button onclick="openAppModal()">Apply</button>
-            </div>
-        </div>
-
-        <div id="appModal" class="modal">
+    <div id="appModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeAppModal()">&times;</span>
             <div>
                 <?php
-                    if (isset($successMessage)) {
-                        echo "<p style='color: green;'>$successMessage</p>";
-                    } elseif (isset($errorMessage)) {
-                        echo "<p style='color: red;'>$errorMessage</p>";
-                    }
+                if (isset($successMessage)) {
+                    echo "<p style='color: green;'>$successMessage</p>";
+                } elseif (isset($errorMessage)) {
+                    echo "<p style='color: red;'>$errorMessage</p>";
+                }
                 ?>
                 <h2>Apply for Space</h2>
                 <form method="POST" action='apply_space_process.php'>
-                     <input type="hidden" name="spacename" id="appSpacename" value="">
+                    <input type="hidden" name="spacename" id="appSpacename" value="">
                     <label for="tenant_name">Tenant Name:</label>
                     <input type="text" name="tenant_name" value="<?php echo $_SESSION['uname']; ?>" readonly>
                     <label for="ap_email">Tenant Email:</label>
@@ -291,29 +304,44 @@ $con->close();?>
         </div>
     </div>
 
-        <script>
- function openModal(spaceName) {
+    <script>
+function openModal(spaceName, spaceStatus, spaceDetails) {
     var modal = document.getElementById("myModal");
     var modalContent = document.getElementById("modalContent");
+    var applyButton = document.getElementById("applyButton");
 
-    // Find the details div corresponding to the clicked space
-    var details = document.querySelector(".card div.details");
+    // Show modal
+    modal.style.display = "flex";
 
-    // Hide details divs for all cards
-    var allDetails = document.querySelectorAll(".card div.details");
-    allDetails.forEach(function(item) {
-        item.style.display = "none";
-    });
-
-    // Show details for the clicked card
-    details.style.display = "block";
-
-    modalContent.innerHTML = details.innerHTML;
+    // Set the spacename and status in the modalContent
+    modalContent.innerHTML = `
+        <h2>${spaceName}</h2>
+        <p>Status: ${spaceStatus}</p>
+        <ul>
+            <li><strong>Space ID:</strong> ${spaceDetails['space_id']}</li>
+            <li><strong>Concourse ID:</strong> ${spaceDetails['concourse_id']}</li>
+            <li><strong>Status:</strong> ${spaceDetails['status']}</li>
+            <li><strong>Space Width:</strong> ${spaceDetails['space_width']}</li>
+            <li><strong>Space Length:</strong> ${spaceDetails['space_length']}</li>
+            <li><strong>Space Height:</strong> ${spaceDetails['space_height']}</li>
+            <li><strong>Space Area:</strong> ${spaceDetails['space_area']}</li>
+            <li><strong>Space Dimension:</strong> ${spaceDetails['space_dimension']}</li>
+            <li><strong>Space Tenant:</strong> ${spaceDetails['space_tenant']}</li>
+        </ul>
+    `;
 
     // Set the spacename in the application form
     document.getElementById("appSpacename").value = spaceName;
 
-    modal.style.display = "flex";
+    // Check if the space status is 'reserved' or 'occupied'
+    if (spaceStatus === 'reserved' || spaceStatus === 'occupied') {
+        // Hide the Apply button
+        applyButton.style.display = "none";
+    } else {
+        // Show and enable the Apply button
+        applyButton.style.display = "block";
+        applyButton.removeAttribute('disabled');
+    }
 }
 
 
@@ -342,19 +370,11 @@ $con->close();?>
         var appModal = document.getElementById("appModal");
         appModal.style.display = "none";
     }
-    function openAppModal() {
-            closeModal(); // Close the previous modal
-            var appModal = document.getElementById("appModal");
-            appModal.style.display = "flex";
-        }
+</script>
 
-        function closeAppModal() {
-            var appModal = document.getElementById("appModal");
-            appModal.style.display = "none";
-        }
-        </script>
-    </div>
-<div>
+
+</div>
+</div>
 
 
       <!-- <a href="tenant-apply-space.php">
