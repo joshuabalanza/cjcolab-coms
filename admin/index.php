@@ -280,7 +280,7 @@ form .user-details .input-box{
             class="form-control form-input"
              name="apassword" 
              id="password" 
-             placeholder=""/>
+             placeholder="Password  "/>
         </div>
 
         <div class="button">
