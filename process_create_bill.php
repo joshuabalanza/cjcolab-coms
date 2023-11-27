@@ -100,7 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_bill'])) {
 }
 
 // Function to send an email to the tenant
-function sendEmailToTenant($email, $tenantName, $total)
+function sendEmailToTenant($email, $tenantName, $electric, $water, $spaceBill, $total, $dueDate)
 {
     $mail = new PHPMailer(true);
 
@@ -118,13 +118,65 @@ function sendEmailToTenant($email, $tenantName, $total)
         $mail->setFrom('coms.system.adm@gmail.com', 'Concessionaire Monitoring Operation System');
         $mail->addAddress($email, $tenantName);     // Add a recipient
 
+        // Get the current month
+        $currentMonth = date('F');
+
         // Content
         $mail->isHTML(true);
-        $mail->Subject = 'New Bill Notification';
-        $mail->Body    = "Dear $tenantName, <br><br>Your new bill is ready. The total amount is $total. <br><br>Regards, <br>Your Landlord";
+        $mail->Subject = "Billing information";
+        $mail->Body = "
+            <html lang='en'>
+            <head>
+                <meta charset='UTF-8'>
+                <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+                <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+                <style>
+                    body {
+                        font-family: 'Arial', sans-serif;
+                        background-color: #f4f4f4;
+                        color: #333;
+                        padding: 20px;
+                        margin: 0;
+                    }
+
+                    .container {
+                        max-width: 600px;
+                        margin: 0 auto;
+                        background-color: #fff;
+                        padding: 20px;
+                        border-radius: 8px;
+                        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                    }
+
+                    h1 {
+                        color: #3498db;
+                    }
+
+                    p {
+                        margin-bottom: 20px;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class='container'>
+                    <h1>Bill Information</h1>
+                    <p>Dear $tenantName,</p>
+                    <p>Your new bill details for the month of $currentMonth are as follows:</p>
+                    <ul>
+                        <li>Electric: $electric</li>
+                        <li>Water: $water</li>
+                        <li>Space Bill: $spaceBill</li>
+                        <li>Total: $total</li>
+                        <li>Due Date: $dueDate</li>
+                    </ul>
+                    <p>Regards,<br>Your Landlord</p>
+                </div>
+            </body>
+            </html>
+        ";
 
         $mail->send();
-
+        
         return true; // Email sent successfully
     } catch (Exception $e) {
         echo json_encode(['error' => 'Email could not be sent. Mailer Error: ' . $mail->ErrorInfo]);
