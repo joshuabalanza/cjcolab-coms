@@ -20,15 +20,29 @@ if (isset($_POST['submit_space'])) {
     $space_width = $_POST['space_width'];
     $space_length = $_POST['space_length'];
     $space_height = $_POST['space_height'];
-    $space_status = $_POST['space_status'];
+    $space_status = $_POST['status'];
     $concourse_id = $_POST['concourse_id'];
+    // Get owner information from the user table
+    $ownerId = $_SESSION['uid'];
+    $getUserQuery = "SELECT uname, uemail FROM user WHERE uid = $ownerId";
+    $userResult = mysqli_query($con, $getUserQuery);
 
-    $insertQuery = "INSERT INTO space (concourse_id, space_name, space_width, space_length, space_height, space_status) VALUES ('$concourse_id', '$space_name', $space_width, $space_length, $space_height, '$space_status')";
+    if ($userResult && mysqli_num_rows($userResult) > 0) {
+        $userData = mysqli_fetch_assoc($userResult);
+        $ownerName = $userData['uname'];
+        $ownerEmail = $userData['uemail'];
 
-    if (mysqli_query($con, $insertQuery)) {
-        echo "Space inserted successfully.";
+        // Insert space with owner information
+        $insertQuery = "INSERT INTO space (concourse_id, space_name, space_width, space_length, space_height, status, space_owner, space_oemail) 
+                        VALUES ('$concourse_id', '$space_name', $space_width, $space_length, $space_height, '$space_status', '$ownerName', '$ownerEmail')";
+
+        if (mysqli_query($con, $insertQuery)) {
+            echo "Space inserted successfully.";
+        } else {
+            echo "Error: " . mysqli_error($con);
+        }
     } else {
-        echo "Error: " . mysqli_error($con);
+        echo "Error retrieving owner information.";
     }
 }
 ?>
@@ -155,8 +169,8 @@ include('includes/nav.php');
                     <input type="number" id="space_length" name="space_length" required>
                     <label for="space_height">Space Height:</label>
                     <input type="number" id="space_height" name="space_height" required>
-                    <label for="space_status">Space Status:</label>
-                    <select id="space_status" name="space_status">
+                    <label for="status">Space Status:</label>
+                    <select id="status" name="status">
                         <option value="available">Available</option>
                         <option value="reserved">Reserved</option>
                         <option value="occupied">Occupied</option>
