@@ -22,6 +22,8 @@ if (isset($_POST['submit_space'])) {
     $space_height = $_POST['space_height'];
     $space_status = $_POST['status'];
     $concourse_id = $_POST['concourse_id'];
+    $coordinates = $_POST['coordinates']; // Added to store coordinates
+
     // Get owner information from the user table
     $ownerId = $_SESSION['uid'];
     $getUserQuery = "SELECT uname, uemail FROM user WHERE uid = $ownerId";
@@ -32,9 +34,9 @@ if (isset($_POST['submit_space'])) {
         $ownerName = $userData['uname'];
         $ownerEmail = $userData['uemail'];
 
-        // Insert space with owner information
-        $insertQuery = "INSERT INTO space (concourse_id, space_name, space_width, space_length, space_height, status, space_owner, space_oemail) 
-                        VALUES ('$concourse_id', '$space_name', $space_width, $space_length, $space_height, '$space_status', '$ownerName', '$ownerEmail')";
+        // Insert space with owner information and coordinates
+        $insertQuery = "INSERT INTO space (concourse_id, space_name, space_width, space_length, space_height, status, space_owner, space_oemail, coordinates) 
+                        VALUES ('$concourse_id', '$space_name', $space_width, $space_length, $space_height, '$space_status', '$ownerName', '$ownerEmail', '$coordinates')";
 
         if (mysqli_query($con, $insertQuery)) {
             echo "Space inserted successfully.";
@@ -84,39 +86,47 @@ include('includes/nav.php');
     background: #0000004d;
     color: #fff !important;
     } */
-    #fp-canvas-container{
-    height:50vh;
-    width:calc(100%);
-    position:relative;
+    #fp-canvas-container {
+        height: 50vh;
+        width: calc(100%);
+        position: relative;
     }
-    .fp-img,.fp-canvas,.fp-canvas-2{
-    position:absolute;
-    width:calc(100%);
-    height:calc(100%);
-    top:0;
-    left:0;
-    z-index: 1;
+
+    .fp-img,
+    .fp-canvas,
+    .fp-canvas-2 {
+        position: absolute;
+        width: calc(100%);
+        height: calc(100%);
+        top: 0;
+        left: 0;
+        z-index: 1;
     }
-    #fp-map{
-    position:absolute;
-    width:calc(100%);
-    height:calc(100%);
-    top:0;
-    left:0;
-    z-index: 1;
+
+    #fp-map {
+        position: absolute;
+        width: calc(100%);
+        height: calc(100%);
+        top: 0;
+        left: 0;
+        z-index: 1;
     }
+
     .fp-canvas {
-    z-index: 2;
-    background: #0000000d;
-    cursor: crosshair;
+        z-index: 2;
+        background: #0000000d;
+        cursor: crosshair;
     }
-    #fp-map{
-    z-index: 1;
+
+    #fp-map {
+        z-index: 1;
     }
+
     area:hover {
-    background: #0000004d;
-    color: #fff !important;
+        background: #0000004d;
+        color: #fff !important;
     }
+
     .tooltip {
         position: absolute;
         background: rgba(255, 255, 255, 0.8);
@@ -156,9 +166,10 @@ include('includes/nav.php');
                 <canvas class="fp-canvas d-none" id="fp-canvas"></canvas>
             </div>
             <div class="col-md-4 space-sidebar-form">
-                <h3><?php echo isset($concourseData['concourse_name']) ? $concourseData['concourse_name'] : "Concourse"; ?></h3>
-                <form id="space-form" class='form' action="" method="post">
-                    <input type="hidden" name="concourse_id" value="<?php echo $concourse_id; ?>">
+    <h3><?php echo isset($concourseData['concourse_name']) ? $concourseData['concourse_name'] : "Concourse"; ?></h3>
+    <form id="space-form" class='form d-none' action="" method="post">
+        <input type="hidden" name="concourse_id" value="<?php echo $concourse_id; ?>">
+        <input type="hidden" id="coordinates" name="coordinates" value="">
 
                     <h3>Space Details</h3>
                     <label for="space_name">Space Name:</label>
@@ -180,17 +191,17 @@ include('includes/nav.php');
             </div>
         </div>
     </div>
-    </div>
 </section>
 <?php
-$sql = "SELECT * FROM `space` order by space_id asc";
+$sql = "SELECT * FROM `space` WHERE concourse_id = $concourse_id ORDER BY space_id ASC";
 $qry = $con->query($sql);
 $tbl = array();
 while ($row = $qry->fetch_assoc()) :
     $tbl[$row['space_id']] = array(
         "id" => $row['space_id'],
         "tbl_no" => $row['space_id'],
-        "name" => $row['space_name']
+        "name" => $row['space_name'],
+        "coordinates" => $row['coordinates']
     );
     ?>
     <tr>
@@ -229,7 +240,7 @@ while ($row = $qry->fetch_assoc()) :
                 var y = $('#fp-img').height() * perc[1];
                 var width = ($('#fp-img').width() * perc[2]) - x;
                 var height = ($('#fp-img').height() * perc[3]) - y;
-                area.attr('coords', x + ", " + y + ", " + width + ", " + height)
+                area.attr('coords', x + ", " + y + ", " + (x + width) + ", " + (y + height))
                 area.text("#" + data.tbl_no)
                 area.addClass('fw-bolder text-muted')
                 area.css({
@@ -252,7 +263,7 @@ while ($row = $qry->fetch_assoc()) :
                 });
                 area.click(function () {
                     console.log("click")
-                    // uni_modal('Table Details',"view_table.php?id="+data.id)
+                    uni_modal('Table Details',"view_table.php?id="+data.id)
                 })
             })
         }
@@ -327,6 +338,8 @@ while ($row = $qry->fetch_assoc()) :
             $(this).addClass('d-none');
             $('#cancel').removeClass('d-none');
             $('#fp-canvas').addClass('d-none');
+            var coordinatesValue = posX + ',' + posY + ',' + nposX + ',' + nposY;
+            $('#coordinates').val(coordinatesValue);
         });
     });
 </script>
