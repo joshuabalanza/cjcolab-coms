@@ -136,29 +136,28 @@ include('includes/nav.php');
                             </div>
                             <div class="modal-body">
                             <form id="spaceDetailsForm" action="submit_space.php" method="post" enctype="multipart/form-data">
-    <!-- Space details form fields go here -->
-    <input type="hidden" name="concourse_id" value="<?php echo $concourse_id; ?>">
-    <h3>Space Details</h3>
-    <label for="space_name_modal">Space Name:</label>
-    <input type="text" id="space_name_modal" name="space_name" required>
-    <!-- Add other space details fields as needed -->
-    <label for="space_width_modal">Space Width:</label>
-    <input type="number" id="space_width_modal" name="space_width" required>
-    <label for="space_length_modal">Space Length:</label>
-    <input type="number" id="space_length_modal" name="space_length" required>
-    <label for="space_height_modal">Space Height:</label>
-    <input type="number" id="space_height_modal" name="space_height" required>
-    <label for="status_modal">Space Status:</label>
-    <select id="status_modal" name="status">
-        <option value="available">Available</option>
-        <option value="reserved">Reserved</option>
-        <option value="occupied">Occupied</option>
-    </select>
-    <label for="space_image_modal">Space Image:</label>
-    <input type="file" id="space_image_modal" name="space_image" accept="image/*">
-    <button type="submit" name="submit_space_modal">Submit Space</button>
-</form>
-
+                                <!-- Space details form fields go here -->
+                                <input type="hidden" name="concourse_id" value="<?php echo $concourse_id; ?>">
+                                <h3>Space Details</h3>
+                                <label for="space_name_modal">Space Name:</label>
+                                <input type="text" id="space_name_modal" name="space_name" required>
+                                <!-- Add other space details fields as needed -->
+                                <label for="space_width_modal">Space Width:</label>
+                                <input type="number" id="space_width_modal" name="space_width" required>
+                                <label for="space_length_modal">Space Length:</label>
+                                <input type="number" id="space_length_modal" name="space_length" required>
+                                <label for="space_height_modal">Space Height:</label>
+                                <input type="number" id="space_height_modal" name="space_height" required>
+                                <label for="status_modal">Space Status:</label>
+                                <select id="status_modal" name="status">
+                                    <option value="available">Available</option>
+                                    <option value="reserved">Reserved</option>
+                                    <option value="occupied">Occupied</option>
+                                </select>
+                                <label for="space_image_modal">Space Image:</label>
+                                <input type="file" id="space_image_modal" name="space_image_modal" accept="image/*">
+                                <button type="submit" name="submit_space_modal">Submit Space</button>
+                            </form>
                             </div>
                         </div>
                     </div>
