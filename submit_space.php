@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_space_modal'])
 
         // Handle file upload
         if (isset($_FILES['space_image_modal'])) {
-            $uploadDir = '/COMS/uploads/';  // Specify the upload directory
+            $uploadDir = __DIR__ . '/uploads/';  // Specify the upload directory
             $uploadFile = $uploadDir . basename($_FILES['space_image_modal']['name']);
     
             if (move_uploaded_file($_FILES['space_image_modal']['tmp_name'], $uploadFile)) {
