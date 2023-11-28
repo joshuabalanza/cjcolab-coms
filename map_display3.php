@@ -98,13 +98,18 @@ include('includes/nav.php');
       <div class="card-body">
          <div class="row"></div>
          <div class="col-md-8">
-            <div class="row">
-               <div class="col-12 text-right">
-                  <button class="btn btn-primary rounded-0" id="draw"> Draw to Map Space</button>
-                  <button class="btn btn-primary rounded-0 d-none" id="create_table"> Create Space</button>
-                  <button class="btn btn-dark rounded-0 d-none" id="cancel"> Cancel</button>
-               </div>
-            </div>
+                <div class="row">
+                <!-- <div class="col-12 text-right">
+                    <button class="btn btn-primary rounded-0" id="draw"> Draw to Map Space</button>
+                    <button class="btn btn-primary rounded-0 d-none" id="create_table"> Create Space</button>
+                    <button class="btn btn-dark rounded-0 d-none" id="cancel"> Cancel</button>
+                </div> -->
+                <div class="col-12 text-right">
+    <button class="btn btn-primary rounded-0" id="draw"> Draw to Map Space</button>
+    <button class="btn btn-primary rounded-0" id="openSpaceModal"> Create Space</button>
+    <button class="btn btn-dark rounded-0 d-none" id="cancel"> Cancel</button>
+</div>
+                </div>
             <!-- <div class="col-2 text-right">
                <button class="btn btn-primary rounded-0" id="space-list    "> Space List</button>
                </div> -->
@@ -122,31 +127,56 @@ include('includes/nav.php');
                <map name="fp-map" id="fp-map" class=""></map>
                <canvas class="fp-canvas d-none" id="fp-canvas"></canvas>
             </div>
-            <div class="col-md-4 space-sidebar-form">
-               <h3><?php echo isset($concourseData['concourse_name']) ? $concourseData['concourse_name'] : "Concourse"; ?></h3>
-               <form id="space-form" class="d-none">
-                  <h3>Space Details</h3>
-                  <label for="space_name">Space Name:</label>
-                  <input type="text" id="space_name" name="space_name" required>
-                  <label for="space_width">Space Width:</label>
-                  <input type="number" id="space_width" name="space_width" required>
-                  <label for="space_length">Space Length:</label>
-                  <input type="number" id="space_length" name="space_length" required>
-                  <label for="space_height">Space Height:</label>
-                  <input type="number" id="space_height" name="space_height" required>
-                  <label for="space_status">Space Status:</label>
-                  <select id="space_status" name="space_status">
-                     <option value="available">Available</option>
-                     <option value="reserved">Reserved</option>
-                     <option value="occupied">Occupied</option>
-                  </select>
-                  <button type="button" id="submit_space">Submit Space</button>
-               </form>
-            </div>
+                <div class="col-md-4 space-sidebar-form">
+                <h3><?php echo isset($concourseData['concourse_name']) ? $concourseData['concourse_name'] : "Concourse"; ?></h3>
+                <form id="space-form" class="d-none">
+                    <h3>Space Details</h3>
+                    <label for="space_name">Space Name:</label>
+                    <input type="text" id="space_name" name="space_name" required>
+                    <label for="space_width">Space Width:</label>
+                    <input type="number" id="space_width" name="space_width" required>
+                    <label for="space_length">Space Length:</label>
+                    <input type="number" id="space_length" name="space_length" required>
+                    <label for="space_height">Space Height:</label>
+                    <input type="number" id="space_height" name="space_height" required>
+                    <label for="space_status">Space Status:</label>
+                    <select id="space_status" name="space_status">
+                        <option value="available">Available</option>
+                        <option value="reserved">Reserved</option>
+                        <option value="occupied">Occupied</option>
+                    </select>
+                    <button type="button" id="submit_space">Submit Space</button>
+                </form>
+                </div>
          </div>
       </div>
    </div>
    </div>
+   <!-- Bootstrap Modal for Space Form -->
+<div class="modal fade" id="spaceModal" tabindex="-1" role="dialog" aria-labelledby="spaceModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="spaceModalLabel">Create Space</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Space Form Content Goes Here -->
+                <h3><?php echo isset($concourseData['concourse_name']) ? $concourseData['concourse_name'] : "Concourse"; ?></h3>
+                <form id="space-form">
+                    <!-- ... Your existing form fields ... -->
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" id="submit_space" class="btn btn-primary">Submit Space</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 </section>
 <?php
    $sql = "SELECT * FROM `space` order by space_id asc";
@@ -226,6 +256,9 @@ while($row = $qry->fetch_assoc()):
        $(window).on('resize', function () {
            map_tbls();
        });
+       $('#openSpaceModal').click(function () {
+        $('#spaceModal').modal('show');
+    });
    
        $('#draw').click(function () {
            $(this).hide('slow');
@@ -234,7 +267,11 @@ while($row = $qry->fetch_assoc()):
            cposY = $('#fp-canvas')[0].getBoundingClientRect().y;
            ctx = $('#fp-canvas')[0].getContext('2d');
        });
-   
+       $('#spaceModal').on('hidden.bs.modal', function () {
+        $('#draw').show('slow');
+        $('#cancel').addClass('d-none');
+        $('#fp-canvas').addClass('d-none');
+    });
        $('#cancel').click(function () {
            $(this).addClass('d-none');
            $('#create_table,#fp-canvas').addClass('d-none');
