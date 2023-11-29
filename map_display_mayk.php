@@ -12,8 +12,6 @@ if (isset($_GET['concourse_id'])) {
     $concourse_id = $_GET['concourse_id'];
     $concourseQuery = "SELECT * FROM concourse_verification WHERE concourse_id = $concourse_id";
     $concourseResult = mysqli_query($con, $concourseQuery);
-    $spacesQuery = "SELECT * FROM space WHERE concourse_id = $concourse_id";
-    $spacesResult = mysqli_query($con, $spacesQuery);
 } else {
     echo 'Concourse ID not provided.';
 }
@@ -161,26 +159,7 @@ include('includes/nav.php');
                     </div>
                 <!-- Container for generated cards -->
                 <div class="col-md-6" id="generatedCardsContainer">
-                    <?php
-                    if ($spacesResult && mysqli_num_rows($spacesResult) > 0) {
-                        while ($spaceData = mysqli_fetch_assoc($spacesResult)) {
-                            echo "<div class='col-md-4'>
-                                    <div class='card' onclick='openModal(\"{$spaceData['space_name']}\", \"{$spaceData['status']}\", " . json_encode($spaceData) . ")'>
-                                        <h2>{$spaceData['space_name']}</h2>
-                                        <div class='details' style='display: none;'>
-                                            <form class='space-details-form' id='spaceForm_{$spaceData['space_id']}'>
-                                                <label for='space_name_modal'>Space Name:</label>
-                                                <input type='text' id='space_name_modal' name='space_name' required>
-                                                <button type='button' onclick='submitSpace({$spaceData['space_id']})'>Submit Space</button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>";
-                        }
-                    } else {
-                        echo "<p>No spaces found for the selected concourse.</p>";
-                    }
-                    ?>
+
                 </div>
             </div>
                 <!-- Modal for inputting number of spaces -->
