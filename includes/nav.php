@@ -137,6 +137,9 @@
                 echo '<li class="nav-item">';
                 echo '<a href="index.php" class="nav-link">Home</a>';
                 echo '</li>';
+                 echo '<li class="nav-item">';
+                echo '<a href="dashboard_tenant2.php" class="nav-link">Dashboard</a>';
+                echo '</li>';
                 echo '<li class="nav-item">';
                 echo '<a href="concourses.php" class="nav-link">Concourses</a>';
                 echo '</li>';
