@@ -113,9 +113,9 @@
                 echo '<a href="index.php" class="nav-link ' . $linkClass . '">Contact</a>';
             } elseif (isset($_SESSION['utype']) && $_SESSION['utype'] == 'Owner') {
                 // Display these links for Owner type users
-                echo '<li class="nav-item">';
-                echo '<a href="index.php" class="nav-link">Home</a>';
-                echo '</li>';
+                // echo '<li class="nav-item">';
+                // echo '<a href="index.php" class="nav-link">Home</a>';
+                // echo '</li>';
                 echo '<li class="nav-item">';
                 echo '<a href="dashboard.php" class="nav-link">Dashboard</a>';
                 echo '</li>';
@@ -134,9 +134,9 @@
 
             } elseif (isset($_SESSION['utype']) && $_SESSION['utype'] == 'Tenant') {
                 // Display these links for Tenant type users
-                echo '<li class="nav-item">';
-                echo '<a href="index.php" class="nav-link">Home</a>';
-                echo '</li>';
+                // echo '<li class="nav-item">';
+                // echo '<a href="index.php" class="nav-link">Home</a>';
+                // echo '</li>';
                  echo '<li class="nav-item">';
                 echo '<a href="dashboard_tenant2.php" class="nav-link">Dashboard</a>';
                 echo '</li>';
@@ -147,9 +147,9 @@
                 echo '<a href="bills.php" class="nav-link">Bills</a>';
                 echo '</li>';
             } elseif (isset($_SESSION['actype'])) {
-                echo '<li class="nav-item">';
-                echo '<a href="index.php" class="nav-link">Home</a>';
-                echo '</li>';
+                // echo '<li class="nav-item">';
+                // echo '<a href="index.php" class="nav-link">Home</a>';
+                // echo '</li>';
                 echo '<li class="nav-item">';
                 echo '<a href="acc_dashboard.php" class="nav-link">Dashboard</a>';
                 echo '</li>';
