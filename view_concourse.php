@@ -145,6 +145,7 @@ include('includes/nav.php');
 </style>
 
 <?php
+if (isset($_SESSION['aid']) && $_SESSION['atype'] === 'accountant') {
 // Check if concourse_id is set in the URL
 if (isset($_GET['concourse_id'])) {
     $concourseId = $_GET['concourse_id'];
@@ -184,7 +185,8 @@ if (isset($_GET['concourse_id'])) {
                 <!-- Display occupied spaces with the modified table design -->
                 <h2>Occupied Spaces</h2>
                 <?php
-                $occupiedSpacesQuery = "SELECT * FROM space WHERE status = 'occupied'";
+                // Fetch occupied spaces based on concourse_id
+                $occupiedSpacesQuery = "SELECT * FROM space WHERE status = 'occupied' AND concourse_id = '$concourseId'";
                 $occupiedSpacesResult = $con->query($occupiedSpacesQuery);
 
                 if ($occupiedSpacesResult->num_rows > 0) {
@@ -341,7 +343,7 @@ if (isset($_GET['concourse_id'])) {
     echo 'Invalid request. Please provide a concourse_id.';
     echo '</div>';
     echo '</div>';
-}
+}}
 ?>
 
 <?php include('includes/footer.php'); ?>
