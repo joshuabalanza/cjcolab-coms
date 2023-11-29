@@ -393,14 +393,14 @@
    <!-- ************ TENANT VERIFIED **************-->
    <!-- **********************************-->
    <?php elseif ($verificationStatus === 'approved' && $utype === 'Tenant'): ?>
-   <h1>Dashboard</h1>
+   <!-- <h1>Dashboard</h1> -->
    <?php
       $sql = "SELECT * FROM space";
       $result = mysqli_query($con, $sql);
       
       $con->close();
       ?>
-   <h1>Available Spaces</h1>
+   <!-- <h1>Available Spaces</h1> -->
    <div class="container">
       <?php
          if ($result && mysqli_num_rows($result) > 0) {
