@@ -5,6 +5,12 @@ session_name("admin_session");
 session_start();?>
 
 <?php
+
+
+if (!isset($_SESSION['aid'])) {
+    header('Location: index.php');
+    exit();
+}
 // $sql = "SELECT * FROM user"; // Replace 'user' with your user table name
 // $result = mysqli_query($con, $sql);
 
