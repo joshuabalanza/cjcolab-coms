@@ -142,9 +142,15 @@ echo '</div>';
       </div>
       <!-- TENANT -->
       <?php elseif ($verificationStatus === 'approved' && $utype === 'Tenant'): ?>
-      <a href="tenant-apply-space.php">
+      <!-- <a href="tenant-apply-space.php">
       <button class="btn-sm btn btn-success">Apply For Space</button>
-      </a>
+      </a> -->
+      <div class="container-fluid">
+      <h3 style="margin-top: 15px; text-align: center;">Concourses</h3>
+      <div id="concourse-list" class="row" style="width: 80%; margin: 0 auto;">
+         <!-- This div will be populated with the fetched data -->
+      </div>
+   </div>
       <?php else: ?>
       <div id="verificationModal" class="prompt-modal">
          <div class="modal-content">
@@ -158,12 +164,7 @@ echo '</div>';
    <!-- **************************************** -->
    <!-- ******DISPLAYED FEATURED CONCOURSE****** -->
    <!-- **************************************** -->
-   <div class="container-fluid">
-      <h3 style="margin-top: 15px; text-align: center;">Concourses</h3>
-      <div id="concourse-list" class="row" style="width: 80%; margin: 0 auto;">
-         <!-- This div will be populated with the fetched data -->
-      </div>
-   </div>
+
    <div id="pagination" class="text-center"></div>
 
 
