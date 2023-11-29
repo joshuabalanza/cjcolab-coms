@@ -389,93 +389,65 @@
          <a href="verification_account.php" class="btn-sm btn btn-success">Verify Account</a>
       </div>
    </div>
-   <!-- **********************************-->
-   <!-- ************ TENANT VERIFIED **************-->
-   <!-- **********************************-->
-   <?php elseif ($verificationStatus === 'approved' && $utype === 'Tenant'): ?>
-   <h1>Dashboard</h1>
-   <?php
-      $sql = "SELECT * FROM space";
-      $result = mysqli_query($con, $sql);
-      
-      $con->close();
-      ?>
-   <h1>Available Spaces</h1>
-   <div class="container">
-      <?php
-         if ($result && mysqli_num_rows($result) > 0) {
-             while ($row = $result->fetch_assoc()) {
-                 echo "<div class='card' onclick='openModal(\"{$row['space_name']}\", \"{$row['status']}\", " . json_encode($row) . ")'>";
-                 echo "<h2>{$row['space_name']}</h2>";
-                 echo "<h6>{$row['status']}</h6>";
-                 echo "<h7>{$row['space_owner']}</h6>";
-                 echo "<div class='details' style='display: none;'>";
-                 echo "<ul>";
-                 echo "<li><strong>Space ID:</strong> {$row['space_id']}</li>";
-                 echo "<li><strong>Concourse ID:</strong> {$row['concourse_id']}</li>";
-                 echo "<li><strong>Owner:</strong> {$row['space_owner']}</li>";
-                 echo "<li><strong>Status:</strong> {$row['status']}</li>";
-                 echo "<li><strong>Space Width:</strong> {$row['space_width']}</li>";
-                 echo "<li><strong>Space Length:</strong> {$row['space_length']}</li>";
-                 echo "<li><strong>Space Height:</strong> {$row['space_height']}</li>";
-                 echo "<li><strong>Space Area:</strong> {$row['space_area']}</li>";
-                 echo "<li><strong>Space Dimension:</strong> {$row['space_dimension']}</li>";
-                 echo "<li><strong>Space Tenant:</strong> {$row['space_tenant']}</li>";
-                 echo "</ul>";
-                 echo "</div>";
-                 echo "</div>";
-             }
-         } else {
-             echo "<p>No available spaces</p>";
-         }
-         ?>
-      <!-- Modal for space details -->
-      <div id="myModal" class="modal">
-         <div class="modal-content">
-            <span class="close-btn" onclick="closeModal()">&times;</span>
-            <div id="modalContent">
-               <!-- Space information will be dynamically loaded here -->
-            </div>
-            <?php
-               // Assuming you have a variable storing the selected space name
-               // $selectedSpaceName = "Example Space";
-               if (isset($_SESSION['status']) !== 'reserved' && isset($_SESSION['status']) !== 'occupied') {
-                   echo '<button id="applyButton" onclick="openAppModal()">Apply</button>';
-               }
-               ?>
-         </div>
-      </div>
-      <div id="appModal" class="modal">
-         <div class="modal-content">
-            <span class="close-btn" onclick="closeAppModal()">&times;</span>
-            <div>
-               <?php
-                  if (isset($successMessage)) {
-                      echo "<p style='color: green;'>$successMessage</p>";
-                  } elseif (isset($errorMessage)) {
-                      echo "<p style='color: red;'>$errorMessage</p>";
-                  }
-                  ?>
-               <h2>Apply for Space</h2>
-               <form method="POST" action='apply_space_process.php'>
-                  <input type="hidden" name="spacename" id="appSpacename" value="">
-                  <label for="tenant_name">Tenant Name:</label>
-                  <input type="text" name="tenant_name" value="<?php echo $_SESSION['uname']; ?>" readonly>
-                  <label for="ap_email">Tenant Email:</label>
-                  <input type="email" name="ap_email" value="<?php echo $_SESSION['uemail']; ?>" readonly>
-                  <!-- Additional form fields as needed -->
-                  <button type="submit" name="apply">Apply</button>
-               </form>
-            </div>
-         </div>
-      </div>
-   </div>
-</div>
+ 
 <?php endif; ?>
 <!--  -->
 <script>
   
-     
+        // Mock data for feedback
+        const feedbackData = [
+            { user: 'Tenant 1', feedback: 'Positive feedback.' },
+            { user: 'Tenant 2', feedback: 'Negative feedback.' },
+        ];
+
+        // Dynamically populate feedback list
+        const feedbackList = document.getElementById('feedbackList');
+        feedbackData.forEach(item => {
+            const li = document.createElement('li');
+            li.textContent = `${item.feedback} from ${item.user}`;
+            feedbackList.appendChild(li);
+        });
+
+        // Mock data for pie charts
+        const tenantPieData = {
+            labels: ['Pending Users', 'Active Users'],
+            datasets: [{
+                data: [30, 70],
+                backgroundColor: ['#FF6384', '#36A2EB'],
+            }],
+        };
+
+        const reservationPieData = {
+            labels: ['Reservations', 'Applications'],
+            datasets: [{
+                data: [40, 60],
+                backgroundColor: ['#FFCE56', '#4CAF50'],
+            }],
+        };
+
+        const propertyOverviewPieData = {
+            labels: ['Occupied', 'Vacant'],
+            datasets: [{
+                data: [80, 20],
+                backgroundColor: ['#FFCE56', '#4CAF50'],
+            }],
+        };
+
+        // Render pie charts
+        const tenantPieChart = new Chart(document.getElementById('tenantPieChart'), {
+            type: 'pie',
+            data: tenantPieData,
+        });
+
+        const reservationPieChart = new Chart(document.getElementById('reservationPieChart'), {
+            type: 'pie',
+            data: reservationPieData,
+        });
+
+        const propertyOverviewPieChart = new Chart(document.getElementById('propertyOverviewPieChart'), {
+            type: 'pie',
+            data: propertyOverviewPieData,
+        });
   
 </script>
 <?php include('includes/footer.php'); ?>
