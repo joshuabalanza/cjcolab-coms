@@ -260,46 +260,46 @@
          </div>
       </div>
       <script>
-    function openModal(spaceName, spaceStatus, spaceDetails) {
-        var modal = document.getElementById("myModal");
-        var modalContent = document.getElementById("modalContent");
-        var applyButton = document.getElementById("applyButton");
-
-        // Show modal
-        modal.style.display = "flex";
-
-        // Set the spacename and status in the modalContent
-        modalContent.innerHTML = `
-            <h2>${spaceName}</h2>
-            <p>Status: ${spaceStatus}</p>
-            <img src="/COMS/uploads/${spaceDetails['space_img']}" alt="Space Image" style="max-width: 100%; max-height: 200px;">
-            <ul>
-                <li><strong>Space ID:</strong> ${spaceDetails['space_id']}</li>
-                <li><strong>Concourse ID:</strong> ${spaceDetails['concourse_id']}</li>
-                <li><strong>Owner:</strong> ${spaceDetails['space_owner']}</li>
-                <li><strong>Status:</strong> ${spaceDetails['status']}</li>
-                <li><strong>Space Width:</strong> ${spaceDetails['space_width']}</li>
-                <li><strong>Space Length:</strong> ${spaceDetails['space_length']}</li>
-                <li><strong>Space Height:</strong> ${spaceDetails['space_height']}</li>
-                <li><strong>Space Area:</strong> ${spaceDetails['space_area']}</li>
-                <li><strong>Space Dimension:</strong> ${spaceDetails['space_dimension']}</li>
-                <li><strong>Space Tenant:</strong> ${spaceDetails['space_tenant']}</li>
-            </ul>
-        `;
-
-        // Set the spacename in the application form
-        document.getElementById("appSpacename").value = spaceName;
-
-        // Check if the space status is 'reserved' or 'occupied'
-        if (spaceStatus === 'reserved' || spaceStatus === 'occupied') {
-            // Hide the Apply button
-            applyButton.style.display = "none";
-        } else {
-            // Show and enable the Apply button
-            applyButton.style.display = "block";
-            applyButton.removeAttribute('disabled');
-        }
-    }
+         function openModal(spaceName, spaceStatus, spaceDetails) {
+             var modal = document.getElementById("myModal");
+             var modalContent = document.getElementById("modalContent");
+             var applyButton = document.getElementById("applyButton");
+         
+             // Show modal
+             modal.style.display = "flex";
+         
+             // Set the spacename and status in the modalContent
+             modalContent.innerHTML = `
+                 <img src="/COMS/uploads/${spaceDetails['space_img']}" alt="Space Image" style="max-width: 100%; max-height: 200px;">
+                 <h2>${spaceName}</h2>
+                 <p>Status: ${spaceStatus}</p>
+                 <ul>
+                     <li><strong>Space ID:</strong> ${spaceDetails['space_id']}</li>
+                     <li><strong>Concourse ID:</strong> ${spaceDetails['concourse_id']}</li>
+                     <li><strong>Owner:</strong> ${spaceDetails['space_owner']}</li>
+                     <li><strong>Status:</strong> ${spaceDetails['status']}</li>
+                     <li><strong>Space Width:</strong> ${spaceDetails['space_width']}</li>
+                     <li><strong>Space Length:</strong> ${spaceDetails['space_length']}</li>
+                     <li><strong>Space Height:</strong> ${spaceDetails['space_height']}</li>
+                     <li><strong>Space Area:</strong> ${spaceDetails['space_area']}</li>
+                     <li><strong>Space Dimension:</strong> ${spaceDetails['space_dimension']}</li>
+                     <li><strong>Space Tenant:</strong> ${spaceDetails['space_tenant']}</li>
+                 </ul>
+             `;
+         
+             // Set the spacename in the application form
+             document.getElementById("appSpacename").value = spaceName;
+         
+             // Check if the space status is 'reserved' or 'occupied'
+             if (spaceStatus === 'reserved' || spaceStatus === 'occupied') {
+                 // Hide the Apply button
+                 applyButton.style.display = "none";
+             } else {
+                 // Show and enable the Apply button
+                 applyButton.style.display = "block";
+                 applyButton.removeAttribute('disabled');
+             }
+         }
          
          function closeModal() {
              var modal = document.getElementById("myModal");
