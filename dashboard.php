@@ -3,94 +3,94 @@
 <!-- ******************** -->
 <?php
    session_name("user_session");
-   session_start();
-   ini_set('display_errors', 1);
-   error_reporting(E_ALL);
-   require('includes/dbconnection.php');
-   ?>
+session_start();
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+require('includes/dbconnection.php');
+?>
 <!-- ******************** -->
 <!-- ***** PHP CODE ***** -->
 <!-- ******************** -->
 <?php
-   // Check if the user is logged in
-   if (!isset($_SESSION['uid'])) {
-       header('Location: login.php');
-       exit();
-   }
-   
-   $uid = $_SESSION['uid'];
-   $utype = $_SESSION['utype'];
-   
-   // Check the status in the user_verification table
-   $verificationStatus = "Not approved"; // Default status
-   $verificationQuery = "SELECT status, first_name, last_name, address, gender, birthday FROM user_verification WHERE user_id = $uid";
-   $verificationResult = mysqli_query($con, $verificationQuery);
-   
-   if ($verificationResult && mysqli_num_rows($verificationResult) > 0) {
-       $verificationData = mysqli_fetch_assoc($verificationResult);
-       $verificationStatus = $verificationData['status'];
-   }
-   
-   
-   
-   // Space overview available/occupied/reserved
-   $propertyOverviewQuery = "SELECT status, COUNT(*) AS count FROM space GROUP BY status";
-   $propertyOverviewResult = mysqli_query($con, $propertyOverviewQuery);
-   
-   
-   
-   // Fetch Data into an associative Array
-   $propertyOverviewData = [];
-   while ($row = mysqli_fetch_assoc($propertyOverviewResult)) {
+// Check if the user is logged in
+if (!isset($_SESSION['uid'])) {
+    header('Location: login.php');
+    exit();
+}
+
+$uid = $_SESSION['uid'];
+$utype = $_SESSION['utype'];
+
+// Check the status in the user_verification table
+$verificationStatus = "Not approved"; // Default status
+$verificationQuery = "SELECT status, first_name, last_name, address, gender, birthday FROM user_verification WHERE user_id = $uid";
+$verificationResult = mysqli_query($con, $verificationQuery);
+
+if ($verificationResult && mysqli_num_rows($verificationResult) > 0) {
+    $verificationData = mysqli_fetch_assoc($verificationResult);
+    $verificationStatus = $verificationData['status'];
+}
+
+
+
+// Space overview available/occupied/reserved
+$propertyOverviewQuery = "SELECT status, COUNT(*) AS count FROM space GROUP BY status";
+$propertyOverviewResult = mysqli_query($con, $propertyOverviewQuery);
+
+
+
+// Fetch Data into an associative Array
+$propertyOverviewData = [];
+while ($row = mysqli_fetch_assoc($propertyOverviewResult)) {
     $propertyOverviewData[$row['status']] = $row['count'];
-   }
-   
-   // Calculate total spaces
-   $totalSpacesQuery = "SELECT COUNT(*) AS total FROM space";
-   $totalSpacesResult = mysqli_query($con, $totalSpacesQuery);
-   $totalSpacesRow = mysqli_fetch_assoc($totalSpacesResult);
-   $totalSpaces = $totalSpacesRow['total'];
-   
-   // Calculate percentage occupancy
-   $percentOccupied = ($propertyOverviewData['occupied'] / $totalSpaces) * 100;
-   $percentAvailable = ($propertyOverviewData['available'] / $totalSpaces) * 100;
-   
-   // Close result sets
-   mysqli_free_result($propertyOverviewResult);
-   mysqli_free_result($totalSpacesResult); 
-   
-   
-   // Fetch tenant data for Tenant Management
-   $tenantManagementQuery = "SELECT utype, COUNT(*) AS count FROM user WHERE utype = 'Tenant'";
-   $tenantManagementResult = mysqli_query($con, $tenantManagementQuery);
-   
-   // Fetch data into an associative array
-   $tenantManagementData = mysqli_fetch_assoc($tenantManagementResult);
-   
-   // Close result set
-   mysqli_free_result($tenantManagementResult);
-   
-   $totalBillsQuery = "SELECT SUM(total) AS totalBills FROM bill";
-   $totalBillsResult = mysqli_query($con, $totalBillsQuery);
-   $totalBills = 0;
-   
-   if ($totalBillsResult && mysqli_num_rows($totalBillsResult) > 0) {
+}
+
+// Calculate total spaces
+$totalSpacesQuery = "SELECT COUNT(*) AS total FROM space";
+$totalSpacesResult = mysqli_query($con, $totalSpacesQuery);
+$totalSpacesRow = mysqli_fetch_assoc($totalSpacesResult);
+$totalSpaces = $totalSpacesRow['total'];
+
+// Calculate percentage occupancy
+$percentOccupied = ($propertyOverviewData['occupied'] / $totalSpaces) * 100;
+$percentAvailable = ($propertyOverviewData['available'] / $totalSpaces) * 100;
+
+// Close result sets
+mysqli_free_result($propertyOverviewResult);
+mysqli_free_result($totalSpacesResult);
+
+
+// Fetch tenant data for Tenant Management
+$tenantManagementQuery = "SELECT utype, COUNT(*) AS count FROM user WHERE utype = 'Tenant'";
+$tenantManagementResult = mysqli_query($con, $tenantManagementQuery);
+
+// Fetch data into an associative array
+$tenantManagementData = mysqli_fetch_assoc($tenantManagementResult);
+
+// Close result set
+mysqli_free_result($tenantManagementResult);
+
+$totalBillsQuery = "SELECT SUM(total) AS totalBills FROM bill";
+$totalBillsResult = mysqli_query($con, $totalBillsQuery);
+$totalBills = 0;
+
+if ($totalBillsResult && mysqli_num_rows($totalBillsResult) > 0) {
     $totalBillsData = mysqli_fetch_assoc($totalBillsResult);
     $totalBills = $totalBillsData['totalBills'];
-   }
-   
-   // Get approved maps
-   $uploadDirectory = __DIR__ . '/uploads/';
-   $approvedMapQuery = "SELECT * FROM concourse_verification WHERE status = 'approved'";
-   $approvedMapResult = mysqli_query($con, $approvedMapQuery);
-   ?>
+}
+
+// Get approved maps
+$uploadDirectory = __DIR__ . '/uploads/';
+$approvedMapQuery = "SELECT * FROM concourse_verification WHERE status = 'approved'";
+$approvedMapResult = mysqli_query($con, $approvedMapQuery);
+?>
 <!-- ******************** -->
 <!-- **** START HTML **** -->
 <!-- ******************** -->
 <?php
-   include('includes/header.php');
-   include('includes/nav.php');
-   ?>
+include('includes/header.php');
+include('includes/nav.php');
+?>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
@@ -302,16 +302,16 @@
          <h2>Tenant Management</h2>
          <div class="section-content">
             <?php
-               // Count the number of active and inactive tenants
-               $activeTenantQuery = "SELECT COUNT(*) as count FROM `user` WHERE `utype` = 'Tenant' AND `status` = 'active'";
-               $inactiveTenantQuery = "SELECT COUNT(*) as count FROM `user` WHERE `utype` = 'Tenant' AND `status` = 'inactive'";
-               
-               $activeTenantResult = mysqli_query($con, $activeTenantQuery);
-               $inactiveTenantResult = mysqli_query($con, $inactiveTenantQuery);
-               
-               $activeTenantCount = ($activeTenantResult && mysqli_num_rows($activeTenantResult) > 0) ? mysqli_fetch_assoc($activeTenantResult)['count'] : 0;
-               $inactiveTenantCount = ($inactiveTenantResult && mysqli_num_rows($inactiveTenantResult) > 0) ? mysqli_fetch_assoc($inactiveTenantResult)['count'] : 0;
-               ?>
+            // Count the number of active and inactive tenants
+            $activeTenantQuery = "SELECT COUNT(*) as count FROM `user` WHERE `utype` = 'Tenant' AND `status` = 'active'";
+       $inactiveTenantQuery = "SELECT COUNT(*) as count FROM `user` WHERE `utype` = 'Tenant' AND `status` = 'inactive'";
+
+       $activeTenantResult = mysqli_query($con, $activeTenantQuery);
+       $inactiveTenantResult = mysqli_query($con, $inactiveTenantQuery);
+
+       $activeTenantCount = ($activeTenantResult && mysqli_num_rows($activeTenantResult) > 0) ? mysqli_fetch_assoc($activeTenantResult)['count'] : 0;
+       $inactiveTenantCount = ($inactiveTenantResult && mysqli_num_rows($inactiveTenantResult) > 0) ? mysqli_fetch_assoc($inactiveTenantResult)['count'] : 0;
+       ?>
             <div class="section-item">
                <p><?php echo $activeTenantCount; ?></p>
                <i class="fas fa-users"></i> <!-- Icon for Active Tenants -->
@@ -347,7 +347,7 @@
          <h2>Financial Overview</h2>
          <div class="section-content">
             <div class="section-item">
-               <p>$<?php echo number_format($totalBills, 2); ?></p>
+               <p>Php<?php echo number_format($totalBills, 2); ?></p>
                <h5>Total Bills</h5>
             </div>
             <div style="padding-top: 35px;" class="section-item">

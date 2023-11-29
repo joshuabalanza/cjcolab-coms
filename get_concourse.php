@@ -1,3 +1,21 @@
+<style>
+    /* Remove underline from links */
+    body a {
+        text-decoration: none !important;
+        color: black !important;
+    }
+
+    /* Remove underline from card title and card text */
+    body .card-title,
+    body .card-text {
+        text-decoration: none !important;
+        color: black !important;
+    }
+    h3{
+        color: #c19f90;
+        font-weight: bold;
+    }
+</style>
 <?php
 
 require('includes/dbconnection.php');

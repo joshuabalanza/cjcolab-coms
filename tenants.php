@@ -81,6 +81,7 @@
         background-color: rgba(0, 0, 0, 0.5);
         justify-content: center;
         align-items: center;
+        margin-top: 30px;
     }
 
     .modal-content {
@@ -90,10 +91,12 @@
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         width: 80%;
         max-width: 600px;
-        /* margin: 0 auto; */
+        overflow-y: auto; /* Make the modal content scrollable */
+        max-height: 80vh; /* Set a maximum height */
+        margin: 0 auto;
         text-align: center;
+        margin-top: 75px;
     }
-
 
     .close-modal {
         cursor: pointer;
@@ -120,28 +123,29 @@
                 <th>Name</th>
                 <th>Email</th>
                 <th>Phone</th>
-                <th>Lease Start Date</th>
-                <th>Lease End Date</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Address</th>
             </tr>
         </thead>
         <tbody>
-            <tr data-tenantid="1" class="tenant-row">
-                <td>1</td>
-                <td>John Doe</td>
-                <td>john@example.com</td>
-                <td>(123) 456-7890</td>
-                <td>2023-01-01</td>
-                <td>2023-12-31</td>
-            </tr>
-            <tr data-tenantid="2" class="tenant-row">
-                <td>2</td>
-                <td>Jane Smith</td>
-                <td>jane@example.com</td>
-                <td>(987) 654-3210</td>
-                <td>2022-06-15</td>
-                <td>2023-06-14</td>
-            </tr>
-            <!-- Add more rows as needed -->
+            <?php
+                // Fetch and display tenant data
+                $tenantQuery = "SELECT * FROM `user` WHERE `utype` = 'Tenant'";
+                $tenantResult = mysqli_query($con, $tenantQuery);
+
+                while ($tenant = mysqli_fetch_assoc($tenantResult)) {
+                    echo '<tr data-tenantid="' . $tenant['uid'] . '" class="tenant-row">';
+                    echo '<td>' . $tenant['uid'] . '</td>';
+                    echo '<td>' . $tenant['uname'] . '</td>';
+                    echo '<td>' . $tenant['uemail'] . '</td>';
+                    echo '<td>' . $tenant['uphone'] . '</td>';
+                    echo '<td>' . $tenant['first_name'] . '</td>';
+                    echo '<td>' . $tenant['last_name'] . '</td>';
+                    echo '<td>' . $tenant['address'] . '</td>';
+                    echo '</tr>';
+                }
+            ?>
         </tbody>
     </table>
 
@@ -152,35 +156,29 @@
             <table id="leasesTable" class="leases-table">
                 <thead>
                     <tr>
+                        <th>Concourse ID</th>
                         <th>Space ID</th>
-                        <th>Lease Start Date</th>
-                        <th>Lease End Date</th>
+                        <th>Space Name</th>
+                        <th>Lease Start</th>
+                        <th>Lease End</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Lease data for Tenant 1 -->
-                    <tr>
-                        <td>101</td>
-                        <td>2023-01-01</td>
-                        <td>2023-06-30</td>
-                    </tr>
-                    <tr>
-                        <td>102</td>
-                        <td>2023-02-01</td>
-                        <td>2023-07-31</td>
-                    </tr>
-                    <!-- Lease data for Tenant 2 -->
-                    <tr>
-                        <td>201</td>
-                        <td>2023-03-01</td>
-                        <td>2023-08-31</td>
-                    </tr>
-                    <tr>
-                        <td>202</td>
-                        <td>2023-04-01</td>
-                        <td>2023-09-30</td>
-                    </tr>
-                    <!-- Add more lease rows as needed -->
+                    <?php
+                        // Fetch and display lease data
+                        $leaseQuery = "SELECT `concourse_id`, `space_id`, `space_name`, `lease_start`, `lease_end` FROM `space` WHERE `space_tenant` IS NOT NULL";
+                        $leaseResult = mysqli_query($con, $leaseQuery);
+
+                        while ($lease = mysqli_fetch_assoc($leaseResult)) {
+                            echo '<tr>';
+                            echo '<td>' . $lease['concourse_id'] . '</td>';
+                            echo '<td>' . $lease['space_id'] . '</td>';
+                            echo '<td>' . $lease['space_name'] . '</td>';
+                            echo '<td>' . $lease['lease_start'] . '</td>';
+                            echo '<td>' . $lease['lease_end'] . '</td>';
+                            echo '</tr>';
+                        }
+                    ?>
                 </tbody>
             </table>
         </div>

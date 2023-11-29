@@ -139,25 +139,23 @@ include('includes/nav.php');
     .modal-body {
     padding-bottom: 20px;
     }
-/* Form styles */
-#spaceDetailsForm {
-    display: flex;
-    flex-direction: column;
-}
 
-label {
-    margin-top: 10px;
-    margin-bottom: 5px; /* Reduce the margin between labels */
-}
+    /* Form styles */
+    #spaceDetailsForm {
+        display: flex;
+        flex-direction: column;
+    }
 
-input,
-select,
-button {
-    margin-bottom: 10px; /* Reduce the margin between input/select and button */
-    padding: 8px;
-    width: 100%;
-    box-sizing: border-box;
-}  box-sizing: border-box;
+    label {
+        margin-top: 10px;
+    }
+    input,
+    select,
+    button {
+        margin-bottom: 15px;
+        padding: 8px;
+        width: 100%;
+        box-sizing: border-box;
     }
 
     button {

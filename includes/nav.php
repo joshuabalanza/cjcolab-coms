@@ -107,10 +107,13 @@
                 echo '<a href="index.php" class="nav-link ' . $linkClass . '">Home</a>';
                 echo '</li>';
                 echo '<li class="nav-item">';
-                echo '<a href="#about-us" class="nav-link ' . $linkClass . '">About</a>';
+                echo '<a href="#concourses" class="nav-link ' . $linkClass . '">Concourses</a>';
                 echo '</li>';
                 echo '<li class="nav-item">';
-                echo '<a href="index.php" class="nav-link ' . $linkClass . '">Contact</a>';
+                echo '<a href="#about-proj" class="nav-link ' . $linkClass . '">About</a>';
+                echo '</li>';
+                echo '<li class="nav-item">';
+                echo '<a href="#contact-us" class="nav-link ' . $linkClass . '">Contact Us</a>';
             } elseif (isset($_SESSION['utype']) && $_SESSION['utype'] == 'Owner') {
                 // Display these links for Owner type users
                 // echo '<li class="nav-item">';
