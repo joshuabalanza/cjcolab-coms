@@ -100,7 +100,7 @@ include('includes/nav.php');
                   echo '<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-2">';
                   echo '<div class="card" style="width: 100%; height: 100%; padding: 10px; margin: 0 auto;">';
 
-                  echo '<a href="concourse.php?concourse_id=' . $mapData['concourse_id'] . '">';
+                  echo '<a href="map_display_mayk.php?concourse_id=' . $mapData['concourse_id'] . '">';
                   echo '<div class="image-container">';
                   if (!empty($mapData['concourse_image'])) {
                       // Display the concourse_image if it exists
@@ -142,9 +142,15 @@ echo '</div>';
       </div>
       <!-- TENANT -->
       <?php elseif ($verificationStatus === 'approved' && $utype === 'Tenant'): ?>
-      <a href="tenant-apply-space.php">
+      <!-- <a href="tenant-apply-space.php">
       <button class="btn-sm btn btn-success">Apply For Space</button>
-      </a>
+      </a> -->
+      <div class="container-fluid">
+      <h3 style="margin-top: 15px; text-align: center;">Concourses</h3>
+      <div id="concourse-list" class="row" style="width: 80%; margin: 0 auto;">
+         <!-- This div will be populated with the fetched data -->
+      </div>
+   </div>
       <?php else: ?>
       <div id="verificationModal" class="prompt-modal">
          <div class="modal-content">
@@ -158,12 +164,7 @@ echo '</div>';
    <!-- **************************************** -->
    <!-- ******DISPLAYED FEATURED CONCOURSE****** -->
    <!-- **************************************** -->
-   <div class="container-fluid">
-      <h3 style="margin-top: 15px; text-align: center;">Concourses</h3>
-      <div id="concourse-list" class="row" style="width: 80%; margin: 0 auto;">
-         <!-- This div will be populated with the fetched data -->
-      </div>
-   </div>
+
    <div id="pagination" class="text-center"></div>
 
 

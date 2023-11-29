@@ -53,12 +53,13 @@ if (isset($_POST['login'])) {
                     $_SESSION['uphone'] = $row['uphone'];
                     $_SESSION['uimage'] = $row['uimage']; // Add this line to set the uimage session variable
 
-
-                    // Redirect to a protected page or the user's profile
-                    header('Location: dashboard.php'); // Change 'dashboard.php' to your desired protected page
-                    // header('Location: index.php'); // Change 'dashboard.php' to your desired protected page
-
-                    exit();
+                    if ($_SESSION['utype'] === 'Tenant') {
+                      header('Location: concourses.php'); // Redirect to concourses.php for tenants
+                      exit();
+                  } else {
+                      header('Location: dashboard.php'); // Change 'dashboard.php' to your desired protected page
+                      exit();
+                  }
                 } else {
                     $error_message = "Invalid password";
                 }

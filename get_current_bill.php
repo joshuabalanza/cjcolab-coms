@@ -1,10 +1,12 @@
 <?php
 require('includes/dbconnection.php');
 
+// Check if space_id and tenant_name are provided
 if (isset($_GET['space_id'])) {
     $spaceId = $_GET['space_id'];
 
-    $billQuery = "SELECT * FROM bill WHERE space_id = '$spaceId' ORDER BY created_at DESC LIMIT 1";
+    // Fetch the most recent bill details for the specified space
+    $billQuery = "SELECT water, electric FROM bill WHERE space_id = '$spaceId' ORDER BY created_at DESC LIMIT 1";
     $result = $con->query($billQuery);
 
     if ($result->num_rows > 0) {
@@ -18,6 +20,6 @@ if (isset($_GET['space_id'])) {
         echo json_encode(['error' => 'No bill found for the specified space.']);
     }
 } else {
-    echo json_encode(['error' => 'Invalid request. Please provide a space_id.']);
+    echo json_encode(['error' => 'Invalid request. Please provide space_id.']);
 }
 ?>

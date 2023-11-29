@@ -1,6 +1,4 @@
 <?php
-// process_update_bill.php
-
 session_name("user_session");
 session_start();
 ini_set('display_errors', 1);
@@ -23,17 +21,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_bill'])) {
     if (isset($_SESSION['current_bill'])) {
         $currentBill = $_SESSION['current_bill'];
 
-        // Update the bill
-        $updateBillQuery = "UPDATE bill SET electric = '$updatedElectric', water = '$updatedWater' WHERE space_id = '$spaceId' AND tenant_name = '" . $currentBill['tenant_name'] . "'";
-        $updateResult = $con->query($updateBillQuery);
+        // Update the bill using prepared statement
+        $updateBillQuery = "UPDATE bill SET electric = ?, water = ? WHERE space_id = ? AND tenant_name = ?";
+        $stmt = $con->prepare($updateBillQuery);
+        $stmt->bind_param("diis", $updatedElectric, $updatedWater, $spaceId, $currentBill['tenant_name']);
+        $stmt->execute();
 
-        if ($updateResult === true) {
-            echo json_encode(['success' => 'Bill updated successfully']);
-            // Optionally, you can unset the session variable after updating
-            unset($_SESSION['current_bill']);
-            exit();
+        if ($stmt->affected_rows > 0) {
+            // Update the space_bill in the space table
+            $updateSpaceBillQuery = "UPDATE space SET space_bill = ? WHERE space_id = ?";
+            $totalBill = $updatedElectric + $updatedWater; // Assuming total_bill is the sum of electric and water bills
+            $stmtSpace = $con->prepare($updateSpaceBillQuery);
+            $stmtSpace->bind_param("di", $totalBill, $spaceId);
+            $stmtSpace->execute();
+
+            if ($stmtSpace->affected_rows > 0) {
+                echo json_encode(['success' => 'Bill and space updated successfully']);
+                // Optionally, you can unset the session variable after updating
+                unset($_SESSION['current_bill']);
+                exit();
+            } else {
+                echo json_encode(['error' => 'Error updating space bill: ' . $stmtSpace->error]);
+                exit();
+            }
         } else {
-            echo json_encode(['error' => 'Error updating bill: ' . $con->error]);
+            echo json_encode(['error' => 'Error updating bill: ' . $stmt->error]);
             exit();
         }
     } else {
