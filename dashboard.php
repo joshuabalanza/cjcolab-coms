@@ -31,10 +31,7 @@
        $verificationStatus = $verificationData['status'];
    }
 
-   // Get approved maps
-   $uploadDirectory = __DIR__ . '/uploads/';
-   $approvedMapQuery = "SELECT * FROM concourse_verification WHERE status = 'approved'";
-   $approvedMapResult = mysqli_query($con, $approvedMapQuery);
+
 
    // Space overview available/occupied/reserved
 $propertyOverviewQuery = "SELECT status, COUNT(*) AS count FROM space GROUP BY status";
@@ -82,6 +79,10 @@ if ($totalBillsResult && mysqli_num_rows($totalBillsResult) > 0) {
     $totalBills = $totalBillsData['totalBills'];
 }
 
+   // Get approved maps
+   $uploadDirectory = __DIR__ . '/uploads/';
+   $approvedMapQuery = "SELECT * FROM concourse_verification WHERE status = 'approved'";
+   $approvedMapResult = mysqli_query($con, $approvedMapQuery);
 ?>
 <!-- ******************** -->
 <!-- **** START HTML **** -->
@@ -89,9 +90,8 @@ if ($totalBillsResult && mysqli_num_rows($totalBillsResult) > 0) {
 <?php
    include('includes/header.php');
    include('includes/nav.php');
-?><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-<!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
-
+?>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
   .dashboard-reports {
@@ -289,7 +289,7 @@ if ($totalBillsResult && mysqli_num_rows($totalBillsResult) > 0) {
       width: 100%;
       }
 </style>
-</style>
+
 
 
 <div class="dashboard-body" style= "margin-top:90px;">
@@ -398,6 +398,9 @@ if ($totalBillsResult && mysqli_num_rows($totalBillsResult) > 0) {
             </div>
         </section>
    </div>
+     <!-- **********************************-->
+   <!-- ************ OWNER NOT VERIFIED **************-->
+   <!-- **********************************-->
      <?php elseif ($verificationStatus === 'rejected' && $utype === 'Owner'): ?>
       <div id="verificationModal" class="prompt-modal">
          <div class="modal-content">
@@ -406,98 +409,16 @@ if ($totalBillsResult && mysqli_num_rows($totalBillsResult) > 0) {
             <a href="verification_account.php" class="btn-sm btn btn-success">Verify Account</a>
          </div>
       </div>                                                                                 
-   <div id="verificationModal" class="prompt-modal">
-      <div class="modal-content">
-         <span class="close">&times;</span>
-         <p>Verify your account to add concourse.</p>
-         <a href="verification_account.php" class="btn-sm btn btn-success">Verify Account</a>
-      </div>
-   </div>
+  
 
-   <!-- **********************************-->
-   <!-- ************ TENANT **************-->
-   <!-- **********************************-->
-   <?php elseif ($verificationStatus === 'approved' && $utype === 'Tenant'): ?>
-   <h1>Dashboard</h1>
-   <?php
-      $sql = "SELECT * FROM space";
-      $result = mysqli_query($con, $sql);
-   
-      $con->close();
-      ?>
-   
-   <h1>Available Spaces</h1>
-   <div class="container">
-      <?php
-         if ($result && mysqli_num_rows($result) > 0) {
-             while ($row = $result->fetch_assoc()) {
-                 echo "<div class='card' onclick='openModal(\"{$row['space_name']}\", \"{$row['status']}\", " . json_encode($row) . ")'>";
-                 echo "<h2>{$row['space_name']}</h2>";
-                 echo "<h6>{$row['status']}</h6>";
-                 echo "<h7>{$row['space_owner']}</h6>";
-                 echo "<div class='details' style='display: none;'>";
-                 echo "<ul>";
-                 echo "<li><strong>Space ID:</strong> {$row['space_id']}</li>";
-                 echo "<li><strong>Concourse ID:</strong> {$row['concourse_id']}</li>";
-                 echo "<li><strong>Owner:</strong> {$row['space_owner']}</li>";
-                 echo "<li><strong>Status:</strong> {$row['status']}</li>";
-                 echo "<li><strong>Space Width:</strong> {$row['space_width']}</li>";
-                 echo "<li><strong>Space Length:</strong> {$row['space_length']}</li>";
-                 echo "<li><strong>Space Height:</strong> {$row['space_height']}</li>";
-                 echo "<li><strong>Space Area:</strong> {$row['space_area']}</li>";
-                 echo "<li><strong>Space Dimension:</strong> {$row['space_dimension']}</li>";
-                 echo "<li><strong>Space Tenant:</strong> {$row['space_tenant']}</li>";
-                 echo "</ul>";
-                 echo "</div>";
-                 echo "</div>";
-             }
-         } else {
-             echo "<p>No available spaces</p>";
-         }
-         ?>
-      <!-- Modal for space details -->
-      <div id="myModal" class="modal">
-         <div class="modal-content">
-            <span class="close-btn" onclick="closeModal()">&times;</span>
-            <div id="modalContent">
-               <!-- Space information will be dynamically loaded here -->
-            </div>
-            <?php
-               // Assuming you have a variable storing the selected space name
-               // $selectedSpaceName = "Example Space";
-               if (isset($_SESSION['status']) !== 'reserved' && isset($_SESSION['status']) !== 'occupied') {
-                   echo '<button id="applyButton" onclick="openAppModal()">Apply</button>';
-               }
-               ?>
-         </div>
-      </div>
-      <div id="appModal" class="modal">
-         <div class="modal-content">
-            <span class="close-btn" onclick="closeAppModal()">&times;</span>
-            <div>
-               <?php
-                  if (isset($successMessage)) {
-                      echo "<p style='color: green;'>$successMessage</p>";
-                  } elseif (isset($errorMessage)) {
-                      echo "<p style='color: red;'>$errorMessage</p>";
-                  }
-                  ?>
-               <h2>Apply for Space</h2>
-               <form method="POST" action='apply_space_process.php'>
-                  <input type="hidden" name="spacename" id="appSpacename" value="">
-                  <label for="tenant_name">Tenant Name:</label>
-                  <input type="text" name="tenant_name" value="<?php echo $_SESSION['uname']; ?>" readonly>
-                  <label for="ap_email">Tenant Email:</label>
-                  <input type="email" name="ap_email" value="<?php echo $_SESSION['uemail']; ?>" readonly>
-                  <!-- Additional form fields as needed -->
-                  <button type="submit" name="apply">Apply</button>
-               </form>
-            </div>
-         </div>
-      </div>
-<script>
-document.addEventListener('DOMContentLoaded', function () {
 
+<?php endif; ?>
+
+<!--  -->
+
+
+
+    <script>
         // Fetch the counts of active and inactive tenants from PHP
     const activeTenantCount = <?php echo $activeTenantCount; ?>;
     const inactiveTenantCount = <?php echo $inactiveTenantCount; ?>;
@@ -542,10 +463,13 @@ document.addEventListener('DOMContentLoaded', function () {
             type: 'pie',
             data: propertyOverviewPieData,
         });
-        });
-
     </script>
-      <!-- <script>
+
+
+
+
+
+ <!-- <script>
 
 
      
@@ -617,19 +541,4 @@ document.addEventListener('DOMContentLoaded', function () {
          }
          
       </script> -->
-   </div>
-</div>
-<?php else: ?>
-<div id="verificationModal" class="prompt-modal">
-   <div class="modal-content">
-      <span class="close">&times;</span>
-      <p>Verify your account to apply for space.</p>
-      <!-- Will change this-->
-      <a href="verification_account.php" class="btn-sm btn btn-success">Verify Account</a>
-   </div>
-</div>
-</div>
-<?php endif; ?>
-</section>
-<script src=""></script>
 <?php include('includes/footer.php'); ?>
