@@ -37,8 +37,8 @@
    $approvedMapResult = mysqli_query($con, $approvedMapQuery);
 
    // Space overview available/occupied/reserved
-$propertyOverviewQuery = "SELECT status, COUNT(*) AS count FROM space GROUP BY status"
-$propertyOverviewResult = mysqli_query($con, $propertyOverviewQuery)
+$propertyOverviewQuery = "SELECT status, COUNT(*) AS count FROM space GROUP BY status";
+$propertyOverviewResult = mysqli_query($con, $propertyOverviewQuery);
 
 
 
@@ -63,6 +63,25 @@ mysqli_free_result($propertyOverviewResult);
 mysqli_free_result($totalSpacesResult); 
 
 
+// Fetch tenant data for Tenant Management
+$tenantManagementQuery = "SELECT utype, COUNT(*) AS count FROM user WHERE utype = 'Tenant'";
+$tenantManagementResult = mysqli_query($con, $tenantManagementQuery);
+
+// Fetch data into an associative array
+$tenantManagementData = mysqli_fetch_assoc($tenantManagementResult);
+
+// Close result set
+mysqli_free_result($tenantManagementResult);
+
+$totalBillsQuery = "SELECT SUM(total) AS totalBills FROM bill";
+$totalBillsResult = mysqli_query($con, $totalBillsQuery);
+$totalBills = 0;
+
+if ($totalBillsResult && mysqli_num_rows($totalBillsResult) > 0) {
+    $totalBillsData = mysqli_fetch_assoc($totalBillsResult);
+    $totalBills = $totalBillsData['totalBills'];
+}
+
 ?>
 <!-- ******************** -->
 <!-- **** START HTML **** -->
@@ -71,57 +90,244 @@ mysqli_free_result($totalSpacesResult);
    include('includes/header.php');
    include('includes/nav.php');
 ?>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
+  .dashboard-reports {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+        text-align: center;
+    }
+   .row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+    }
+
+    section {
+        flex: 1;
+        padding: 20px;
+        background-color: #f4f4f4;
+        margin: 10px;
+        border-radius: 5px;
+        height: 260px;
+    }
+
+    h2 {
+        color: #c19f90;
+    }
+
+    .section-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .section-item,
+    .pie-chart {
+        flex: 1;
+        padding: 10px;
+        background-color: #fff;
+        border-radius: 5px;
+        margin: 10px;
+        height: 150px; /* Set the desired height */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .section-item i,
+    .section-item h5 {
+        margin-top: auto;
+        margin-bottom: 10px;
+    }
+
+    .section-item p {
+        font-size: 40px; /* Set the desired font size */
+        margin-top: 20px;
+    }
+
+    .pie-chart {
+        text-align: center;
+        padding-top: 35px;
+    }
+
+    .pie-chart canvas {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #tenantPieChart,
+    #reservationPieChart,
+    #propertyOverviewPieChart {
+        max-width: 80px;
+        height: auto;
+        display: block;
+        margin: 0 auto;
+    }
+
+    #feedbackSection {
+        background-color: #f4f4f4;
+        padding: 20px;
+        border-radius: 10px;
+        flex: 1; /* Take full width */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        max-height: 300px; /* Adjust the max-height as needed */
+        overflow-y: auto;
+    }
+
+    #feedbackList,
+    #tenantList {
+        list-style: none;
+        padding: 0;
+        width: 100%;
+        max-width: 400px; /* Adjust the max-width as needed */
+    }
+
+    #feedbackList li,
+    #tenantList li {
+        margin-bottom: 10px;
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 5px;
+        text-align: center;
+    }
+
+    /* Adjusted pie chart sizes */
+    canvas {
+        max-width: 80px;
+        height: 100%;
+        display: block;
+        margin: 0 auto;
+    }
+
+    button:hover {
+        background-color: #c19f90 !important;
+    }
+
+    button {
+        background-color: #9b593c;
+    }
+</style>
+</style>
 
 
-<section style= "margin-top:90px;">
+<div class="dashboard-body" style= "margin-top:90px;">
+   <h1>Dashboard</h1> 
+<div class="dashboard-reports" >
    <?php
       if ($verificationStatus === 'approved' && $utype === 'Owner'): ?>
-   <h1>Dashboard</h1>
-   <div>
-      1. total maps <br/>
-      2. total spaces/map?
-      -total free/vacant spaces?
-      - total taken spaces?
+   <div class ="row">
+       <section>
+            <h2>Space Overview</h2>
+            <div class="section-content">
+                <div class="section-item">
+                    <p><?php echo $propertyOverviewData['occupied']; ?></p>
+                    <i class="fas fa-map-marker-alt"></i> <!-- Icon for Maps -->
+                </div>
+                <div class="section-item">
+                    <p><?php echo $totalSpaces; ?></p>
+                    <i class="fas fa-th-large"></i> <!-- Icon for Spaces -->
+                </div>
+                <div class="pie-chart">
+                    <canvas id="propertyOverviewPieChart"></canvas>
+                </div>
+            </div>
+        </section>
+          <section style="width: 600px;">
+    <h2>Tenant Management</h2>
+    <div class="section-content">
+        <?php
+        // Count the number of active and inactive tenants
+        $activeTenantQuery = "SELECT COUNT(*) as count FROM `user` WHERE `utype` = 'Tenant' AND `status` = 'active'";
+        $inactiveTenantQuery = "SELECT COUNT(*) as count FROM `user` WHERE `utype` = 'Tenant' AND `status` = 'inactive'";
+
+        $activeTenantResult = mysqli_query($con, $activeTenantQuery);
+        $inactiveTenantResult = mysqli_query($con, $inactiveTenantQuery);
+
+        $activeTenantCount = ($activeTenantResult && mysqli_num_rows($activeTenantResult) > 0) ? mysqli_fetch_assoc($activeTenantResult)['count'] : 0;
+        $inactiveTenantCount = ($inactiveTenantResult && mysqli_num_rows($inactiveTenantResult) > 0) ? mysqli_fetch_assoc($inactiveTenantResult)['count'] : 0;
+        ?>
+        <div class="section-item">
+            <p><?php echo $activeTenantCount; ?></p>
+            <i class="fas fa-users"></i> <!-- Icon for Active Tenants -->
+        </div>
+        <div class="section-item">
+            <p><?php echo $inactiveTenantCount; ?></p>
+            <i class="fas fa-users"></i> <!-- Icon for Inactive Tenants -->
+        </div>
+        <div class="pie-chart">
+            <canvas id="tenantPieChart"></canvas>
+        </div>
+    </div>
+</section>
+      <section>
+            <h2>Reservation Tracking</h2>
+            <div class="section-content">
+                <div class="section-item">
+                    <p>28</p>
+                    <i class="fas fa-calendar-check"></i> <!-- Icon for Reservations -->
+                </div>
+                <div class="section-item">
+                    <p>65</p>
+                    <i class="fas fa-file-alt"></i> <!-- Icon for Applications -->
+                </div>
+                <div class="pie-chart">
+                    <canvas id="reservationPieChart"></canvas>
+                </div>
+            </div>
+        </section>
    </div>
-   <div>
-      <h6>pie chart?</h6>
-      3. total users <br/>
-      4. total user reservation/application?
+   <div class="row">
+     <section>
+            <h2>Financial Overview</h2>
+            <div class="section-content">
+    <div class="section-item">
+        <p>$<?php echo number_format($totalBills, 2); ?></p>
+        <h5>Total Bills</h5>
+    </div>
+    <div style="padding-top: 35px;" class="section-item">
+        <button style="margin-bottom: 10px;">Billing Information</button>
+        <button>Financial Reports</button>
+    </div>
+</div>
+        </section>
+
+        <section style="width: 600px;" id="feedbackSection">
+            <h2>Feedback</h2>
+            <div class="section-content" style="width: 300px;">
+                <ul id="feedbackList">
+                    <li>Ekis dito</li>
+                    <li>Walang kuryente</li>
+                    <li>4 years online parin</li>
+                    <li>Midterm na </li>
+                    <li>1 palang ftf class </li>
+                    <li>Ngyek</li>
+                </ul>
+                <ul id="tenantList">
+                    <li>Walter White</li>
+                    <li>Jesse Pinkman</li>
+                    <li>Mike Ermanshrout</li>
+                    <li>Gus Fring</li>
+                    <li>Isagi Yoichi</li>
+                    <li>Eren Yeager</li>
+                </ul>
+            </div>
+        </section>
    </div>
-   <div>
-      <h6>pie chart?</h6>
-      5. total user assigned?<br/>
-      6. total bills? /monthly reports?
-   </div>
-   <div>
-      7. adding cancel reservations<br/>
-      8. monthly revenue? based on rent bill? 
-   </div>
-   <?php elseif ($verificationStatus === 'rejected' && $utype === 'Owner'): ?>
-   <h1>Dashboard</h1>
-   <div>
-      1. total maps <br/>
-      2. total spaces/map?
-      -total free/vacant spaces?
-      - total taken spaces?
-   </div>
-   <div>
-      <h6>pie chart?</h6>
-      3. total users <br/>
-      4. total user reservation/application?
-   </div>
-   <div>
-      <h6>pie chart?</h6>
-      5. total user assigned?<br/>
-      6. total bills? /monthly reports?
-   </div>
-   <div>
-      7. adding cancel reservations<br/>
-      8. monthly revenue? based on rent bill? 
-   </div>
+     <?php elseif ($verificationStatus === 'rejected' && $utype === 'Owner'): ?>
+      <div id="verificationModal" class="prompt-modal">
+         <div class="modal-content">
+            <span class="close">&times;</span>
+            <p>Verify your account to add concourse.</p>
+            <a href="verification_account.php" class="btn-sm btn btn-success">Verify Account</a>
+         </div>
+      </div>                                                                                 
    <div id="verificationModal" class="prompt-modal">
       <div class="modal-content">
          <span class="close">&times;</span>
@@ -361,7 +567,7 @@ mysqli_free_result($totalSpacesResult);
          }
       </script>
    </div>
-</section>
+</div>
 <?php else: ?>
 <div id="verificationModal" class="prompt-modal">
    <div class="modal-content">
@@ -370,6 +576,7 @@ mysqli_free_result($totalSpacesResult);
       <!-- Will change this-->
       <a href="verification_account.php" class="btn-sm btn btn-success">Verify Account</a>
    </div>
+</div>
 </div>
 <?php endif; ?>
 </section>
