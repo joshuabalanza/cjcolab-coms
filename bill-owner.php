@@ -150,19 +150,21 @@ include('includes/nav.php');
         <table>
             <thead>
                 <tr>
-                    <th>Space</th>
+                    <th>Space id</th>
+                    <th>Tenant Name</th>
                     <th>Due Date</th>
                     <th>Outstanding Amount</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
-                $query = "SELECT space_id, due_date, total FROM bill WHERE owner_name = '$owner_name'";
+                $query = "SELECT space_id, tenant_name, due_date, total FROM bill WHERE owner_name = '$owner_name'";
                 $result = mysqli_query($con, $query);
 
                 while ($row = mysqli_fetch_assoc($result)) {
                     echo "<tr>";
                     echo "<td>{$row['space_id']}</td>";
+                    echo "<td>{$row['tenant_name']}</td>";
                     echo "<td>{$row['due_date']}</td>";
                     echo "<td>₱{$row['total']}</td>";
                     echo "</tr>";
