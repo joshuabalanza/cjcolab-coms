@@ -64,8 +64,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_bill'])) {
             $stmt->bind_param("sssssss", $spaceId, $tenantName, $tenantEmail, $electric, $water, $spaceBill, $total);
 
             if ($stmt->execute()) {
+                // Calculate the due date for email notification
+                $dueDate = date('Y-m-d', strtotime('+7 days'));
+
                 // Notify the tenant via email
-                if (sendEmailToTenant($tenantEmail, $tenantName, $total)) {
+                if (sendEmailToTenant($tenantEmail, $tenantName, $electric, $water, $spaceBill, $total, $dueDate)) {
                     // Update notified status to 'notified'
                     $updateNotifiedQuery = "UPDATE bill SET notified = 'notified' WHERE space_id = ? AND tenant_name = ?";
                     $stmt = $con->prepare($updateNotifiedQuery);
