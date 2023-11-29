@@ -145,6 +145,7 @@ include('includes/nav.php');
 </style>
 
 <?php
+if (isset($_SESSION['aid']) && $_SESSION['atype'] === 'accountant') {
 // Check if concourse_id is set in the URL
 if (isset($_GET['concourse_id'])) {
     $concourseId = $_GET['concourse_id'];
@@ -184,7 +185,8 @@ if (isset($_GET['concourse_id'])) {
                 <!-- Display occupied spaces with the modified table design -->
                 <h2>Occupied Spaces</h2>
                 <?php
-                $occupiedSpacesQuery = "SELECT * FROM space WHERE concourse_id = '$concourseId' AND status = 'occupied'";
+                // Fetch occupied spaces based on concourse_id
+                $occupiedSpacesQuery = "SELECT * FROM space WHERE status = 'occupied' AND concourse_id = '$concourseId'";
                 $occupiedSpacesResult = $con->query($occupiedSpacesQuery);
 
                 if ($occupiedSpacesResult->num_rows > 0) {
@@ -241,57 +243,55 @@ if (isset($_GET['concourse_id'])) {
             </div>
         </div>
 
-  <!-- Modal overlay and content for updating a bill -->
-<div id="updateBillModal" class="modal-overlay">
-    <div class="modal-content">
-        <span class="close-modal" id="closeUpdateBillModalBtn">&times;</span>
-        <h3>Update Bill for Space</h3>
-        <!-- Form to update a bill -->
-        <form id="updateBillForm" method="post" action="process_update_bill.php">
-            <input type="hidden" name="space_id" id="updateBillSpaceIdInput" value="">
-            <label for="updatedElectricInput">Current Electric Bill:</label>
-            <input type="text" name="updated_electric" id="updatedElectricInput" readonly>
-            <label for="updatedWaterInput">Current Water Bill:</label>
-            <input type="text" name="updated_water" id="updatedWaterInput" readonly>
-            <!-- Add more updated bill details as needed -->
-            <button type="submit" name="update_bill">Update Bill</button>
-        </form>
-    </div>
-</div>
-
+        <!-- Modal overlay and content for updating a bill -->
+        <div id="updateBillModal" class="modal-overlay">
+            <div class="modal-content">
+                <span class="close-modal" id="closeUpdateBillModalBtn">&times;</span>
+                <h3>Update Bill for Space</h3>
+                <!-- Form to update a bill -->
+                <form id="updateBillForm" method="post" action="process_update_bill.php">
+                    <input type="hidden" name="space_id" id="updateBillSpaceIdInput" value="">
+                    <label for="updatedElectricInput">Current Electric Bill:</label>
+                    <input type="text" name="updated_electric" id="updatedElectricInput" >
+                    <label for="updatedWaterInput">Current Water Bill:</label>
+                    <input type="text" name="updated_water" id="updatedWaterInput" >
+                    <!-- Add more updated bill details as needed -->
+                    <button type="submit" name="update_bill">Update Bill</button>
+                </form>
+            </div>
+        </div>
 
         <script>
-    function openCreateBillModal(button) {
-        const spaceId = button.getAttribute('data-space-id');
-        document.getElementById('createBillSpaceIdInput').value = spaceId;
-        document.getElementById('createBillModal').style.display = 'flex';
-    }
+            function openCreateBillModal(button) {
+                const spaceId = button.getAttribute('data-space-id');
+                document.getElementById('createBillSpaceIdInput').value = spaceId;
+                document.getElementById('createBillModal').style.display = 'flex';
+            }
 
-    // Open the update bill modal
-    function openUpdateBillModal(button) {
-        const spaceId = button.getAttribute('data-space-id');
-        document.getElementById('updateBillSpaceIdInput').value = spaceId;
+            // Open the update bill modal
+            function openUpdateBillModal(button) {
+                const spaceId = button.getAttribute('data-space-id');
+                document.getElementById('updateBillSpaceIdInput').value = spaceId;
 
-        // Fetch the current bill details
-        fetch('get_current_bill.php?space_id=' + spaceId)
-            .then(response => response.json())
-            .then(data => {
-                if (!data.error) {
-                    // Populate the form fields with current bill details
-                    document.getElementById('updatedElectricInput').value = data.electric;
-                    document.getElementById('updatedWaterInput').value = data.water;
-                    // Add more fields if needed
-                } else {
-                    console.error('Error:', data.error);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+                // Fetch the current bill details
+                fetch('get_current_bill.php?space_id=' + spaceId)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (!data.error) {
+                            // Populate the form fields with current bill details
+                            document.getElementById('updatedElectricInput').value = data.electric;
+                            document.getElementById('updatedWaterInput').value = data.water;
+                            // Add more fields if needed
+                        } else {
+                            console.error('Error:', data.error);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
 
-        document.getElementById('updateBillModal').style.display = 'flex';
-    }
-
+                document.getElementById('updateBillModal').style.display = 'flex';
+            }
 
             // Close the create bill modal
             document.getElementById('closeCreateBillModalBtn').addEventListener('click', function () {
@@ -303,10 +303,10 @@ if (isset($_GET['concourse_id'])) {
                 document.getElementById('updateBillModal').style.display = 'none';
             });
 
-// Handle form submission for create bill
-document.getElementById('createBillForm').addEventListener('submit', function (event) {
-    // Allow the form to be submitted in the traditional way
-});
+            // Handle form submission for create bill
+            document.getElementById('createBillForm').addEventListener('submit', function (event) {
+                // Allow the form to be submitted in the traditional way
+            });
 
             // Handle form submission for update bill
             document.getElementById('updateBillForm').addEventListener('submit', function (event) {
@@ -343,7 +343,7 @@ document.getElementById('createBillForm').addEventListener('submit', function (e
     echo 'Invalid request. Please provide a concourse_id.';
     echo '</div>';
     echo '</div>';
-}
+}}
 ?>
 
 <?php include('includes/footer.php'); ?>

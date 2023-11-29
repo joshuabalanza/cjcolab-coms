@@ -116,9 +116,9 @@
                 echo '<a href="#contact-us" class="nav-link ' . $linkClass . '">Contact Us</a>';
             } elseif (isset($_SESSION['utype']) && $_SESSION['utype'] == 'Owner') {
                 // Display these links for Owner type users
-                echo '<li class="nav-item">';
-                echo '<a href="index.php" class="nav-link">Home</a>';
-                echo '</li>';
+                // echo '<li class="nav-item">';
+                // echo '<a href="index.php" class="nav-link">Home</a>';
+                // echo '</li>';
                 echo '<li class="nav-item">';
                 echo '<a href="dashboard.php" class="nav-link">Dashboard</a>';
                 echo '</li>';
@@ -137,12 +137,12 @@
 
             } elseif (isset($_SESSION['utype']) && $_SESSION['utype'] == 'Tenant') {
                 // Display these links for Tenant type users
-                echo '<li class="nav-item">';
-                echo '<a href="index.php" class="nav-link">Home</a>';
-                echo '</li>';
-                 echo '<li class="nav-item">';
-                echo '<a href="dashboard_tenant2.php" class="nav-link">Dashboard</a>';
-                echo '</li>';
+                // echo '<li class="nav-item">';
+                // echo '<a href="index.php" class="nav-link">Home</a>';
+                // echo '</li>';
+                //  echo '<li class="nav-item">';
+                // echo '<a href="dashboard_tenant2.php" class="nav-link">Dashboard</a>';
+                // echo '</li>';
                 echo '<li class="nav-item">';
                 echo '<a href="concourses.php" class="nav-link">Concourses</a>';
                 echo '</li>';
@@ -150,9 +150,9 @@
                 echo '<a href="bills.php" class="nav-link">Bills</a>';
                 echo '</li>';
             } elseif (isset($_SESSION['actype'])) {
-                echo '<li class="nav-item">';
-                echo '<a href="index.php" class="nav-link">Home</a>';
-                echo '</li>';
+                // echo '<li class="nav-item">';
+                // echo '<a href="index.php" class="nav-link">Home</a>';
+                // echo '</li>';
                 echo '<li class="nav-item">';
                 echo '<a href="acc_dashboard.php" class="nav-link">Dashboard</a>';
                 echo '</li>';
@@ -198,8 +198,8 @@
        echo '<a class="dropdown-item" href="profile.php">
            <i class="fa-regular fa-user"></i>
            My Profile</a>';
-       echo '<a class="dropdown-item" href="transactions.php">
-           <i class="fa-solid fa-file-lines"></i> Transactions</a>';
+    //    echo '<a class="dropdown-item" href="transactions.php">
+    //        <i class="fa-solid fa-file-lines"></i> Transactions</a>';
        echo '<a class="dropdown-item" href="#" onclick="event.preventDefault(); showLogoutModal();">
            <i class="fa-solid fa-power-off"></i> Logout
        </a>
