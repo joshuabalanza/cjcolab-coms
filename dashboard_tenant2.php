@@ -91,9 +91,8 @@
    include('includes/header.php');
    include('includes/nav.php');
    ?>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<style>
+
+   <style>
    .dashboard-reports {
    font-family: Arial, sans-serif;
    margin: 0;
@@ -274,6 +273,7 @@
    width: 100%;
    }
 </style>
+
 <div class="dashboard-body" style= "margin-top:90px;">
 <h1>Dashboard</h1>
 <div class="dashboard-reports" >
@@ -472,10 +472,74 @@
    </div>
 </div>
 <?php endif; ?>
-<!--  -->
+
 <script>
-  
+  function openModal(spaceName, spaceStatus, spaceDetails) {
+         var modal = document.getElementById("myModal");
+         var modalContent = document.getElementById("modalContent");
+         var applyButton = document.getElementById("applyButton");
      
-  
+         // Show modal
+         modal.style.display = "flex";
+     
+         // Set the spacename and status in the modalContent
+         modalContent.innerHTML = `
+             <img src="/COMS/uploads/${spaceDetails['space_img']}" alt="Space Image" style="max-width: 100%; max-height: 200px;">
+             <h2>${spaceName}</h2>
+             <p>Status: ${spaceStatus}</p>
+             <ul>
+                 <li><strong>Space ID:</strong> ${spaceDetails['space_id']}</li>
+                 <li><strong>Concourse ID:</strong> ${spaceDetails['concourse_id']}</li>
+                 <li><strong>Owner:</strong> ${spaceDetails['space_owner']}</li>
+                 <li><strong>Status:</strong> ${spaceDetails['status']}</li>
+                 <li><strong>Space Width:</strong> ${spaceDetails['space_width']}</li>
+                 <li><strong>Space Length:</strong> ${spaceDetails['space_length']}</li>
+                 <li><strong>Space Height:</strong> ${spaceDetails['space_height']}</li>
+                 <li><strong>Space Area:</strong> ${spaceDetails['space_area']}</li>
+                 <li><strong>Space Dimension:</strong> ${spaceDetails['space_dimension']}</li>
+                 <li><strong>Space Tenant:</strong> ${spaceDetails['space_tenant']}</li>
+             </ul>
+         `;
+     
+         // Set the spacename in the application form
+         document.getElementById("appSpacename").value = spaceName;
+     
+         // Check if the space status is 'reserved' or 'occupied'
+         if (spaceStatus === 'reserved' || spaceStatus === 'occupied') {
+             // Hide the Apply button
+             applyButton.style.display = "none";
+         } else {
+             // Show and enable the Apply button
+             applyButton.style.display = "block";
+             applyButton.removeAttribute('disabled');
+         }
+     }
+   
+     function closeModal() {
+         var modal = document.getElementById("myModal");
+         modal.style.display = "none";
+     }
+     
+     function openAppModal() {
+         // Close the first modal
+         closeModal();
+     
+         var appModal = document.getElementById("appModal");
+         var appSpacename = document.getElementById("appSpacename");
+         
+         // Get the spacename from the modalContent
+         var selectedSpaceName = document.getElementById("modalContent").querySelector('h2').innerText;
+     
+         // Set the spacename in the application form
+         appSpacename.value = selectedSpaceName;
+     
+         appModal.style.display = "flex";
+     }
+     
+     function closeAppModal() {
+         var appModal = document.getElementById("appModal");
+         appModal.style.display = "none";
+     }
+     
 </script>
 <?php include('includes/footer.php'); ?>
