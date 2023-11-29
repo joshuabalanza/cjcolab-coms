@@ -89,7 +89,9 @@ if ($totalBillsResult && mysqli_num_rows($totalBillsResult) > 0) {
 <?php
    include('includes/header.php');
    include('includes/nav.php');
-?>
+?><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
+
    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
   .dashboard-reports {
@@ -213,6 +215,79 @@ if ($totalBillsResult && mysqli_num_rows($totalBillsResult) > 0) {
     button {
         background-color: #9b593c;
     }
+      .container {
+      max-width: 800px;
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      }
+      .card {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      width: calc(33.33% - 20px);
+      margin-bottom: 20px;
+      cursor: pointer;
+      }
+      h1 {
+      text-align: center;
+      color: #333;
+      }
+      .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+      }
+      .modal-content {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      max-width: 400px;
+      width: 100%;
+      }
+      ul {
+      list-style-type: none;
+      padding: 0;
+      }
+      li {
+      margin: 10px 0;
+      }
+      .close-btn {
+      background-color: #3498db;
+      color: #fff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      }
+      #appModal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+      }
+      #appModalContent {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      max-width: 400px;
+      width: 100%;
+      }
 </style>
 </style>
 
@@ -220,8 +295,11 @@ if ($totalBillsResult && mysqli_num_rows($totalBillsResult) > 0) {
 <div class="dashboard-body" style= "margin-top:90px;">
    <h1>Dashboard</h1> 
 <div class="dashboard-reports" >
-   <?php
-      if ($verificationStatus === 'approved' && $utype === 'Owner'): ?>
+
+   <!-- **********************************-->
+   <!-- ************ OWNER ***************-->
+   <!-- **********************************-->
+   <?php if ($verificationStatus === 'approved' && $utype === 'Owner'): ?>
    <div class ="row">
        <section>
             <h2>Space Overview</h2>
@@ -332,10 +410,13 @@ if ($totalBillsResult && mysqli_num_rows($totalBillsResult) > 0) {
       <div class="modal-content">
          <span class="close">&times;</span>
          <p>Verify your account to add concourse.</p>
-         <!-- Will change this-->
          <a href="verification_account.php" class="btn-sm btn btn-success">Verify Account</a>
       </div>
    </div>
+
+   <!-- **********************************-->
+   <!-- ************ TENANT **************-->
+   <!-- **********************************-->
    <?php elseif ($verificationStatus === 'approved' && $utype === 'Tenant'): ?>
    <h1>Dashboard</h1>
    <?php
@@ -344,91 +425,7 @@ if ($totalBillsResult && mysqli_num_rows($totalBillsResult) > 0) {
    
       $con->close();
       ?>
-   <style>
-      body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      }
-      .container {
-      max-width: 800px;
-      width: 100%;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      }
-      .card {
-      background-color: #fff;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      padding: 20px;
-      width: calc(33.33% - 20px);
-      margin-bottom: 20px;
-      cursor: pointer;
-      }
-      h1 {
-      text-align: center;
-      color: #333;
-      }
-      .modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      justify-content: center;
-      align-items: center;
-      }
-      .modal-content {
-      background-color: #fff;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      padding: 20px;
-      max-width: 400px;
-      width: 100%;
-      }
-      ul {
-      list-style-type: none;
-      padding: 0;
-      }
-      li {
-      margin: 10px 0;
-      }
-      .close-btn {
-      background-color: #3498db;
-      color: #fff;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 4px;
-      cursor: pointer;
-      }
-      #appModal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      justify-content: center;
-      align-items: center;
-      }
-      #appModalContent {
-      background-color: #fff;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      padding: 20px;
-      max-width: 400px;
-      width: 100%;
-      }
-   </style>
+   
    <h1>Available Spaces</h1>
    <div class="container">
       <?php
@@ -498,7 +495,60 @@ if ($totalBillsResult && mysqli_num_rows($totalBillsResult) > 0) {
             </div>
          </div>
       </div>
-      <script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+        // Fetch the counts of active and inactive tenants from PHP
+    const activeTenantCount = <?php echo $activeTenantCount; ?>;
+    const inactiveTenantCount = <?php echo $inactiveTenantCount; ?>;
+
+    // Data for tenant pie chart
+    const tenantPieData = {
+        labels: ['Active Tenants', 'Inactive Tenants'],
+        datasets: [{
+            data: [activeTenantCount, inactiveTenantCount],
+            backgroundColor: ['#36A2EB', '#FF6384'],
+        }],
+    };
+
+    // Render tenant pie chart
+    const tenantPieChart = new Chart(document.getElementById('tenantPieChart'), {
+        type: 'pie',
+        data: tenantPieData,
+    });
+
+        const reservationPieData = {
+            labels: ['Reservations', 'Applications'],
+            datasets: [{
+                data: [40, 60],
+                backgroundColor: ['#FFCE56', '#4CAF50'],
+            }],
+        };
+
+        const propertyOverviewPieData = {
+            labels: ['Occupied', 'Vacant'],
+            datasets: [{
+                data: [<?php echo $percentOccupied; ?>, <?php echo 100 - $percentOccupied; ?>],
+                backgroundColor: ['#FFCE56', '#4CAF50'],
+            }],
+        };
+
+        const reservationPieChart = new Chart(document.getElementById('reservationPieChart'), {
+            type: 'pie',
+            data: reservationPieData,
+        });
+
+        const propertyOverviewPieChart = new Chart(document.getElementById('propertyOverviewPieChart'), {
+            type: 'pie',
+            data: propertyOverviewPieData,
+        });
+        });
+
+    </script>
+      <!-- <script>
+
+
+     
          function openModal(spaceName, spaceStatus, spaceDetails) {
              var modal = document.getElementById("myModal");
              var modalContent = document.getElementById("modalContent");
@@ -539,7 +589,7 @@ if ($totalBillsResult && mysqli_num_rows($totalBillsResult) > 0) {
                  applyButton.removeAttribute('disabled');
              }
          }
-         
+
          function closeModal() {
              var modal = document.getElementById("myModal");
              modal.style.display = "none";
@@ -565,7 +615,8 @@ if ($totalBillsResult && mysqli_num_rows($totalBillsResult) > 0) {
              var appModal = document.getElementById("appModal");
              appModal.style.display = "none";
          }
-      </script>
+         
+      </script> -->
    </div>
 </div>
 <?php else: ?>
@@ -580,4 +631,5 @@ if ($totalBillsResult && mysqli_num_rows($totalBillsResult) > 0) {
 </div>
 <?php endif; ?>
 </section>
+<script src=""></script>
 <?php include('includes/footer.php'); ?>
