@@ -12,7 +12,7 @@ $totalAmountRow = $totalAmountResult->fetch_assoc();
 $totalAmount = isset($totalAmountRow['totalAmount']) ? $totalAmountRow['totalAmount'] : 0;
 
 // Fetch billing information
-$sql = "SELECT tenant_name, space_id, total, due_date, status AS payment_status, electric, water, space_bill FROM bill";
+$sql = "SELECT tenant_name, space_id, total, due_date, electric, water, space_bill FROM bill";
 $result = $con->query($sql);
 
 // Close the database connection
@@ -92,46 +92,95 @@ include('includes/nav.php');
     tbody tr:hover {
         cursor: pointer;
         background-color: #c19f90;
+        color: white;}
+ 
+        tbody tr:hover {
+        cursor: pointer;
+        background-color: #c19f90;
         color: white;
+    }
+
+    .pay-btn,
+    .history-btn,
+    .receipt-btn {
+        padding: 5px 10px;
+        margin-right: 5px;
+        background-color: #9b593c;
+        color: #fff;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    button:hover {
+        background-color: #c19f90 !important;
+    }
+
+    #outstandingAmount,
+    #totalBill,
+    #paymentHistoryModal,
+    #chargeBreakdownModal,
+    #receiptModal {
+        display: none;
+    }
+
+    #paymentHistoryModal .modal-content table {
+        margin-top: 10px;
     }
 </style>
 </head>
-<body style="margin-top: 150px;">
-    <section>
-        <h2>Overview</h2>
-        <p>
-            Total Amount: <?php echo number_format($totalAmount, 2); ?>
-        </p>
 
-        <h2>Billing Information</h2>
-        <table id="billingTable">
+<body>
+    <section id="bill-table" style="margin-top: 100px;">
+        <h2>Bill Summary</h2>
+        <div>
+            <?php
+            $owner_name = $_SESSION['uname'];
+            $query = "SELECT SUM(total) as totalAmount FROM bill WHERE owner_name = '$owner_name'";
+            $result = mysqli_query($con, $query);
+            $row = mysqli_fetch_assoc($result);
+
+            $totalAmount = $row['totalAmount'];
+            echo "<p> Total Amount: P$totalAmount</p>"
+            ?>
+        </div>
+        <div id="totalBill"></div>
+        <table>
             <thead>
                 <tr>
-                    <th>Tenant Name</th>
                     <th>Space</th>
-                    <th>Total Charges</th>
                     <th>Due Date</th>
-                    <th>Payment Status</th>
+                    <th>Outstanding Amount</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
-                if ($result->num_rows > 0) {
-                    while ($row = $result->fetch_assoc()) {
-                        echo "<tr data-electric='{$row['electric']}' data-water='{$row['water']}' data-space-bill='{$row['space_bill']}'>";
-                        echo "<td>{$row['tenant_name']}</td>";
-                        echo "<td>{$row['space_id']}</td>";
-                        echo "<td>{$row['total']}</td>";
-                        echo "<td>{$row['due_date']}</td>";
-                        echo "<td>{$row['payment_status']}</td>";
-                        echo "</tr>";
-                    }
-                } else {
-                    echo "<tr><td colspan='5'>No data available</td></tr>";
+                $query = "SELECT space_id, due_date, total FROM bill WHERE owner_name = '$owner_name'";
+                $result = mysqli_query($con, $query);
+
+                while ($row = mysqli_fetch_assoc($result)) {
+                    echo "<tr>";
+                    echo "<td>{$row['space_id']}</td>";
+                    echo "<td>{$row['due_date']}</td>";
+                    echo "<td>₱{$row['total']}</td>";
+                    echo "</tr>";
                 }
                 ?>
             </tbody>
         </table>
+
+        <div id="receiptModal" class="modal">
+            <div class="modal-content">
+                <span onclick="closeReceiptModal()" style="float: right; cursor: pointer;">&times;</span>
+                <h3>Upload Receipt</h3>
+                <p>Please upload an image of your receipt.</p>
+                <!-- File input for receipt upload -->
+                <input type="file" id="receiptUpload" accept="image/*">
+                <button onclick="submitReceipt()">Submit Receipt</button>
+            </div>
+        </div>
     </section>
 
     <div id="chargeBreakdownModal" class="modal">

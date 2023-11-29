@@ -129,7 +129,7 @@
                 echo '<a href="tenants.php" class="nav-link">Tenants</a>';
                 echo '</li>';
                 echo '<li class="nav-item">';
-                echo '<a href="bills.php" class="nav-link">Bills</a>';
+                echo '<a href="bill-owner.php" class="nav-link">Bills</a>';
                 echo '</li>';
                 echo '<li class="nav-item">';
                 echo '<a href="reservations.php" class="nav-link">Reservations</a>';
@@ -147,7 +147,7 @@
                 echo '<a href="concourses.php" class="nav-link">Concourses</a>';
                 echo '</li>';
                 echo '<li class="nav-item">';
-                echo '<a href="bills.php" class="nav-link">Bills</a>';
+                echo '<a href="bill-tenant.php" class="nav-link">Bills</a>';
                 echo '</li>';
             } elseif (isset($_SESSION['actype'])) {
                 // echo '<li class="nav-item">';

@@ -119,7 +119,8 @@ include('includes/nav.php');
     <h2>Bill Summary</h2>
     <div>
       <?php 
-      $query = "SELECT SUM(total) as totalAmount FROM bill";
+      $tenant = $_SESSION['uname'];
+      $query = "SELECT SUM(total) as totalAmount FROM bill WHERE tenant_name = '$tenant'";
       $result = mysqli_query($con, $query);
       $row = mysqli_fetch_assoc($result);
       
@@ -134,16 +135,13 @@ include('includes/nav.php');
             <th>Space</th>
             <th>Due Date</th>
             <th>Outstanding Amount</th>
-            <th>Status</th>
-            <th>Actions</th>
         </tr>
         </thead>
         <tbody>
         <?php
-        // Fetch data from the 'bill' table
-        $query = "SELECT * FROM bill";
+        // Fetch data from the 'bill' table for the specific tenant
+        $query = "SELECT * FROM bill WHERE tenant_name = '$tenant'";
         $result = mysqli_query($con, $query);
-        
 
         while ($row = mysqli_fetch_assoc($result)) {
             echo "<tr data-spaceid='{$row['space_id']}' 
@@ -153,18 +151,9 @@ include('includes/nav.php');
                         class='billing-row'>";
             echo "<td>{$row['space_id']}</td>";
             echo "<td>{$row['due_date']}</td>";
-            echo "<td>\${$row['total']}</td>";
-            echo "<td>{$row['status']}</td>";
+            echo "<td>₱{$row['total']}</td>";
             echo "<td>";
 
-            // Buttons logic based on the bill status
-            if ($row['status'] == 'paid') {
-                echo "<button class='history-btn' onclick='viewPaymentHistory(\"{$row['space_id']}\")'>History</button>";
-            } elseif ($row['status'] == 'unpaid' || $row['status'] == 'partially_paid') {
-                echo "<button class='pay-btn' onclick='redirectPayment(\"{$row['space_id']}\")'>Pay</button>";
-                echo "<button class='history-btn' onclick='viewPaymentHistory(\"{$row['space_id']}\")'>History</button>";
-                echo "<button class='receipt-btn' onclick='uploadReceipt(\"{$row['space_id']}\")'>Receipt</button>";
-            }
 
             echo "</td>";
             echo "</tr>";
@@ -172,51 +161,6 @@ include('includes/nav.php');
         ?>
         </tbody>
     </table>
-
-    <div id="chargeBreakdownModal" class="modal">
-        <div class="modal-content">
-            <span onclick="closeChargeBreakdownModal()" style="float: right; cursor: pointer;">&times;</span>
-            <h3>Charge Breakdown</h3>
-            <table id="chargeBreakdownTable">
-                <thead>
-                <tr>
-                    <th>Charge Type</th>
-                    <th>Amount</th>
-                </tr>
-                </thead>
-                <tbody>
-                <!-- Rows dynamically populated with JavaScript -->
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <div id="paymentHistoryModal" class="modal">
-        <div class="modal-content">
-            <span onclick="closePaymentHistoryModal()" style="float: right; cursor: pointer;">&times;</span>
-            <h3>Payment History</h3>
-            <table id="paymentHistoryTable">
-                <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Amount</th>
-                </tr>
-                </thead>
-                <tbody>
-                <!-- Dummy Payment History Data -->
-                <tr>
-                    <td>2023-05-15</td>
-                    <td>$500.00</td>
-                </tr>
-                <tr>
-                    <td>2023-06-01</td>
-                    <td>$200.00</td>
-                </tr>
-                <!-- Add more rows as needed -->
-                </tbody>
-            </table>
-        </div>
-    </div>
 
     <div id="receiptModal" class="modal">
         <div class="modal-content">
