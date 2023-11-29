@@ -35,6 +35,34 @@
    $uploadDirectory = __DIR__ . '/uploads/';
    $approvedMapQuery = "SELECT * FROM concourse_verification WHERE status = 'approved'";
    $approvedMapResult = mysqli_query($con, $approvedMapQuery);
+
+   // Space overview available/occupied/reserved
+$propertyOverviewQuery = "SELECT status, COUNT(*) AS count FROM space GROUP BY status"
+$propertyOverviewResult = mysqli_query($con, $propertyOverviewQuery)
+
+
+
+// Fetch Data into an associative Array
+$propertyOverviewData = [];
+while ($row = mysqli_fetch_assoc($propertyOverviewResult)) {
+    $propertyOverviewData[$row['status']] = $row['count'];
+}
+
+// Calculate total spaces
+$totalSpacesQuery = "SELECT COUNT(*) AS total FROM space";
+$totalSpacesResult = mysqli_query($con, $totalSpacesQuery);
+$totalSpacesRow = mysqli_fetch_assoc($totalSpacesResult);
+$totalSpaces = $totalSpacesRow['total'];
+
+// Calculate percentage occupancy
+$percentOccupied = ($propertyOverviewData['occupied'] / $totalSpaces) * 100;
+$percentAvailable = ($propertyOverviewData['available'] / $totalSpaces) * 100;
+
+// Close result sets
+mysqli_free_result($propertyOverviewResult);
+mysqli_free_result($totalSpacesResult); 
+
+
 ?>
 <!-- ******************** -->
 <!-- **** START HTML **** -->
@@ -43,6 +71,11 @@
    include('includes/header.php');
    include('includes/nav.php');
 ?>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+
+
 <section style= "margin-top:90px;">
    <?php
       if ($verificationStatus === 'approved' && $utype === 'Owner'): ?>
