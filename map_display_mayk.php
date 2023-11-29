@@ -230,6 +230,8 @@ include('includes/nav.php');
                                 <input type="number" id="space_length_modal" name="space_length" required>
                                 <label for="space_height_modal">Space Height:</label>
                                 <input type="number" id="space_height_modal" name="space_height" required>
+                                <label for="space_price_modal">Rent Price:</label>
+                                <input type="number" id="space_price_modal" name="space_price" required>
                                 <label for="status_modal">Space Status:</label>
                                 <select id="status_modal" name="status">
                                     <option value="available">Available</option>
@@ -380,20 +382,21 @@ $sql = "SELECT * FROM `space` WHERE concourse_id = $concourse_id ORDER BY space_
                  <h2>${spaceName}</h2>
                  <p>Status: ${spaceStatus}</p>
                  <ul>
-                     <li><strong>Space ID:</strong> ${spaceDetails['space_id']}</li>
-                     <li><strong>Concourse ID:</strong> ${spaceDetails['concourse_id']}</li>
+
                      <li><strong>Owner:</strong> ${spaceDetails['space_owner']}</li>
                      <li><strong>Status:</strong> ${spaceDetails['status']}</li>
-                     <li><strong>Space Width:</strong> ${spaceDetails['space_width']}</li>
-                     <li><strong>Space Length:</strong> ${spaceDetails['space_length']}</li>
-                     <li><strong>Space Height:</strong> ${spaceDetails['space_height']}</li>
-                     <li><strong>Space Area:</strong> ${spaceDetails['space_area']}</li>
+
                      <li><strong>Space Dimension:</strong> ${spaceDetails['space_dimension']}</li>
                      <li><strong>Space Tenant:</strong> ${spaceDetails['space_tenant']}</li>
                  </ul>
              `;
          }
-         
+                    // <li><strong>Space ID:</strong> ${spaceDetails['space_id']}</li>
+                    //  <li><strong>Concourse ID:</strong> ${spaceDetails['concourse_id']}</li>
+                    //  <li><strong>Space Width:</strong> ${spaceDetails['space_width']}</li>
+                    //  <li><strong>Space Length:</strong> ${spaceDetails['space_length']}</li>
+                    //  <li><strong>Space Height:</strong> ${spaceDetails['space_height']}</li>
+                    //  <li><strong>Space Area:</strong> ${spaceDetails['space_area']}</li>
          function closeModal() {
              var modal = document.getElementById("myModal");
              modal.style.display = "none";

@@ -163,7 +163,6 @@
       margin: 10px 0;
       }
       .close-btn {
-      background-color: #3498db;
       color: #fff;
       border: none;
       padding: 8px 16px;
@@ -221,9 +220,9 @@
          ?>
       <!-- Modal for space details -->
       <div id="myModal" class="modal">
-         <div class="modal-content">
-            <span class="close-btn" onclick="closeModal()">&times;</span>
-            <div id="modalContent">
+      <div class="modal-content" style="text-align: left; padding: 20px; position: relative;">
+         <span class="close-btn" onclick="closeModal()" style="position: absolute; top: 10px; right: 10px; cursor: pointer; font-size: 20px; color: #000;">&times;</span>
+            <div id="modalContent" style="margin-top: 20px;">
                <!-- Space information will be dynamically loaded here -->
             </div>
             <?php
@@ -270,23 +269,25 @@
          
              // Set the spacename and status in the modalContent
              modalContent.innerHTML = `
-                 <img src="/COMS/uploads/${spaceDetails['space_img']}" alt="Space Image" style="max-width: 100%; max-height: 200px;">
-                 <h2>${spaceName}</h2>
-                 <p>Status: ${spaceStatus}</p>
+             <img src="/COMS/uploads/${spaceDetails['space_img']}" alt="Space Image" style="display: block; margin: 0 auto; max-width: 100%; max-height: 200px;">
+                 <h2 style="text-align: center; font-weight: bold;">${spaceName}</h2>
                  <ul>
-                     <li><strong>Space ID:</strong> ${spaceDetails['space_id']}</li>
-                     <li><strong>Concourse ID:</strong> ${spaceDetails['concourse_id']}</li>
+
                      <li><strong>Owner:</strong> ${spaceDetails['space_owner']}</li>
-                     <li><strong>Status:</strong> ${spaceDetails['status']}</li>
-                     <li><strong>Space Width:</strong> ${spaceDetails['space_width']}</li>
-                     <li><strong>Space Length:</strong> ${spaceDetails['space_length']}</li>
-                     <li><strong>Space Height:</strong> ${spaceDetails['space_height']}</li>
-                     <li><strong>Space Area:</strong> ${spaceDetails['space_area']}</li>
                      <li><strong>Space Dimension:</strong> ${spaceDetails['space_dimension']}</li>
+                     <li><strong>Status:</strong> ${spaceDetails['status']}</li>
+                     <li><strong>Rent Price:</strong> ${spaceDetails['space_price']}</li>
                      <li><strong>Space Tenant:</strong> ${spaceDetails['space_tenant']}</li>
                  </ul>
-             `;
-         
+             `;                              
+            //  <p>Status: ${spaceStatus}</p>
+        
+                     // <li><strong>Space ID:</strong> ${spaceDetails['space_id']}</li>
+                     // <li><strong>Concourse ID:</strong> ${spaceDetails['concourse_id']}</li>
+                     //          <li><strong>Space Width:</strong> ${spaceDetails['space_width']}</li>
+                     // <li><strong>Space Length:</strong> ${spaceDetails['space_length']}</li>
+                     // <li><strong>Space Height:</strong> ${spaceDetails['space_height']}</li>
+                     // <li><strong>Space Area:</strong> ${spaceDetails['space_area']}</li>
              // Set the spacename in the application form
              document.getElementById("appSpacename").value = spaceName;
          
