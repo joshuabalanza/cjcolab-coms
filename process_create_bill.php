@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_bill'])) {
 
             if ($stmt->execute()) {
                 // Notify the tenant via email
-                if (sendEmailToTenant($tenantEmail, $tenantName, $total)) {
+                if (sendEmailToTenant($tenantEmail, $tenantName, $electric, $water, $spaceBill, $total, $dueDate)) {
                     // Update notified status to 'notified'
                     $updateNotifiedQuery = "UPDATE bill SET notified = 'notified' WHERE space_id = ? AND tenant_name = ?";
                     $stmt = $con->prepare($updateNotifiedQuery);
