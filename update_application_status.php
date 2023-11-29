@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($action === 'approve') {
         $status = 'approved';
 
-        // Get tenant_name and tenant_email from space_application
+        // Get tenant_name, tenant_email, and space_name from space_application
         $getTenantInfoQuery = "SELECT tenant_name, ap_email, spacename FROM space_application WHERE app_id = ?";
         $getTenantInfoStmt = $con->prepare($getTenantInfoQuery);
         $getTenantInfoStmt->bind_param('i', $applicationId);
@@ -32,11 +32,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $tenantName = $tenantInfoRow['tenant_name'];
             $tenantEmail = $tenantInfoRow['ap_email'];
             $spaceName = $tenantInfoRow['spacename'];
-        
+
+            // Get the current date for contract start
+            $contractStart = date('Y-m-d');
+
+            // Calculate contract end (1 year from start)
+            $contractEnd = date('Y-m-d', strtotime($contractStart . ' + 1 year'));
+
+            // Update the contract table with start and end dates
+            $updateContractQuery = "INSERT INTO contract (tenant_name, c_start, c_end) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE c_start = VALUES(c_start), c_end = VALUES(c_end)";
+            $updateContractStmt = $con->prepare($updateContractQuery);
+            $updateContractStmt->bind_param('sss', $tenantName, $contractStart, $contractEnd);
+            $updateContractStmt->execute();
+
             // Send email notification to the tenant
             sendEmailToTenant($tenantEmail, $tenantName, $status, $spaceName);
+
+            // Schedule notification 1 month before the end of the contract
+            $notificationDate = date('Y-m-d', strtotime($contractEnd . ' - 1 month'));
+            scheduleNotification($tenantName, $tenantEmail, $spaceName, $notificationDate);
         }
-        
+
         // Update the space_application table
         $updateApplicationStmt->bind_param('si', $status, $applicationId);
         $updateApplicationStmt->execute();
@@ -46,7 +62,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $updateSpaceStmt = $con->prepare($updateSpaceQuery);
         $updateSpaceStmt->bind_param('ss', $tenantName, $spaceName);
         $updateSpaceStmt->execute();
-
     } elseif ($action === 'reject') {
         $status = 'rejected';
 
@@ -69,6 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo 'Error updating application status. Please try again.';
     }
 }
+
 // Function to send an email to the tenant
 function sendEmailToTenant($email, $tenantName, $status, $spaceName)
 {
@@ -105,7 +121,7 @@ function sendEmailToTenant($email, $tenantName, $status, $spaceName)
                         padding: 20px;
                         margin: 0;
                     }
-        
+
                     .container {
                         max-width: 600px;
                         margin: 0 auto;
@@ -114,11 +130,11 @@ function sendEmailToTenant($email, $tenantName, $status, $spaceName)
                         border-radius: 8px;
                         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
                     }
-        
+
                     h1 {
                         color: #3498db;
                     }
-        
+
                     p {
                         margin-bottom: 20px;
                     }
@@ -130,6 +146,81 @@ function sendEmailToTenant($email, $tenantName, $status, $spaceName)
                     <p>Dear $tenantName,</p>
                     <p>Your space application for space $spaceName is $status.</p>
                     <p>Regards,<br>Your Landlord</p>
+                </div>
+            </body>
+            </html>
+        ";
+
+        $mail->send();
+
+        return true; // Email sent successfully
+    } catch (Exception $e) {
+        return false; // Email sending failed
+    }
+}
+
+// Function to schedule a notification
+function scheduleNotification($tenantName, $tenantEmail, $spaceName, $notificationDate)
+{
+    $mail = new PHPMailer(true);
+
+    try {
+        // Server settings
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com'; // Your SMTP server
+        $mail->SMTPAuth = true;
+        $mail->Username = 'coms.system.adm@gmail.com'; // Your Gmail email address
+        $mail->Password = 'wdcbquevxahkehla'; // Your Gmail password
+        $mail->SMTPSecure = 'tls';
+        $mail->Port = 587;
+
+        // Recipients
+        $mail->setFrom('coms.system.adm@gmail.com', 'Concessionaire Monitoring Operation System');
+        $mail->addAddress($tenantEmail, $tenantName);
+
+        // Content
+        $mail->isHTML(true);
+        $mail->Subject = 'Upcoming Contract End';
+        $mail->Body = "
+            <html lang='en'>
+            <head>
+                <meta charset='UTF-8'>
+                <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+                <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+                <style>
+                    body {
+                        font-family: 'Arial', sans-serif;
+                        background-color: #f4f4f4;
+                        color: #333;
+                        padding: 20px;
+                        margin: 0;
+                    }
+
+                    .container {
+                        max-width: 600px;
+                        margin: 0 auto;
+                        background-color: #fff;
+                        padding: 20px;
+                        border-radius: 8px;
+                        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                    }
+
+                    h1 {
+                        color: #3498db;
+                    }
+
+                    p {
+                        margin-bottom: 20px;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class='container'>
+                    <h1>Contract End Notification</h1>
+                    <p>Dear $tenantName,</p>
+                    <p>Your contract for space $spaceName is ending soon. We wanted to remind you that the contract is scheduled to end on $notificationDate.</p>
+                    <p>Please make necessary arrangements or contact us if you have any questions.</p>
+                    <p>Thank you,<br>Your Landlord</p>
                 </div>
             </body>
             </html>
