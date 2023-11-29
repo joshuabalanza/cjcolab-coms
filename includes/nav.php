@@ -132,7 +132,7 @@
                 echo '<a href="bill-owner.php" class="nav-link">Bills</a>';
                 echo '</li>';
                 echo '<li class="nav-item">';
-                echo '<a href="reservations.php" class="nav-link">Reservations</a>';
+                echo '<a href="applications.php" class="nav-link">Applications</a>';
                 echo '</li>';
 
             } elseif (isset($_SESSION['utype']) && $_SESSION['utype'] == 'Tenant') {

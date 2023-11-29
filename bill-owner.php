@@ -134,6 +134,8 @@ include('includes/nav.php');
 
 <body>
     <section id="bill-table" style="margin-top: 100px;">
+    <button onclick="redirectCreateAccountant()">Create Accountant</button>
+
         <h2>Bill Summary</h2>
         <div>
             <?php
@@ -251,6 +253,9 @@ include('includes/nav.php');
         function closeChargeBreakdownModal() {
             const modal = document.getElementById('chargeBreakdownModal');
             modal.style.display = 'none';
+        }
+        function redirectCreateAccountant() {
+            window.location.href = 'acc_create_accountant.php';
         }
     </script>
 

@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_space_modal'])
     
         if (mysqli_query($con, $insertQuery)) {
             // Successfully inserted space, redirect to map_display_mayk.php with the necessary information
-            header("Location: map_display_mayk.php?concourse_id=$concourse_id&inserted_space=$space_name");
+            header("Location: map_display.php?concourse_id=$concourse_id&inserted_space=$space_name");
             exit();
         } else {
             echo "Error: " . mysqli_error($con);

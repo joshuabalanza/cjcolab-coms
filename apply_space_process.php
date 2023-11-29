@@ -139,11 +139,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['apply'])) {
             echo 'Error sending email notification to the owner.';
         }
 
-        header('Location: dashboard.php'); // Redirect back to dashboard.php
+        header('Location: concourse_view.php'); // Redirect back to concourse_view.php
         exit();
     } else {
         $_SESSION['errorMessage'] = 'Error submitting application. Please try again.';
-        header('Location: dashboard.php'); // Redirect back to dashboard.php
+        header('Location: concourse_view.php'); // Redirect back to dashboard.php
         exit();
     }
 }
