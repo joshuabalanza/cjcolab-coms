@@ -19,7 +19,7 @@ session_start();
 include('includes/header.php');
 include('includes/nav.php');
 ?>
-  <style>
+<style>
     .about-wrapper {
         width: 80%; /* Adjust the width as needed */
         margin: 0 auto; /* Center the wrapper horizontally */
@@ -35,7 +35,7 @@ include('includes/nav.php');
     position: relative;
     background-color: #9b593c;
     text-align: center;
-}
+    }
 
     .about-section h1 {
         font-family: 'Times New Roman';
@@ -121,7 +121,7 @@ include('includes/nav.php');
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     text-align: justify;
     width: 80%;
-}
+    }
 
     @media only screen and (max-width: 768px) {
         .white-container {
@@ -149,9 +149,9 @@ include('includes/nav.php');
 
     .text-center {
     margin: 0 auto;
-}
+    }
 
-.contact-us {
+    .contact-us {
         margin-top: 20px; /* Adjust the margin as needed */
         cursor: pointer;
         display: inline-block;
@@ -187,8 +187,28 @@ include('includes/nav.php');
     .contact-text:hover {
         animation: bounce 1s ease infinite;
     }
-    
-   </style>
+    .main-container {
+        width: 80%;
+        margin: 0 auto;
+    }
+
+    .about-container {
+        width: 73%;
+        height: 100%;
+        margin: 20px auto;
+        color: black;
+        background-color: #fff; /* Set your desired background color */
+        padding: 20px; /* Adjust padding as needed */
+        border-radius: 8px; /* Add border radius for a rounded look */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
+    }
+
+    @media only screen and (max-width: 768px) {
+        .about-container {
+            width: 90%; /* Adjust the width for smaller screens */
+        }
+    }
+</style>
 <section class="vh-100" style="background-color: #9b593c;">
     <div class="container-fluid">
         <!-- Login Section -->
@@ -207,10 +227,6 @@ include('includes/nav.php');
                             <p class="fw-normal mb-0 text-center" style="font-size: 1.5rem;">Modernized Monitoring of Operations</p>
                         </div>
                     </form>
-                    <!-- Project Description -->
-                    <p class="fw-normal mb-4 text-justify">
-                        The goal of the project is to provide an online system monitoring operations for business spaces. The system helps track payments for electricity, water, and rent bills. It also automatically notifies the owner of contract dates and tenant changes. Tenants receive notifications about due dates, especially for contracts. The Concessionaire Operations Monitoring in the Philippines is often either hassle-ridden or outdated, according to relevant literature. Many owners are not visible to tenants and lack insights into tenant operations around the business area.
-                    </p>
                     <!-- End Project Description -->
                     <div class="d-grid gap-2 col-6 mx-auto">
                         <button class="btn btn-dark btn-lg btn-block" style="background-color: #9b593c;" type="button" onclick="redirectToLogin()">Login</button>
@@ -223,11 +239,31 @@ include('includes/nav.php');
 </div>
 
     </div>
-<!-- About Us Section -->
-<div id="about-us" class="col-md-10 about-section text-center">
+</section>
+<!-- Start Concourses -->
+<section id="concourses" class="col-md-10 about-section text-center" style="background-color: #9b593c;">
+   <div class="container-fluid">
+      <h3 style="margin-top: 15px; text-align: center;">Concourses</h3>
+      <div id="concourse-list" class="row" style="width: 80%; margin: 0 auto;">
+         <!-- This div will be populated with the fetched data -->
+      </div>
+   </div>
+</section>
+<!-- Project Description -->
+<section id="about-proj" class="about-container col-md-8 about-section text-center mx-auto">                            
+    <p class="fw-normal mb-4 text-justify" style="font-weight:bold;">
+        The goal of the project is to provide an online system monitoring operations for business spaces.<br>
+        The system helps track payments for electricity, water, and rent bills. It also automatically notifies the owner of contract dates and tenant changes.<br>
+        Tenants receive notifications about due dates, especially for contracts. The Concessionaire Operations Monitoring in the Philippines is often either <br>hassle-ridden or outdated,
+        according to relevant literature. Many owners are not visible to tenants and lack insights into tenant operations around the business area.
+    </p>
+</section>
+<section>
+    <!-- About Us Section -->
+<div id="contact-us" class="col-md-10 about-section text-center">
     <div class="white-container" style="width: 80%;">
         <div class="d-flex justify-content-between align-items-center">
-            <h1 style="color: black;">About Us: The Developers</h1>
+            <h1 style="color: black;">The Developers</h1>
             <div class="contact-us">
                 <p class="contact-text" id="contact-text">Contact Us</p>
             </div>
@@ -240,48 +276,42 @@ include('includes/nav.php');
 <!-- Example row of columns -->
 <div class="row">
     <div class="col-12 col-md-3">
-        <img src="/assets/images/mayki.jpg" class="rounded-square mx-auto d-block" alt="Mikee" width="150" height="150">
-        <p class="text-center black-text"><b>Mikee Estanislao</b></p>
-        <p class="text-center black-text"><a class="btn btn-info" href="mailto:mikeenestanislao@iskolarngbayan.pup.edu.ph">E-Mail</a></p>
-        <p class="text-center black-text"><a class="btn btn-primary" href="https://www.facebook.com/xMaykiNerix" role="button">Facebook</a></p>
-        <p class="text-center black-text"><a class="btn btn-secondary" href="https://github.com/maykinerii" role="button">Github</a></p>
-    </div>
-    <div class="col-md-3">
-        <img src="/assets/images/ced.jpg" class="rounded-square mx-auto d-block" alt="Ced" width="150" height="150">
-        <p class="text-center black-text"><b>John Cedrick Garcia</b></p>
-        <p class="text-center black-text"><a class="btn btn-info" href="mailto:jcmgarcia@iskolarngbayan.pup.edu.ph">E-Mail</a></p>
-        <p class="text-center black-text"><a class="btn btn-primary" href="https://www.facebook.com/lcedgarcia" role="button">Facebook</a></p>
-        <p class="text-center black-text"><a class="btn btn-secondary" href="https://github.com/cedgarcia" role="button">Github</a></p>
-    </div>
-    <div class="col-md-3">
-        <img src="/assets/images/rk.png" class="rounded-square mx-auto d-block" alt="RK" width="150" height="150">
-        <p class="text-center black-text"><b>Rei Kristian Panelo</b></p>
-        <p class="text-center black-text"><a class="btn btn-info" href="mailto:reikristianapanelo@iskolarngbayan.pup.edu.ph">E-Mail</a></p>
-        <p class="text-center black-text"><a class="btn btn-primary" href="https://www.facebook.com/rkpanelo" role="button">Facebook</a></p>
-        <p class="text-center black-text"><a class="btn btn-secondary" href="https://github.com/reikristianpanelo" role="button">Github</a></p>
-    </div>
-    <div class="col-md-3">
-        <img src="/assets/images/roland.jpg" class="rounded-square mx-auto d-block" alt="Roland" width="150" height="150">
-        <p class="text-center black-text"><b>Roland Angelo Tugaoen</b></p>
-        <p class="text-center black-text"><a class="btn btn-info" href="mailto:rabtugaoen@iskolarngbayan.pup.edu.ph">E-Mail</a></p>
-        <p class="text-center black-text"><a class="btn btn-primary" href="https://www.facebook.com/rolandtugaoen2016" role="button">Facebook</a></p>
-        <p class="text-center black-text"><a class="btn btn-secondary" href="https://github.com/TugaGelo" role="button">Github</a></p>
-    </div>
-</div>
-    </div>
+            <img src="assets/images/mayki.jpg" class="rounded-square mx-auto d-block" alt="Mikee" width="150" height="150">
+            <p class="text-center black-text" style="color: #c19f90;"><b>Mikee Estanislao</b></p>
+            <div class="text-center">
+            <a class="btn btn-info" href="mailto:mikeenestanislao@iskolarngbayan.pup.edu.ph"><i class="fas fa-envelope"></i></a>
+            <a class="btn btn-primary" href="https://www.facebook.com/xMaykiNerix" role="button"><i class="fab fa-facebook"></i></a>
+            <a class="btn btn-secondary" href="https://github.com/maykinerii" role="button"><i class="fab fa-github"></i></a>
+        </div></div>
+        <div class="col-md-3">
+            <img src="assets/images/ced.jpg" class="rounded-square mx-auto d-block" alt="Ced" width="150" height="150">
+            <p class="text-center black-text" style="color: #c19f90;"><b>John Cedrick Garcia</b></p>
+            <div class="text-center">
+            <a class="btn btn-info" href="mailto:jcmgarcia@iskolarngbayan.pup.edu.ph"><i class="fas fa-envelope"></i></a>
+            <a class="btn btn-primary" href="https://www.facebook.com/lcedgarcia" role="button"><i class="fab fa-facebook"></i></a>
+            <a class="btn btn-secondary" href="https://github.com/cedgarcia" role="button"><i class="fab fa-github"></i></a>
+        </div></div>
+        <div class="col-md-3">
+            <img src="assets/images/rk.png" class="rounded-square mx-auto d-block" alt="RK" width="150" height="150">
+            <p class="text-center black-text" style="color: #c19f90;"><b>Rei Kristian Panelo</b></p>
+            <div class="text-center">
+            <a class="btn btn-info" href="mailto:reikristianapanelo@iskolarngbayan.pup.edu.ph"><i class="fas fa-envelope"></i></a>
+            <a class="btn btn-primary" href="https://www.facebook.com/rkpanelo" role="button"><i class="fab fa-facebook"></i></a>
+            <a class="btn btn-secondary" href="https://github.com/reikristianpanelo" role="button"><i class="fab fa-github"></i></a>
+        </div></div>
+        <div class="col-md-3">
+            <img src="assets/images/roland.jpg" class="rounded-square mx-auto d-block" alt="Roland" width="150" height="150">
+            <p class="text-center black-text"style="color: #c19f90;"><b>Roland Angelo Tugaoen</b></p>
+            <div class="text-center">
+            <a class="btn btn-info" href="mailto:rabtugaoen@iskolarngbayan.pup.edu.ph"><i class="fas fa-envelope"></i></a>
+            <a class="btn btn-primary" href="https://www.facebook.com/rolandtugaoen2016" role="button"><i class="fab fa-facebook"></i></a>
+            <a class="btn btn-secondary" href="https://github.com/TugaGelo" role="button"><i class="fab fa-github"></i></a>
+        </div></div>
     </div>
 </div>
 
-<section>
-<!-- Start Concourses -->
-<section id="concourses" class="vh-100" style="background-color: #9b593c;">
-   <div class="container-fluid">
-      <h3 style="margin-top: 15px; text-align: center;">Concourses</h3>
-      <div id="concourse-list" class="row" style="width: 80%; margin: 0 auto;">
-         <!-- This div will be populated with the fetched data -->
-      </div>
-   </div>
 </section>
+
 <!-- End Concourses -->
 <!-- Start How It Works/Process -->
 <!-- <section id="processs">
