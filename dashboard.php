@@ -347,7 +347,7 @@
          <h2>Financial Overview</h2>
          <div class="section-content">
             <div class="section-item">
-               <p>$<?php echo number_format($totalBills, 2); ?></p>
+               <p>Php<?php echo number_format($totalBills, 2); ?></p>
                <h5>Total Bills</h5>
             </div>
             <div style="padding-top: 35px;" class="section-item">
