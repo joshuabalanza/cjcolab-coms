@@ -18,6 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_bill'])) {
     $electric = mysqli_real_escape_string($con, $_POST['electric']);
     $water = mysqli_real_escape_string($con, $_POST['water']);
     $concourseId = mysqli_real_escape_string($con, $_POST['concourse_id']);
+    $spaceBill = mysqli_real_escape_string($con, $_POST['space_bill']);
 
     // Validate numeric values
     if (!is_numeric($electric) || !is_numeric($water)) {
@@ -40,57 +41,77 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_bill'])) {
     if ($tenantResult->num_rows > 0) {
         $tenantRow = $tenantResult->fetch_assoc();
         $tenantName = $tenantRow['space_tenant'];
-        $spaceBill = $tenantRow['space_bill'];
+        $tenantSpaceBill = $tenantRow['space_bill']; // Store the space bill for the tenant
 
-        // Get tenant_email from the user table
-        $getTenantEmailQuery = "SELECT uemail FROM user WHERE uname = ? AND utype = 'tenant'";
-        $stmt = $con->prepare($getTenantEmailQuery);
-        $stmt->bind_param("s", $tenantName);
+        // Get owner information from the space table
+        $getOwnerQuery = "SELECT space_owner FROM space WHERE space_id = ?";
+        $stmt = $con->prepare($getOwnerQuery);
+        $stmt->bind_param("s", $spaceId);
         $stmt->execute();
-        $emailResult = $stmt->get_result();
+        $ownerResult = $stmt->get_result();
 
-        if ($emailResult->num_rows > 0) {
-            $emailRow = $emailResult->fetch_assoc();
-            $tenantEmail = $emailRow['uemail'];
+        if ($ownerResult === false) {
+            echo json_encode(['error' => 'Error retrieving owner data: ' . $stmt->error]);
+            exit();
+        }
 
-            // Calculate total bill
-            $total = $electric + $water + $spaceBill;
+        if ($ownerResult->num_rows > 0) {
+            $ownerRow = $ownerResult->fetch_assoc();
+            $ownerName = $ownerRow['space_owner'];
 
-            // Insert into the bill table using prepared statements
-            $insertBillQuery = "INSERT INTO bill (space_id, tenant_name, tenant_email, electric, water, space_bill, total, due_date, created_at, notified) 
-                                VALUES (?, ?, ?, ?, ?, ?, ?, DATE_ADD(NOW(), INTERVAL 7 DAY), NOW(), 'not notified')";
+            // Get tenant_email from the user table
+            $getTenantEmailQuery = "SELECT uemail FROM user WHERE uname = ? AND utype = 'tenant'";
+            $stmt = $con->prepare($getTenantEmailQuery);
+            $stmt->bind_param("s", $tenantName);
+            $stmt->execute();
+            $emailResult = $stmt->get_result();
 
-            $stmt = $con->prepare($insertBillQuery);
-            $stmt->bind_param("sssssss", $spaceId, $tenantName, $tenantEmail, $electric, $water, $spaceBill, $total);
+            if ($emailResult->num_rows > 0) {
+                $emailRow = $emailResult->fetch_assoc();
+                $tenantEmail = $emailRow['uemail'];
 
-            if ($stmt->execute()) {
-                // Calculate the due date for email notification
-                $dueDate = date('Y-m-d', strtotime('+7 days'));
+                // Calculate total bill
+$total = $electric + $water + $tenantSpaceBill; // Use the tenant's space bill
 
-                // Notify the tenant via email
-                if (sendEmailToTenant($tenantEmail, $tenantName, $electric, $water, $spaceBill, $total, $dueDate)) {
-                    // Update notified status to 'notified'
-                    $updateNotifiedQuery = "UPDATE bill SET notified = 'notified' WHERE space_id = ? AND tenant_name = ?";
-                    $stmt = $con->prepare($updateNotifiedQuery);
-                    $stmt->bind_param("ss", $spaceId, $tenantName);
-                    $stmt->execute();
-                }
+// Insert into the bill table using prepared statements
+$insertBillQuery = "INSERT INTO bill (space_id, owner_name, tenant_name, tenant_email, electric, water, space_bill, total, due_date, created_at, notified) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, DATE_ADD(NOW(), INTERVAL 7 DAY), NOW(), 'not notified')";
 
-                // Update space_bill in the space table
-                $updateSpaceBillQuery = "UPDATE space SET space_bill = ? WHERE space_id = ?";
-                $stmt = $con->prepare($updateSpaceBillQuery);
-                $stmt->bind_param("ss", $total, $spaceId);
-                $stmt->execute();
+$stmt = $con->prepare($insertBillQuery);
+$stmt->bind_param("ssssssss", $spaceId, $ownerName, $tenantName, $tenantEmail, $electric, $water, $tenantSpaceBill, $total);
 
-                // Redirect back to the view_concourse.php page or another appropriate page
-                header('Location: view_concourse.php?concourse_id=' . $concourseId);
-                exit();
+if ($stmt->execute()) {
+    // Calculate the due date for email notification
+    $dueDate = date('Y-m-d', strtotime('+7 days'));
+
+    // Notify the tenant via email
+    if (sendEmailToTenant($tenantEmail, $tenantName, $electric, $water, $tenantSpaceBill, $total, $dueDate)) {
+        // Update notified status to 'notified'
+        $updateNotifiedQuery = "UPDATE bill SET notified = 'notified' WHERE space_id = ? AND tenant_name = ?";
+        $stmt = $con->prepare($updateNotifiedQuery);
+        $stmt->bind_param("ss", $spaceId, $tenantName);
+        $stmt->execute();
+    }
+
+    // Update space_bill in the space table
+    $updateSpaceBillQuery = "UPDATE space SET space_bill = ? WHERE space_id = ?";
+    $stmt = $con->prepare($updateSpaceBillQuery);
+    $stmt->bind_param("ss", $total, $spaceId);
+    $stmt->execute();
+
+    // Redirect back to the view_concourse.php page or another appropriate page
+    header('Location: view_concourse.php?concourse_id=' . $concourseId);
+    exit();
+} else {
+    echo json_encode(['error' => 'Error creating bill: ' . $stmt->error]);
+    exit();
+}
             } else {
-                echo json_encode(['error' => 'Error creating bill: ' . $stmt->error]);
+                echo json_encode(['error' => 'Tenant email not found.']);
                 exit();
             }
         } else {
-            echo json_encode(['error' => 'Tenant email not found.']);
+            echo json_encode(['error' => 'Owner not found for the provided space_id.']);
             exit();
         }
     } else {
@@ -121,7 +142,7 @@ function sendEmailToTenant($email, $tenantName, $electric, $water, $spaceBill, $
         $mail->setFrom('coms.system.adm@gmail.com', 'Concessionaire Monitoring Operation System');
         $mail->addAddress($email, $tenantName);     // Add a recipient
 
-        // Get the current month
+        // Get the current month    
         $currentMonth = date('F');
 
         // Content
