@@ -377,6 +377,7 @@ include('includes/nav.php');
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     function loadConcourses(page) {
+        console.log("test push and sync");
         $.ajax({
             type: 'GET',
             url: 'get_concourse.php',
