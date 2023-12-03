@@ -23,8 +23,9 @@ use PHPMailer\PHPMailer\Exception;
 
 require 'vendor/autoload.php';
 if (isset($_POST['register'])) {
+    $error_message="";
     if (empty($_POST['uname']) || empty($_POST['uemail']) || empty($_POST['upassword']) || empty($_POST['username'])) {
-        $error_message = "<span style='color: red;'>All fields are required</span>";
+        $error_message = "<span style='color: red;'>All fields are required</span> <br/>";
     } else {
         $uname = $_POST['uname'];
         $uemail = $_POST['uemail'];
@@ -32,9 +33,10 @@ if (isset($_POST['register'])) {
         $confirm_password = $_POST['confirm_password'];
         $username = $_POST['username'];
         $usertype = $_POST['usertype'];
+        $birthdate_validate = $_POST['validate_birthdate'];
 
         if ($upassword !== $confirm_password) {
-            $error_message = "<span style='color: red;'>Passwords do not match. Please confirm your password properly.</span>";
+            $error_message = "<span style='color: red;'>Passwords do not match. Please confirm your password properly.</span> <br/>";
         } else {
             // Check if the email is already registered
             $emailExists = false;
@@ -64,10 +66,17 @@ if (isset($_POST['register'])) {
                 $usernameExists = true;
             }
 
-            if ($emailExists) {
-                $error_message = "<span style='color: red;'>Email is already registered. Please use a different email.</span>";
-            } elseif ($usernameExists) {
-                $error_message = "<span style='color: red;'>Username is already taken. Please choose a different username.</span>";
+            if ($emailExists || $usernameExists || $birthdate_validate=="below_18") {
+                
+                if ($emailExists) {
+                  $error_message .= "<span style='color: red;'>Email is already registered. Please use a different email.</span> <br/>";
+                } 
+                if ($usernameExists) {
+                  $error_message .= "<span style='color: red;'>Username is already taken. Please choose a different username.</span> <br/>";
+                } 
+                if ($birthdate_validate=="below_18") {
+                  $error_message .= "<span style='color: red;'>We're sorry, but you must be at least 18 years old to register.</span>";
+                } 
             } else {
                 $hashedPassword = password_hash($upassword, PASSWORD_DEFAULT);
 
@@ -108,7 +117,7 @@ if (isset($_POST['register'])) {
                 }
 
                 // Redirect to OTP verification page
-                header('Location: otp.php?email=' . $uemail);
+                 header('Location: otp.php?email=' . $uemail);
                 exit();
             }
         }
@@ -273,17 +282,22 @@ include('includes/nav.php');
       flex-direction: column;
     }
   }
+
+  .birthdate{
+    margin-top:5px
+  }
 </style>
 <div class="container" style="margin-top: 5%;">
     <div class="title">Registration</div>
     <div class="content">
         <form action="" method="POST">
-            <p>
+            <br/>
+            <p class="">
                 <?php
                 if (isset($error_message)) {
                     echo $error_message;
                 }
-                ?>
+              ?>
             </p>
 
             <div class="user-details">
@@ -312,6 +326,11 @@ include('includes/nav.php');
                     <input type="text" name="username" id="username" autocomplete="off" placeholder="Enter your username" required>
                     <!-- Suggested username based on the entered full name -->
                     <div class="suggested-username" id="suggested-username"></div>
+                </div>
+                <div class="input-box">
+                    <span for="birthdate" class="details">Birthday</span>
+                    <input type="date" class="birthdate" name="birthdate" id="birthdate" autocomplete="off" style="padding-top:10px" required>
+                    <input type="text" name="validate_birthdate"  id="validate_birthdate">
                 </div>
             </div>
 
@@ -417,6 +436,35 @@ document.getElementById('username').addEventListener('input', function () {
             }
         });
     });
+
+    function getAge(birthDateString) {
+      var today = new Date();
+      var birthDate = new Date(birthDateString);
+      var age = today.getFullYear() - birthDate.getFullYear();
+      var m = today.getMonth() - birthDate.getMonth();
+      if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+          age--;
+      }
+      console.log(age)
+      return age;
+    }
+
+    $("#birthdate").change(function(){
+        // alert("The text has been changed.");
+        var birthdate = $("#birthdate").val()
+        var validate_birthdate
+        console.log(birthdate);
+        if(getAge(birthdate) < 18) {
+          validate_birthdate = "below_18"
+          console.log("You are not 18 years old and above");
+        } 
+        else{
+          validate_birthdate = "over_18"
+        }
+        $("#validate_birthdate").val(validate_birthdate)
+        console.log(validate_birthdate)
+    });
+
 </script>
 
 <?php include('includes/footer.php')?>

@@ -28,7 +28,7 @@ if (isset($_GET['page'])) {
 }
 
 $offset = ($currentPage - 1) * $itemsPerPage;
-$approvedConcoursesQuery = "SELECT * FROM concourse_verification WHERE status = 'approved' ORDER BY concourse_id DESC LIMIT $itemsPerPage OFFSET $offset";
+$approvedConcoursesQuery = "SELECT * FROM concourse_verification ORDER BY concourse_id DESC LIMIT $itemsPerPage OFFSET $offset";
 $approvedConcoursesResult = mysqli_query($con, $approvedConcoursesQuery);
 
 if ($approvedConcoursesResult && mysqli_num_rows($approvedConcoursesResult) > 0) {
@@ -41,7 +41,7 @@ if ($approvedConcoursesResult && mysqli_num_rows($approvedConcoursesResult) > 0)
         echo '<div class="image-container">';
         echo '<a href="concourse_view.php?concourse_id=' . $concourseData['concourse_id'] . '">';
 
-        echo '<img src="/COMS/uploads/' . $concourseData['concourse_map'] . '" class="card-img-top" style="width:100%; height: 300px;" alt="Concourse Map">';
+        echo '<img src="./uploads/' . $concourseData['concourse_map'] . '" class="card-img-top" style="width:100%; height: 300px;" alt="Concourse Map">';
         echo '</div>';
         echo '<div class="card-body">';
         echo '<h5 class="card-title">' . $concourseData['concourse_name'] . '</h5>';
