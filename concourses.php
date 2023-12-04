@@ -146,7 +146,9 @@ echo '</div>';
       <button class="btn-sm btn btn-success">Apply For Space</button>
       </a> -->
       <div class="container-fluid">
-      <h3 style="margin-top: 15px; text-align: center;">Concourses</h3>
+      <div class="pt-3"></div>
+      <h5 style="text-align: center; color:#fff">CONCOURSES</h5>
+      <div class="pt-3"></div>
       <div id="concourse-list" class="row" style="width: 80%; margin: 0 auto;">
          <!-- This div will be populated with the fetched data -->
       </div>
@@ -180,7 +182,7 @@ echo '</div>';
    <div id="addConcourseModal" class="modal">
       <div class="modal-content">
          <span class="close" id="closeAddConcourseModal">&times;</span>
-         <h2>Add a Concourse</h2>
+         <h4>ADD A CONCOURSE</h4>
          <!-- <form id="concourseForm" method="POST" action="verification_concourse_process.php"> -->
          <form id="concourseForm" method="POST" action="verification_concourse_process.php" enctype="multipart/form-data">
             <label for="concourseName">Concourse Name:</label>

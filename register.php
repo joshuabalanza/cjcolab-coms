@@ -330,7 +330,7 @@ include('includes/nav.php');
                 <div class="input-box">
                     <span for="birthdate" class="details">Birthday</span>
                     <input type="date" class="birthdate" name="birthdate" id="birthdate" autocomplete="off" style="padding-top:10px" required>
-                    <input type="text" name="validate_birthdate"  id="validate_birthdate">
+                    <input type="hidden" name="validate_birthdate"  id="validate_birthdate">
                 </div>
             </div>
 
