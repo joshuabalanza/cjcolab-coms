@@ -1,6 +1,11 @@
 <?php
 
-$con = mysqli_connect("localhost", "root", "", "test_coms");
+// For Local
+// $con = mysqli_connect("localhost", "root", "", "test_coms");
+
+//For Live
+$con = mysqli_connect("comsystem.tech", "u556873115_coms", "123!@#Prodcoms", "u556873115_live_coms");
+
 // print_r("Connected");
 if(mysqli_connect_errno()) {
     echo "Connection Fail" . mysqli_connect_error();
