@@ -19,12 +19,14 @@ include('includes/header.php');
 include('includes/nav.php');
 ?>
 
-<style>    /* Style for the "Add Space" button */
+<style>
+    /* Style for the "Add Space" button */
     .add-space-button {
         position: absolute;
         bottom: 20px;
         right: 20px;
     }
+
     /* Style for the container with the image */
     .image-container {
         max-width: 100%;
@@ -42,15 +44,18 @@ include('includes/nav.php');
 
     /* Style for each card */
     .card {
-        width: 200px; /* Adjust the width as needed */
+        width: 200px;
+        /* Adjust the width as needed */
         margin: 10px;
         cursor: pointer;
         transition: transform 0.3s ease-in-out;
     }
 
-    .card:hover, .add-space-button {
+    .card:hover,
+    .add-space-button {
         transform: scale(1.05);
     }
+
     .modal-backdrop {
         z-index: 1050 !important;
     }
@@ -88,20 +93,25 @@ include('includes/nav.php');
 
     /* Style for the card container */
     .container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between; /* Adjust as needed */
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        /* Adjust as needed */
     }
 
     .card {
-        width: 18%; /* Adjust the width as needed */
-        margin-bottom: 20px; /* Add margin to separate the cards */
-        border: 1px solid #ddd; /* Add borders or styling as needed */
+        width: 18%;
+        /* Adjust the width as needed */
+        margin-bottom: 20px;
+        /* Add margin to separate the cards */
+        border: 1px solid #ddd;
+        /* Add borders or styling as needed */
         box-sizing: border-box;
         cursor: pointer;
     }
 
     @media (max-width: 1200px) {
+
         /* Adjustments for smaller screens, you can modify as needed */
         .card {
             width: calc(25% - 20px);
@@ -109,6 +119,7 @@ include('includes/nav.php');
     }
 
     @media (max-width: 992px) {
+
         /* Adjustments for even smaller screens, you can modify as needed */
         .card {
             width: calc(33.333% - 20px);
@@ -117,27 +128,32 @@ include('includes/nav.php');
 
 
     .modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        /* Semi-transparent black overlay */
     }
+
     .modal-dialog {
-    margin: 50px auto;
+        margin: 50px auto;
     }
+
     .modal-content {
-    background-color: #fff;
-    padding: 20px;
+        background-color: #fff;
+        padding: 20px;
     }
+
     .modal-content {
-    background-color: #fff;
-    padding: 20px;
+        background-color: #fff;
+        padding: 20px;
     }
+
     .modal-body {
-    padding-bottom: 20px;
+        padding-bottom: 20px;
     }
 
     /* Form styles */
@@ -149,6 +165,7 @@ include('includes/nav.php');
     label {
         margin-top: 10px;
     }
+
     input,
     select,
     button {
@@ -159,54 +176,61 @@ include('includes/nav.php');
     }
 
     button {
-        background-color: #007bff; /* Button color */
+        background-color: #007bff;
+        /* Button color */
         color: #fff;
         cursor: pointer;
     }
 
     button:hover {
-        background-color: #0056b3; /* Button color on hover */
+        background-color: #0056b3;
+        /* Button color on hover */
     }
 
 
     .card {
-      background-color: #fff;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      padding: 20px;
-      margin-bottom: 20px;
-      cursor: pointer;
-      }
-      h1 {
-      text-align: center;
-      color: #333;
-      }
-      .modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      justify-content: center;
-      align-items: center;
-      }
-      .modal-content {
-      background-color: #fff;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      padding: 20px;
-      max-width: 400px;
-      width: 100%;
-      }
-      ul {
-      list-style-type: none;
-      padding: 0;
-      }
-      li {
-      margin: 10px 0;
-      }
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        margin-bottom: 20px;
+        cursor: pointer;
+    }
+
+    h1 {
+        text-align: center;
+        color: #333;
+    }
+
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal-content {
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        max-width: 400px;
+        width: 100%;
+    }
+
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    li {
+        margin: 10px 0;
+    }
 
     /* Style for the close button */
     .close-btn {
@@ -220,144 +244,155 @@ include('includes/nav.php');
         top: 10px;
         right: 10px;
         opacity: 0.7;
-        transition: opacity 0.3s ease-in-out; /* Added transition for smooth hover effect */
+        transition: opacity 0.3s ease-in-out;
+        /* Added transition for smooth hover effect */
     }
 
     .close-btn:hover {
         opacity: 1;
-        background-color: transparent; /* Set background to transparent on hover */
+        background-color: transparent;
+        /* Set background to transparent on hover */
     }
 </style>
 <section style="margin-top: 80px;">
-            <?php
-                if ($concourseResult->num_rows > 0) {
-                    $concourseDetails = $concourseResult->fetch_assoc();
-                    ?>
-                <div class="container">
-                    <h1 style="color: #c19f90;">Concourse Details</h1>
-                    <div class="card" style="width: 100%; height: 100%; padding: 10px; margin: 0 auto; position: relative;">
-                        <div class="image-container">
-                            <?php
-                            // Display concourse image or map (similar to how you did in the previous code)
-                            if (!empty($concourseDetails['concourse_image'])) {
-                                echo '<img src="/COMS/uploads/featured-concourse/' . $concourseDetails['concourse_image'] . '" id="concourseImage" class="card-img-top" alt="Concourse Image" style="width:100%; height: 300px;">';
-                            } elseif (!empty($concourseDetails['concourse_map'])) {
-                                echo '<img src="/COMS/uploads/' . $concourseDetails['concourse_map'] . '" id="concourseImage" class="card-img-top" alt="Concourse Map" style="width:100%; height: 300px;">';
-                            } else {
-                                echo '<img src="path_to_placeholder_image.jpg" id="concourseImage" class="card-img-top" alt="Placeholder Image" style="width:100%; height: 300px;">';
-                            }
-                            ?>
-
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title"><?php echo $concourseDetails['concourse_name']; ?></h5>
-                            <p class="card-text"><span class="bold-label">Address:</span> <?php echo $concourseDetails['concourse_address']; ?></p>
-                            <p class="card-text"><span class="bold-label">Owner Name:</span> <?php echo $concourseDetails['owner_name']; ?></p>
-                            <!-- Add more details as needed -->
-                        </div>
-                            <div class="add-space-button">
-                                <button class="btn btn-primary" style="background-color:#9b593c;border:none;"onclick="showSpaceDetailsForm()">Add Space</button>
-                            </div>
-                        </div>
-                    </div>
-
+    <?php
+    if ($concourseResult->num_rows > 0) {
+        $concourseDetails = $concourseResult->fetch_assoc();
+        ?>
+        <div class="container">
+            <h1 style="color: #c19f90;">Concourse Details</h1>
+            <div class="card" style="width: 100%; height: 100%; padding: 10px; margin: 0 auto; position: relative;">
+                <div class="image-container">
                     <?php
-                } else {
-                    echo '<div class="container">';
-                    echo '<div class="content">';
-                    echo 'Concourse not found.';
-                    echo '</div>';
-                    echo '</div>';
-                }
-            ?>
+                    // Display concourse image or map (similar to how you did in the previous code)
+                    if (!empty($concourseDetails['concourse_image'])) {
+                        echo '<img src="/COMS/uploads/featured-concourse/' . $concourseDetails['concourse_image'] . '" id="concourseImage" class="card-img-top" alt="Concourse Image" style="width:100%; height: 300px;">';
+                    } elseif (!empty($concourseDetails['concourse_map'])) {
+                        echo '<img src="/COMS/uploads/' . $concourseDetails['concourse_map'] . '" id="concourseImage" class="card-img-top" alt="Concourse Map" style="width:100%; height: 300px;">';
+                    } else {
+                        echo '<img src="path_to_placeholder_image.jpg" id="concourseImage" class="card-img-top" alt="Placeholder Image" style="width:100%; height: 300px;">';
+                    }
+                    ?>
+
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <?php echo $concourseDetails['concourse_name']; ?>
+                    </h5>
+                    <p class="card-text"><span class="bold-label">Address:</span>
+                        <?php echo $concourseDetails['concourse_address']; ?>
+                    </p>
+                    <p class="card-text"><span class="bold-label">Owner Name:</span>
+                        <?php echo $concourseDetails['owner_name']; ?>
+                    </p>
+                    <!-- Add more details as needed -->
+                </div>
+                <div class="add-space-button">
+                    <button class="btn btn-primary" style="background-color:#9b593c;border:none;"
+                        onclick="showSpaceDetailsForm()">Add Space</button>
+                </div>
             </div>
-                <!-- <div class="col-md-4 space-sidebar-form">
+        </div>
+
+        <?php
+    } else {
+        echo '<div class="container">';
+        echo '<div class="content">';
+        echo 'Concourse not found.';
+        echo '</div>';
+        echo '</div>';
+    }
+    ?>
+    </div>
+    <!-- <div class="col-md-4 space-sidebar-form">
                     <h3><?php echo isset($concourseData['concourse_name']) ? $concourseData['concourse_name'] : "Concourse"; ?></h3>
                 </div> -->
-                <div class="modal fade" id="spaceDetailsModal" tabindex="-1" role="dialog" aria-labelledby="spaceDetailsModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close close-btn" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                            <form id="spaceDetailsForm" action="submit_space.php" method="post" enctype="multipart/form-data">
-                                <!-- Space details form fields go here -->
-                                <input type="hidden" name="concourse_id" value="<?php echo $concourse_id; ?>">
-                                <h3>Space Details</h3>
-                                <label for="space_name_modal">Space Name:</label>
-                                <input type="text" id="space_name_modal" name="space_name" required>
-                                <!-- Add other space details fields as needed -->
-                                <label for="space_width_modal">Space Width:</label>
-                                <input type="number" id="space_width_modal" name="space_width" required>
-                                <label for="space_length_modal">Space Length:</label>
-                                <input type="number" id="space_length_modal" name="space_length" required>
-                                <label for="space_height_modal">Space Height:</label>
-                                <input type="number" id="space_height_modal" name="space_height" required>
-                                <label for="space_price">Rent Price:</label>
-                                <input type="number" id="space_price" name="space_price" required>
-                                <label for="status_modal">Space Status:</label>
-                                <select id="status_modal" name="status">
-                                    <option value="available">Available</option>
-                                    <option value="reserved">Reserved</option>
-                                    <option value="occupied">Occupied</option>
-                                </select>
-                                <label for="space_image_modal">Space Image:</label>
-                                <input type="file" id="space_image_modal" name="space_image_modal" accept="image/*">
-                                <button type="submit" name="submit_space_modal" style="background-color: #9b593c; border:none;">Submit Space</button>
-                            </form>
-                            </div>
-                        </div>
-                    </div>
+    <div class="modal fade" id="spaceDetailsModal" tabindex="-1" role="dialog" aria-labelledby="spaceDetailsModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close close-btn" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="spaceDetailsForm" action="submit_space.php" method="post" enctype="multipart/form-data">
+                        <!-- Space details form fields go here -->
+                        <input type="hidden" name="concourse_id" value="<?php echo $concourse_id; ?>">
+                        <h3>Space Details</h3>
+                        <label for="space_name_modal">Space Name:</label>
+                        <input type="text" id="space_name_modal" name="space_name" required>
+                        <!-- Add other space details fields as needed -->
+                        <label for="space_width_modal">Space Width:</label>
+                        <input type="number" id="space_width_modal" name="space_width" required>
+                        <label for="space_length_modal">Space Length:</label>
+                        <input type="number" id="space_length_modal" name="space_length" required>
+                        <label for="space_height_modal">Space Height:</label>
+                        <input type="number" id="space_height_modal" name="space_height" required>
+                        <label for="space_price">Rent Price:</label>
+                        <input type="number" id="space_price" name="space_price" required>
+                        <label for="status_modal">Space Status:</label>
+                        <select id="status_modal" name="status">
+                            <option value="available">Available</option>
+                            <option value="reserved">Reserved</option>
+                            <option value="occupied">Occupied</option>
+                        </select>
+                        <label for="space_image_modal">Space Image:</label>
+                        <input type="file" id="space_image_modal" name="space_image_modal" accept="image/*">
+                        <button type="submit" name="submit_space_modal"
+                            style="background-color: #9b593c; border:none;">Submit Space</button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
-<?php
-$sql = "SELECT * FROM `space` WHERE concourse_id = $concourse_id ORDER BY space_id ASC";
+    </div>
+    </div>
+    </div>
+    <?php
+    $sql = "SELECT * FROM `space` WHERE concourse_id = $concourse_id ORDER BY space_id ASC";
     $result = mysqli_query($con, $sql);
     $con->close();
-?>
+    ?>
     <h1 style="color: #c19f90;">SPACES</h1>
     <div class="container">
-  <?php
-  if ($result && mysqli_num_rows($result) > 0) {
-    while ($row = $result->fetch_assoc()) {
-      echo "<div class='card' onclick='openSpaceModal(\"{$row['space_name']}\", \"{$row['status']}\", " . json_encode($row) . ")'>";
-      echo "<h2>{$row['space_name']}</h2>";
-      echo "<h6>{$row['status']}</h6>";
-      echo "<h7>{$row['space_owner']}</h6>";
-      echo "<div class='details' style='display: none;'>";
-      echo "<ul>";
-      echo "<li><strong>Space ID:</strong> {$row['space_id']}</li>";
-      echo "<li><strong>Concourse ID:</strong> {$row['concourse_id']}</li>";
-      echo "<li><strong>Owner:</strong> {$row['space_owner']}</li>";
-      echo "<li><strong>Status:</strong> {$row['status']}</li>";
-      echo "<li><strong>Space Width:</strong> {$row['space_width']}</li>";
-      echo "<li><strong>Space Length:</strong> {$row['space_length']}</li>";
-      echo "<li><strong>Space Height:</strong> {$row['space_height']}</li>";
-      echo "<li><strong>Space Area:</strong> {$row['space_area']}</li>";
-      echo "<li><strong>Space Dimension:</strong> {$row['space_dimension']}</li>";
-      echo "<li><strong>Space Tenant:</strong> {$row['space_tenant']}</li>";
-      echo "</ul>";
-      echo "</div>";
-      echo "</div>";
-    }
-  } else {
-    echo "<p>No available spaces</p>";
-  }
-  ?>
-</div>
-
-<div id="myModal" class="modal">
-  <div class="modal-content">
-    <span class="close-btn" onclick="closeModal()">&times;</span>
-    <div id="modalContent">
+        <?php
+        if ($result && mysqli_num_rows($result) > 0) {
+            while ($row = $result->fetch_assoc()) {
+                echo "<div class='card' onclick='openSpaceModal(\"{$row['space_name']}\", \"{$row['status']}\", " . json_encode($row) . ")'>";
+                echo "<h2>{$row['space_name']}</h2>";
+                echo "<h6>{$row['status']}</h6>";
+                echo "<h7>{$row['space_owner']}</h6>";
+                echo "<div class='details' style='display: none;'>";
+                echo "<ul>";
+                echo "<li><strong>Space ID:</strong> {$row['space_id']}</li>";
+                echo "<li><strong>Concourse ID:</strong> {$row['concourse_id']}</li>";
+                echo "<li><strong>Owner:</strong> {$row['space_owner']}</li>";
+                echo "<li><strong>Status:</strong> {$row['status']}</li>";
+                echo "<li><strong>Space Width:</strong> {$row['space_width']}</li>";
+                echo "<li><strong>Space Length:</strong> {$row['space_length']}</li>";
+                echo "<li><strong>Space Height:</strong> {$row['space_height']}</li>";
+                echo "<li><strong>Space Area:</strong> {$row['space_area']}</li>";
+                echo "<li><strong>Space Dimension:</strong> {$row['space_dimension']}</li>";
+                echo "<li><strong>Space Tenant:</strong> {$row['space_tenant']}</li>";
+                echo "</ul>";
+                echo "</div>";
+                echo "</div>";
+            }
+        } else {
+            echo "<p>No available spaces</p>";
+        }
+        ?>
     </div>
-  </div>
-</div>
+
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <div id="modalContent">
+            </div>
+        </div>
+    </div>
 </section>
 <!-- <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script> -->
 <script>
@@ -366,6 +401,32 @@ $sql = "SELECT * FROM `space` WHERE concourse_id = $concourse_id ORDER BY space_
         if (spaceNameParam) {
             openModalForSpace(spaceNameParam);
         }
+
+    });
+
+    //autocompute price
+    $("#space_width_modal").on("input", function () {
+        var space_length = (document.getElementById("space_length_modal").value);
+        space_length = space_length.length > 0 ? space_length : 0;
+        var space_width = document.getElementById("space_width_modal").value;
+        space_width = space_width > 0 ? space_width : 0;
+
+        var compute_price = (space_width * space_length) * 25;
+
+
+        document.getElementById("space_price").value = compute_price;
+    });
+
+    $("#space_length_modal").on("input", function () {
+        var space_length = (document.getElementById("space_length_modal").value);
+        space_length = space_length.length > 0 ? space_length : 0;
+        var space_width = document.getElementById("space_width_modal").value;
+        space_width = space_width > 0 ? space_width : 0;
+
+        var compute_price = (space_width * space_length) * 25;
+
+
+        document.getElementById("space_price").value = compute_price;
     });
 
     function openModalForSpace(spaceName) {
