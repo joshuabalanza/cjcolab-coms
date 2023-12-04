@@ -116,8 +116,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['apply'])) {
     $ownerName = $_SESSION['uname'];
     $ownerEmail = $_SESSION['uemail'];
 
+    $requirements_file = '';  // Initialize an empty string for space image
+
+    // Handle file upload
+    if (isset($_FILES['requirements'])) {
+        $uploadDir = __DIR__ . '/uploads/';  // Specify the upload directory
+        $uploadFile = $uploadDir . basename($_FILES['requirements']['name']);
+
+        if (move_uploaded_file($_FILES['requirements']['tmp_name'], $uploadFile)) {
+            $requirements_file = $_FILES['requirements']['name'];
+        } else {
+            echo "File upload failed.";
+            exit;
+        }
+    }
+
     // Insert application into space_application table
-    $insertApplicationQuery = "INSERT INTO space_application (spacename, tenant_name, ap_email, status) VALUES ('$spaceName', '$tenantName', '$tenantEmail', 'pending')";
+    $insertApplicationQuery = "INSERT INTO space_application (spacename, tenant_name, ap_email, status, Requirements) VALUES ('$spaceName', '$tenantName', '$tenantEmail', 'pending', '$requirements_file')";
     $insertResult = $con->query($insertApplicationQuery);
 
     // Update status in space table to 'reserved'

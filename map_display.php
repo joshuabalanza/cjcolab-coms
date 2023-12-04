@@ -328,8 +328,8 @@ include('includes/nav.php');
                         <input type="number" id="space_width_modal" name="space_width" required>
                         <label for="space_length_modal">Space Length:</label>
                         <input type="number" id="space_length_modal" name="space_length" required>
-                        <label for="space_height_modal">Space Height:</label>
-                        <input type="number" id="space_height_modal" name="space_height" required>
+                        <!-- <label for="space_height_modal" hidden>Space Height:</label> -->
+                        <!-- <input type="number" id="space_height_modal" name="space_height" hidden> -->
                         <label for="space_price">Rent Price:</label>
                         <input type="number" id="space_price" name="space_price" required>
                         <label for="status_modal">Space Status:</label>
