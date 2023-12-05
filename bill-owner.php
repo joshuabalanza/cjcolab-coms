@@ -5,6 +5,37 @@ ini_set('display_errors', 1);
 error_reporting(E_ALL);
 include('includes/dbconnection.php');
 
+if (isset($_POST['SavaChangesBilling'])) {
+    $billingElectricAmount = $_POST['billingElectricAmount'];
+    $billingWaterAmount = $_POST['billingWaterAmount'];
+                
+    if (empty($_POST['billingElectricAmount']) || empty($_POST['billingWaterAmount'])) {
+        $error_message = "<span style='color: red;'>All fields are required</span> <br/>";
+    } 
+    else {
+        $sql1 = "INSERT INTO billing_setup (BillingCode, BillingName, Amount) VALUES ('ElectricBillRate','Electric Bill Rate','$billingElectricAmount'),  ('WaterBillRate','Water Bill Rate','$billingWaterAmount')";
+        $con->query($sql1);
+
+        $billingquery = "SELECT * FROM billing_setup WHERE billingcode = 'WaterBillRate' ORDER BY DateAsof DESC LIMIT 1";
+        $billingresult = $con->query($billingquery);
+        if ($billingresult->num_rows > 0) {
+            $row = $billingresult->fetch_assoc();
+            $varbillingWaterAmount = $row['Amount'];
+            $varbillingAmountAsOf = $row['DateAsOf'];
+        }
+
+        $billingquery2 = "SELECT * FROM billing_setup WHERE billingcode = 'ElectricBillRate' ORDER BY DateAsof DESC LIMIT 1";
+        $billingresult2 = $con->query($billingquery2);
+        if ($billingresult2->num_rows > 0) {
+            $row2 = $billingresult2->fetch_assoc();
+            $varbillingElectricAmount = $row2['Amount'];
+        }     
+        // RefreshContent(); 
+        $showSuccessModal = true;
+        
+    }
+}
+
 
 // Calculate total amount
 $totalAmountQuery = "SELECT SUM(total) AS totalAmount FROM bill";
@@ -231,9 +262,6 @@ include('includes/nav.php');
                 <form action="" method="POST">
                     <span class="close" onclick="closeBillingModal()">&times;</span>
                     <h4>Manage Billing</h4>
-                    <?php  if(isset($_GET["showSuccessModal"])) { 
-                        echo 'hellow' . $_GET["showSuccessModal"];
-                        }  ?>
                     <div>
                         <label for="billingElectricAmount">Electric Bill Rate (per kilowats)</label>
                         <input type="text" name="billingElectricAmount" id="billingElectricAmount" value="<?php echo $varbillingElectricAmount ?>"/>
@@ -249,6 +277,15 @@ include('includes/nav.php');
                 </form>
             </div>
         </div>  
+    </div>
+    <div id="successModal" class="modal">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <span class="close" onclick="closeSuccessModal()">&times;</span>
+                <h4>Successful!</h4>
+                <p>Changes on Billing Rate has been saved</p>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -274,9 +311,14 @@ include('includes/nav.php');
                     showChargeBreakdown({ electric, water, spaceBill });
                 }
             });
+
+            
         });
      
-       
+        if ( window.history.replaceState ) {
+            window.history.replaceState( null, null, window.location.href );
+        }
+
         function showChargeBreakdown(data) {
             const chargeBreakdownData = [
                 { chargeType: 'Electric', amount: data.electric },
@@ -311,46 +353,25 @@ include('includes/nav.php');
             modal.style.display = 'block';
         }
 
+        function openSuccessModal() {
+            var modal = document.getElementById('successModal');
+            modal.style.display = 'block';
+        }
+
+        function closeSuccessModal() {
+            var modal = document.getElementById('successModal');
+            modal.style.display = 'none';
+        }
+
         function closeBillingModal() {
             var modal = document.getElementById('billingModal');
             modal.style.display = 'none';
         }
         <?php if (isset($showSuccessModal) && $showSuccessModal) : ?>
-           
-           console.log('Success');
-   <?php endif; ?>
+            openSuccessModal()
+        <?php endif; ?>
     </script>
- <?php 
-    if (isset($_POST['SavaChangesBilling'])) {
-        $billingElectricAmount = $_POST['billingElectricAmount'];
-        $billingWaterAmount = $_POST['billingWaterAmount'];
-                    
-        if (empty($_POST['billingElectricAmount']) || empty($_POST['billingWaterAmount'])) {
-            $error_message = "<span style='color: red;'>All fields are required</span> <br/>";
-        } 
-        else {
-            $sql1 = "INSERT INTO billing_setup (BillingCode, BillingName, Amount) VALUES ('ElectricBillRate','Electric Bill Rate','$billingElectricAmount'),  ('WaterBillRate','Water Bill Rate','$billingWaterAmount')";
-            $con->query($sql1);
-
-            $billingquery = "SELECT * FROM billing_setup WHERE billingcode = 'WaterBillRate' ORDER BY DateAsof DESC LIMIT 1";
-            $billingresult = $con->query($billingquery);
-            if ($billingresult->num_rows > 0) {
-                $row = $billingresult->fetch_assoc();
-                $varbillingWaterAmount = $row['Amount'];
-                $varbillingAmountAsOf = $row['DateAsOf'];
-            }
-
-            $billingquery2 = "SELECT * FROM billing_setup WHERE billingcode = 'ElectricBillRate' ORDER BY DateAsof DESC LIMIT 1";
-            $billingresult2 = $con->query($billingquery2);
-            if ($billingresult2->num_rows > 0) {
-                $row2 = $billingresult2->fetch_assoc();
-                $varbillingElectricAmount = $row2['Amount'];
-            }     
-            // RefreshContent();
-            $_POST["showSuccessModal"] = true;
-            header('Location: .');
-        }
-    }
-    ?>
    
     <?php include('includes/footer.php'); ?>
+
+    

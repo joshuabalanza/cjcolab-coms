@@ -119,7 +119,7 @@ if (isset($_POST['register'])) {
                 // Redirect to OTP verification page
                 //  header('Location: otp.php?email=' . $uemail);
 
-                $showSuccessModal = true;
+               
                 $showSuccessModal = true;
                 // exit();
             }
@@ -371,13 +371,15 @@ include('includes/nav.php');
 </div>
 
 <div id="successModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeSuccessModal()">&times;</span>
-        <h2>Registration Successful!</h2>
-        <p>Congratulations! Your are now registed.</p>
-        <div class="button-modal">
-            <button class="yes" onclick="redirectToLogin()">Go To Login</button>
-        </div>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+          <span class="close" onclick="closeSuccessModal()">&times;</span>
+          <h2>Registration Successful!</h2>
+          <p>Congratulations! Your are now registed.</p>
+          <div class="button-modal">
+              <button class="yes" onclick="redirectToLogin()">Go To Login</button>
+          </div>
+      </div>
     </div>
 </div>
 

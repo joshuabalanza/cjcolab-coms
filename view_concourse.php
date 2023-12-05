@@ -8,6 +8,8 @@ require('includes/dbconnection.php');
 include('includes/header.php');
 include('includes/nav.php');
 
+$varbillingWaterAmount = "";
+$varbillingElectricAmount  = "";
 $billingquery = "SELECT * FROM billing_setup WHERE billingcode = 'WaterBillRate' ORDER BY DateAsof DESC LIMIT 1";
 $billingresult = $con->query($billingquery);
 if ($billingresult->num_rows > 0) {
