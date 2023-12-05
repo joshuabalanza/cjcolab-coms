@@ -91,34 +91,37 @@ if (isset($_POST['register'])) {
                 // Insert data into the database
                 $expiration_time = date("Y-m-d H:i:s", strtotime('+1 minutes'));
                 $created_at = date("Y-m-d H:i:s");
-                $sql = "INSERT INTO user (uname, uemail, upassword, otp, activation_code, utype, created_at, otp_expiration, username) VALUES ('$uname', '$uemail', '$hashedPassword', '$otp', '$activation_code', '$usertype', '$created_at', '$expiration_time', '$username')";
+                $sql = "INSERT INTO user (uname, uemail, upassword, otp, activation_code, utype, created_at, otp_expiration, username, verified) VALUES ('$uname', '$uemail', '$hashedPassword', '$otp', '$activation_code', '$usertype', '$created_at', '$expiration_time', '$username',1)";
                 $con->query($sql);
 
                 // Send OTP to the user's email
-                $mail = new PHPMailer(true);
-                try {
-                    $mail->isSMTP();
-                    $mail->Host = 'smtp.gmail.com'; // Your SMTP server
-                    $mail->SMTPAuth = true;
-                    $mail->Username = 'coms.system.adm@gmail.com'; // Your Gmail email address
-                    $mail->Password = 'wdcbquevxahkehla'; // Your Gmail password
-                    $mail->SMTPSecure = 'tls';
-                    $mail->Port = 587;
+                // $mail = new PHPMailer(true);
+                // try {
+                //     $mail->isSMTP();
+                //     $mail->Host = 'smtp.gmail.com'; // Your SMTP server
+                //     $mail->SMTPAuth = true;
+                //     $mail->Username = 'coms.system.adm@gmail.com'; // Your Gmail email address
+                //     $mail->Password = 'wdcbquevxahkehla'; // Your Gmail password
+                //     $mail->SMTPSecure = 'tls';
+                //     $mail->Port = 587;
 
-                    $mail->setFrom('coms.system.adm@gmail.com', 'Concessionaire Monitoring Operation System');
-                    $mail->addAddress($uemail); // User's email address
-                    $mail->isHTML(true);
-                    $mail->Subject = 'Email Verification';
-                    $mail->Body = 'Your OTP is: ' . $otp;
+                //     $mail->setFrom('coms.system.adm@gmail.com', 'Concessionaire Monitoring Operation System');
+                //     $mail->addAddress($uemail); // User's email address
+                //     $mail->isHTML(true);
+                //     $mail->Subject = 'Email Verification';
+                //     $mail->Body = 'Your OTP is: ' . $otp;
 
-                    $mail->send();
-                } catch (Exception $e) {
-                    echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
-                }
+                //     $mail->send();
+                // } catch (Exception $e) {
+                //     echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+                // }
 
                 // Redirect to OTP verification page
-                 header('Location: otp.php?email=' . $uemail);
-                exit();
+                //  header('Location: otp.php?email=' . $uemail);
+
+                $showSuccessModal = true;
+                $showSuccessModal = true;
+                // exit();
             }
         }
     }
@@ -367,6 +370,17 @@ include('includes/nav.php');
     </div>
 </div>
 
+<div id="successModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeSuccessModal()">&times;</span>
+        <h2>Registration Successful!</h2>
+        <p>Congratulations! Your are now registed.</p>
+        <div class="button-modal">
+            <button class="yes" onclick="redirectToLogin()">Go To Login</button>
+        </div>
+    </div>
+</div>
+
 <script>
 document.getElementById('username').addEventListener('input', function () {
     const enteredUsername = this.value.trim();
@@ -405,6 +419,26 @@ document.getElementById('username').addEventListener('input', function () {
             .catch(error => console.error('Error:', error));
     }
 });
+
+function openSuccessModal() {
+    var modal = document.getElementById('successModal');
+    modal.style.display = 'block';
+}
+
+function closeSuccessModal() {
+    var modal = document.getElementById('successModal');
+    modal.style.display = 'none';
+}
+
+function redirectToLogin() {
+    window.location.href = "login.php";
+}
+
+<?php if (isset($showSuccessModal) && $showSuccessModal) : ?>
+    window.onload = function() {
+        openSuccessModal();
+    };
+<?php endif; ?>
 </script>
 
 <script>

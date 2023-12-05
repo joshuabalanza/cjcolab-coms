@@ -7,6 +7,21 @@ require('includes/dbconnection.php');
 
 include('includes/header.php');
 include('includes/nav.php');
+
+$billingquery = "SELECT * FROM billing_setup WHERE billingcode = 'WaterBillRate' ORDER BY DateAsof DESC LIMIT 1";
+$billingresult = $con->query($billingquery);
+if ($billingresult->num_rows > 0) {
+    $row = $billingresult->fetch_assoc();
+    $varbillingWaterAmount = $row['Amount'];
+}
+
+$billingquery2 = "SELECT * FROM billing_setup WHERE billingcode = 'ElectricBillRate' ORDER BY DateAsof DESC LIMIT 1";
+$billingresult2 = $con->query($billingquery2);
+if ($billingresult2->num_rows > 0) {
+    $row2 = $billingresult2->fetch_assoc();
+    $varbillingElectricAmount = $row2['Amount'];
+}
+
 ?>
 <style>
     section {
@@ -157,17 +172,17 @@ if (isset($_GET['concourse_id'])) {
         $concourseDetails = $result->fetch_assoc();
         ?>
         <div class="container" style="margin-top: 100px;">
-            <h1>Concourse Details</h1>
+            <h4 style="color:#fff; text-align:center">Concourse Details</h4>
             <div class="card" style="width: 100%; height: 100%; padding: 10px; margin: 0 auto;">
                 <div class="image-container">
                     <?php
                     // Display concourse image or map (similar to how you did in the previous code)
                     if (!empty($concourseDetails['concourse_image'])) {
-                        echo '<img src="/COMS/uploads/featured-concourse/' . $concourseDetails['concourse_image'] . '" id="concourseImage" class="card-img-top" alt="Concourse Image" style="width:100%; height: 300px;">';
+                        echo '<img src="./uploads/featured-concourse/' . $concourseDetails['concourse_image'] . '" id="concourseImage" class="card-img-top" alt="Concourse Image" style="width:100%; height: auto;">';
                     } elseif (!empty($concourseDetails['concourse_map'])) {
-                        echo '<img src="/COMS/uploads/' . $concourseDetails['concourse_map'] . '" id="concourseImage" class="card-img-top" alt="Concourse Map" style="width:100%; height: 300px;">';
+                        echo '<img src="./uploads/' . $concourseDetails['concourse_map'] . '" id="concourseImage" class="card-img-top" alt="Concourse Map" style="width:100%; height: auto;">';
                     } else {
-                        echo '<img src="path_to_placeholder_image.jpg" id="concourseImage" class="card-img-top" alt="Placeholder Image" style="width:100%; height: 300px;">';
+                        echo '<img src="path_to_placeholder_image.jpg" id="concourseImage" class="card-img-top" alt="Placeholder Image" style="width:100%; height: auto;">';
                     }
                     ?>
                 </div>
@@ -225,18 +240,23 @@ if (isset($_GET['concourse_id'])) {
         <!-- Modal overlay and content for creating a bill -->
         <div id="createBillModal" class="modal-overlay">
             <div class="modal-content">
-                <span class="close-modal" id="closeCreateBillModalBtn">&times;</span>
-                <h3>Create Bill for Space</h3>
+                <span class="close-modal mb-3" id="closeCreateBillModalBtn">&times;</span>
+                <h4>Create Bill for Space</h4>
+                
+                <div class="pt-3"></div>
                 <!-- Form to create a bill -->
                 <form id="createBillForm" method="post" action="process_create_bill.php">
                     <input type="hidden" name="space_id" id="createBillSpaceIdInput" value="">
-                    <input type="hidden" name="concourse_id" id="createBillSpaceIdInput" value="">
-                    <label for="electric">Electric Bill:</label>
-                    <input type="text" name="electric" required>
-                    <label for="water">Water Bill:</label>
-                    <input type="text" name="water" required>
+                    <input type="hidden" name="concourse_id" id="createBillSpaceIdInput" value="<?php echo $_GET['concourse_id'] ?>">
+                    <label for="electric" class="font-weight-bold">Electric Consumption: (kw * <?php echo $varbillingElectricAmount ?>)</label>
+                    <input type="text" name="electric2" id="electric2" required>
+                    <input type="text" name="electric" id="electric">
+                    <label for="water" class="font-weight-bold">Water Consumption: (kw * <?php echo $varbillingWaterAmount ?>)</label>
+                    <input type="text" name="water2" id="water2"  required>
+                    <input type="text" name="water" id="water">
+                    <div class="pt-3"></div>
                     <!-- Add more bill details as needed -->
-                    <button type="submit" name="create_bill">Create Bill</button>
+                    <button type="submit" class="btn btn-primary" name="create_bill" >Create Bill</button>
                 </form>
             </div>
         </div>
@@ -250,9 +270,9 @@ if (isset($_GET['concourse_id'])) {
         <form id="updateBillForm" method="post" action="process_update_bill.php">
             <input type="hidden" name="space_id" id="updateBillSpaceIdInput" value="">
             <label for="updatedElectricInput">Current Electric Bill:</label>
-            <input type="text" name="updated_electric" id="updatedElectricInput" readonly>
+            <input type="text" name="updated_electric" id="updatedElectricInput" disabled>
             <label for="updatedWaterInput">Current Water Bill:</label>
-            <input type="text" name="updated_water" id="updatedWaterInput" readonly>
+            <input type="text" name="updated_water" id="updatedWaterInput" disabled>
             <!-- Add more updated bill details as needed -->
             <button type="submit" name="update_bill">Update Bill</button>
         </form>
@@ -345,5 +365,17 @@ document.getElementById('createBillForm').addEventListener('submit', function (e
     echo '</div>';
 }
 ?>
+<script>
+    $("#createBillModal").on("input", function () {
+    var electric = (document.getElementById("electric2").value);
+    electric = electric.length > 0 ? electric : 0;
+    var water = document.getElementById("water2").value;
+    water = water > 0 ? water : 0;
 
+    var electrilbill = electric * <?php echo $varbillingElectricAmount ?>;
+    var waterbill = water * <?php echo $varbillingWaterAmount ?>;
+    document.getElementById("electric").value = electrilbill;
+    document.getElementById("water").value = waterbill;
+});
+</script>
 <?php include('includes/footer.php'); ?>

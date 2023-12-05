@@ -5,20 +5,43 @@ ini_set('display_errors', 1);
 error_reporting(E_ALL);
 include('includes/dbconnection.php');
 
+
 // Calculate total amount
 $totalAmountQuery = "SELECT SUM(total) AS totalAmount FROM bill";
 $totalAmountResult = $con->query($totalAmountQuery);
-$totalAmountRow = $totalAmountResult->fetch_assoc();
+$totalAmountRow = $totalAmountResult->fetch_assoc();    
 $totalAmount = isset($totalAmountRow['totalAmount']) ? $totalAmountRow['totalAmount'] : 0;
 
 // Fetch billing information
 $sql = "SELECT tenant_name, space_id, total, due_date, electric, water, space_bill FROM bill";
 $result = $con->query($sql);
 
+$varbillingWaterAmount="";
+$varbillingAmountAsOf="";
+$varbillingElectricAmount="";
+
+
+$billingquery = "SELECT * FROM billing_setup WHERE billingcode = 'WaterBillRate' ORDER BY DateAsof DESC LIMIT 1";
+$billingresult = $con->query($billingquery);
+if ($billingresult->num_rows > 0) {
+    $row = $billingresult->fetch_assoc();
+    $varbillingWaterAmount = $row['Amount'];
+    $varbillingAmountAsOf = $row['DateAsOf'];
+}
+
+$billingquery2 = "SELECT * FROM billing_setup WHERE billingcode = 'ElectricBillRate' ORDER BY DateAsof DESC LIMIT 1";
+$billingresult2 = $con->query($billingquery2);
+if ($billingresult2->num_rows > 0) {
+    $row2 = $billingresult2->fetch_assoc();
+    $varbillingElectricAmount = $row2['Amount'];
+}     
+
+
 // Close the database connection
 $con->close();
-?>
 
+?>
+ 
 <?php
 include('includes/header.php');
 include('includes/nav.php');
@@ -114,10 +137,6 @@ include('includes/nav.php');
         display: inline-block;
     }
 
-    button:hover {
-        background-color: #c19f90 !important;
-    }
-
     #outstandingAmount,
     #totalBill,
     #paymentHistoryModal,
@@ -134,8 +153,9 @@ include('includes/nav.php');
 
 <body>
     <section id="bill-table" style="margin-top: 100px;">
-    <button onclick="redirectCreateAccountant()">Create Accountant</button>
-
+    <button class="btn btn-primary" onclick="redirectCreateAccountant()">Create Accountant</button>
+    <button class="btn btn-primary" onclick="showBillingModal()">Manage Billing Amount</button>
+    <div class="pt-3"></div>
         <h2>Bill Summary</h2>
         <div>
             <?php
@@ -205,6 +225,32 @@ include('includes/nav.php');
         </div>
     </div>
 
+    <div id="billingModal" class="modal">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <form action="" method="POST">
+                    <span class="close" onclick="closeBillingModal()">&times;</span>
+                    <h4>Manage Billing</h4>
+                    <?php  if(isset($_GET["showSuccessModal"])) { 
+                        echo 'hellow' . $_GET["showSuccessModal"];
+                        }  ?>
+                    <div>
+                        <label for="billingElectricAmount">Electric Bill Rate (per kilowats)</label>
+                        <input type="text" name="billingElectricAmount" id="billingElectricAmount" value="<?php echo $varbillingElectricAmount ?>"/>
+                    </div>
+                    <div>
+                        <label for="billingWaterAmount">Water Bill Rate (per kilowats)</label>
+                        <input type="text" name="billingWaterAmount" id="billingWaterAmount" value="<?php echo $varbillingWaterAmount ?>"/>
+                    </div>
+                    <div class="pt-1" style="color:gray">Last Modified: <?php echo $varbillingAmountAsOf ?></div>
+                    <div class="button pt-3">
+                        <input type="submit" name="SavaChangesBilling" />
+                    </div>
+                </form>
+            </div>
+        </div>  
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const modalOverlay = document.querySelector('.modal');
@@ -212,6 +258,7 @@ include('includes/nav.php');
                 if (event.target === modalOverlay) {
                     closeChargeBreakdownModal();
                 }
+                
             });
 
             const billingTable = document.getElementById('billingTable');
@@ -228,7 +275,8 @@ include('includes/nav.php');
                 }
             });
         });
-
+     
+       
         function showChargeBreakdown(data) {
             const chargeBreakdownData = [
                 { chargeType: 'Electric', amount: data.electric },
@@ -257,6 +305,52 @@ include('includes/nav.php');
         function redirectCreateAccountant() {
             window.location.href = 'acc_create_accountant.php';
         }
-    </script>
 
+        function showBillingModal() {
+            var modal = document.getElementById('billingModal');
+            modal.style.display = 'block';
+        }
+
+        function closeBillingModal() {
+            var modal = document.getElementById('billingModal');
+            modal.style.display = 'none';
+        }
+        <?php if (isset($showSuccessModal) && $showSuccessModal) : ?>
+           
+           console.log('Success');
+   <?php endif; ?>
+    </script>
+ <?php 
+    if (isset($_POST['SavaChangesBilling'])) {
+        $billingElectricAmount = $_POST['billingElectricAmount'];
+        $billingWaterAmount = $_POST['billingWaterAmount'];
+                    
+        if (empty($_POST['billingElectricAmount']) || empty($_POST['billingWaterAmount'])) {
+            $error_message = "<span style='color: red;'>All fields are required</span> <br/>";
+        } 
+        else {
+            $sql1 = "INSERT INTO billing_setup (BillingCode, BillingName, Amount) VALUES ('ElectricBillRate','Electric Bill Rate','$billingElectricAmount'),  ('WaterBillRate','Water Bill Rate','$billingWaterAmount')";
+            $con->query($sql1);
+
+            $billingquery = "SELECT * FROM billing_setup WHERE billingcode = 'WaterBillRate' ORDER BY DateAsof DESC LIMIT 1";
+            $billingresult = $con->query($billingquery);
+            if ($billingresult->num_rows > 0) {
+                $row = $billingresult->fetch_assoc();
+                $varbillingWaterAmount = $row['Amount'];
+                $varbillingAmountAsOf = $row['DateAsOf'];
+            }
+
+            $billingquery2 = "SELECT * FROM billing_setup WHERE billingcode = 'ElectricBillRate' ORDER BY DateAsof DESC LIMIT 1";
+            $billingresult2 = $con->query($billingquery2);
+            if ($billingresult2->num_rows > 0) {
+                $row2 = $billingresult2->fetch_assoc();
+                $varbillingElectricAmount = $row2['Amount'];
+            }     
+            // RefreshContent();
+            $_POST["showSuccessModal"] = true;
+            header('Location: .');
+        }
+    }
+    ?>
+   
     <?php include('includes/footer.php'); ?>

@@ -260,15 +260,15 @@ include('includes/nav.php');
         $concourseDetails = $concourseResult->fetch_assoc();
         ?>
         <div class="container">
-            <h1 style="color: #c19f90;">Concourse Details</h1>
+        <h4 style="color:#fff; text-align:center" class="pt-2">Concourse Details</h4>
             <div class="card" style="width: 100%; height: 100%; padding: 10px; margin: 0 auto; position: relative;">
                 <div class="image-container">
                     <?php
                     // Display concourse image or map (similar to how you did in the previous code)
                     if (!empty($concourseDetails['concourse_image'])) {
-                        echo '<img src="/COMS/uploads/featured-concourse/' . $concourseDetails['concourse_image'] . '" id="concourseImage" class="card-img-top" alt="Concourse Image" style="width:100%; height: 300px;">';
+                        echo '<img src="./uploads/featured-concourse/' . $concourseDetails['concourse_image'] . '" id="concourseImage" class="card-img-top" alt="Concourse Image" style="width:100%; height: 300px;">';
                     } elseif (!empty($concourseDetails['concourse_map'])) {
-                        echo '<img src="/COMS/uploads/' . $concourseDetails['concourse_map'] . '" id="concourseImage" class="card-img-top" alt="Concourse Map" style="width:100%; height: 300px;">';
+                        echo '<img src="./uploads/' . $concourseDetails['concourse_map'] . '" id="concourseImage" class="card-img-top" alt="Concourse Map" style="width:100%; height: 300px;">';
                     } else {
                         echo '<img src="path_to_placeholder_image.jpg" id="concourseImage" class="card-img-top" alt="Placeholder Image" style="width:100%; height: 300px;">';
                     }
@@ -355,7 +355,7 @@ include('includes/nav.php');
     $result = mysqli_query($con, $sql);
     $con->close();
     ?>
-    <h1 style="color: #c19f90;">SPACES</h1>
+    <h2 style="color: #fff; text-align:center" class="pt-3">SPACES</h2> <br/>
     <div class="container">
         <?php
         if ($result && mysqli_num_rows($result) > 0) {
@@ -478,7 +478,7 @@ include('includes/nav.php');
 
         // Set the spacename and status in the modalContent
         modalContent.innerHTML = `
-            <img src="/COMS/uploads/${spaceDetails['space_img']}" alt="Space Image" style="max-width: 100%; max-height: 200px;">
+            <img src="./uploads/${spaceDetails['space_img']}" alt="Space Image" style="max-width: 100%; max-height: 200px;">
             <h2>${spaceName}</h2>
             <p>Status: ${spaceStatus}</p>
             <ul>
