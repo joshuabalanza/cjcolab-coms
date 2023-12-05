@@ -214,7 +214,7 @@ if (isset($_GET['concourse_id'])) {
                   <label for="ap_email">Tenant Email:</label>
                   <input type="email" name="ap_email" value="<?php echo $_SESSION['uemail']; ?>" readonly>
                   <label for="requirements">Attach copy of requirements:</label>
-                  <input type="file" id="requirements" name="requirements" accept="application/pdf,application/vnd.ms-excel">
+                  <input type="file" id="requirements" name="requirements" accept="application/pdf">
                   <!-- Additional form fields as needed -->
                   <button type="submit" name="apply">Apply</button>
                </form>
