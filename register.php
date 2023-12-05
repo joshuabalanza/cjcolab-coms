@@ -89,38 +89,38 @@ if (isset($_POST['register'])) {
                 $activation_code = str_shuffle('abcdefghijklmno' . $act_str);
 
                 // Insert data into the database
-                $expiration_time = date("Y-m-d H:i:s", strtotime('+1 minutes'));
+                $expiration_time = date("Y-m-d H:i:s", strtotime('+3 minutes'));
                 $created_at = date("Y-m-d H:i:s");
                 $sql = "INSERT INTO user (uname, uemail, upassword, otp, activation_code, utype, created_at, otp_expiration, username, verified) VALUES ('$uname', '$uemail', '$hashedPassword', '$otp', '$activation_code', '$usertype', '$created_at', '$expiration_time', '$username',1)";
                 $con->query($sql);
 
                 // Send OTP to the user's email
-                // $mail = new PHPMailer(true);
-                // try {
-                //     $mail->isSMTP();
-                //     $mail->Host = 'smtp.gmail.com'; // Your SMTP server
-                //     $mail->SMTPAuth = true;
-                //     $mail->Username = 'coms.system.adm@gmail.com'; // Your Gmail email address
-                //     $mail->Password = 'wdcbquevxahkehla'; // Your Gmail password
-                //     $mail->SMTPSecure = 'tls';
-                //     $mail->Port = 587;
+                $mail = new PHPMailer(true);
+                try {
+                    $mail->isSMTP();
+                    $mail->Host = 'smtp.gmail.com'; // Your SMTP server
+                    $mail->SMTPAuth = true;
+                    $mail->Username = 'coms.system.adm@gmail.com'; // Your Gmail email address
+                    $mail->Password = 'wdcbquevxahkehla'; // Your Gmail password
+                    $mail->SMTPSecure = 'tls';
+                    $mail->Port = 587;
 
-                //     $mail->setFrom('coms.system.adm@gmail.com', 'Concessionaire Monitoring Operation System');
-                //     $mail->addAddress($uemail); // User's email address
-                //     $mail->isHTML(true);
-                //     $mail->Subject = 'Email Verification';
-                //     $mail->Body = 'Your OTP is: ' . $otp;
+                    $mail->setFrom('coms.system.adm@gmail.com', 'Concessionaire Monitoring Operation System');
+                    $mail->addAddress($uemail); // User's email address
+                    $mail->isHTML(true);
+                    $mail->Subject = 'Email Verification';
+                    $mail->Body = 'Your OTP is: ' . $otp;
 
-                //     $mail->send();
-                // } catch (Exception $e) {
-                //     echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
-                // }
+                    $mail->send();
+                } catch (Exception $e) {
+                    echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+                }
 
                 // Redirect to OTP verification page
-                //  header('Location: otp.php?email=' . $uemail);
+                 header('Location: otp.php?email=' . $uemail);
 
                
-                $showSuccessModal = true;
+                // $showSuccessModal = true;
                 // exit();
             }
         }

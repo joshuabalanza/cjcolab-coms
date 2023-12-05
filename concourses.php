@@ -82,7 +82,7 @@ include('includes/nav.php');
       <!-- **** CTA BUTTON DISPLAY DEPENDING ON USER TYPE AND ACCOUNT STATUS **** -->
       <!-- ********************************************************************** -->
       <!-- OWNER -->
-      <?php if ($verificationStatus === 'approved' && $utype === 'Owner'): ?>
+      <?php if ($utype === 'Owner'): ?>
          
       <h5 style="text-align: center; color:white" class="pt-1">YOUR CONCOURSES</h5>
       <button id="openAddConcourseModal" class="btn-sm btn btn-success" style="display: block; margin: 0 auto; margin-bottom: 10px;">Add Concourse</button>
@@ -125,18 +125,18 @@ include('includes/nav.php');
                   echo '</div>';
               }
           } else {
-              echo '<div class="col-lg-12">';
-              echo '<p>No approved maps found.</p>';
+              echo '<div class="col-lg-12 text-center text-white mt-5">';
+              echo '<p>No maps found yet.</p>';
               echo '</div>';
           }
 echo '</div>';
 ?>
 
-      <?php elseif ($verificationStatus === 'rejected' && $utype === 'Owner'): ?>
+      <?php elseif ($verificationStatus !== 'rejected' && $utype === 'Owner'): ?>
       <div id="verificationModal" class="prompt-modal">
          <div class="modal-content">
             <span class="close">&times;</span>
-            <p>Verify your account to add concourse.</p>
+            <p>Setup your account to add concourse.</p>
             <a href="verification_account.php" class="btn-sm btn btn-success">Verify Account</a>
          </div>
       </div>
@@ -191,9 +191,9 @@ echo '</div>';
             <input type="text" id="concourseAddress" name="concourseAddress" required>
             <label for="concourseMap">Concourse Map:</label>
             <input type="file" id="concourseMap" name="concourseMap" required>
-            <label for="concourseSpaces">Spaces:</label>
+            <!-- <label for="concourseSpaces">Spaces:</label> -->
             <!-- <textarea id="concourseSpaces" name="concourseSpaces" required></textarea> -->
-            <input type="number" id="concourseSpaces" name="concourseSpaces" required>
+            <!-- <input type="number" id="concourseSpaces" name="concourseSpaces" required> -->
             <button type="submit" class="btn btn-success"name="submit_concourse" >Submit</button>
          </form>
       </div>
