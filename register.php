@@ -391,7 +391,7 @@ document.getElementById('username').addEventListener('input', function () {
     // Remove any existing suggestions
     suggestedUsername.innerHTML = '';
 
-    if (enteredUsername !== '') {
+    if (enteredUsername !== '' && enteredUsername.length > 3) {
         const url = `check_username_availability.php?username=${enteredUsername}`;
 
         // Make an AJAX request to check username availability
@@ -417,8 +417,7 @@ document.getElementById('username').addEventListener('input', function () {
                         })
                         .catch(error => console.error('Error:', error));
                 }
-            })
-            .catch(error => console.error('Error:', error));
+            }).catch(error => console.error('Error:', error));
     }
 });
 
