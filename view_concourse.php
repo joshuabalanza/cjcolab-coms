@@ -272,11 +272,16 @@ if (isset($_GET['concourse_id'])) {
         <form id="updateBillForm" method="post" action="process_update_bill.php">
             <input type="hidden" name="space_id" id="updateBillSpaceIdInput" value="">
             <label for="updatedElectricInput">Current Electric Bill:</label>
-            <input type="text" name="updated_electric" id="updatedElectricInput" disabled>
+            <input type="text" name="updated_electric" id="updatedElectricInput" readonly>
             <label for="updatedWaterInput">Current Water Bill:</label>
-            <input type="text" name="updated_water" id="updatedWaterInput" disabled>
+            <input type="text" name="updated_water" id="updatedWaterInput" readonly>
+            <label for="updatedWaterInput">Payment Status:</label>
+            <select class="form-control" name="updated_paymentstatus" id="updated_paymentstatus" >
+                <option value="UnPaid" selected>Unpaid</option>
+                <option value="Paid">Paid</option>
+            </select>
             <!-- Add more updated bill details as needed -->
-            <button type="submit" name="update_bill">Update Bill</button>
+            <button type="submit" name="update_bill" class="mt-3">Update Bill</button>
         </form>
     </div>
 </div>
@@ -302,6 +307,7 @@ if (isset($_GET['concourse_id'])) {
                     // Populate the form fields with current bill details
                     document.getElementById('updatedElectricInput').value = data.electric;
                     document.getElementById('updatedWaterInput').value = data.water;
+                    document.getElementById('updated_paymentstatus').value = data.paymentstatus;
                     // Add more fields if needed
                 } else {
                     console.error('Error:', data.error);

@@ -74,8 +74,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_bill'])) {
 $total = $electric + $water + $tenantSpaceBill; // Use the tenant's space bill
 
 // Insert into the bill table using prepared statements
-$insertBillQuery = "INSERT INTO bill (space_id, owner_name, tenant_name, tenant_email, electric, water, space_bill, total, due_date, created_at, notified) 
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, DATE_ADD(NOW(), INTERVAL 7 DAY), NOW(), 'not notified')";
+$insertBillQuery = "INSERT INTO bill (space_id, owner_name, tenant_name, tenant_email, electric, water, space_bill, total, due_date, created_at, notified, paymentstatus) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, DATE_ADD(NOW(), INTERVAL 7 DAY), NOW(), 'not notified','unpaid')";
 
 $stmt = $con->prepare($insertBillQuery);
 $stmt->bind_param("ssssssss", $spaceId, $ownerName, $tenantName, $tenantEmail, $electric, $water, $tenantSpaceBill, $total);

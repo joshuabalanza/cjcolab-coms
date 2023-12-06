@@ -6,7 +6,7 @@ if (isset($_GET['space_id'])) {
     $spaceId = $_GET['space_id'];
 
     // Fetch the most recent bill details for the specified space
-    $billQuery = "SELECT water, electric FROM bill WHERE space_id = '$spaceId' ORDER BY created_at DESC LIMIT 1";
+    $billQuery = "SELECT water, electric,paymentstatus FROM bill WHERE space_id = '$spaceId' ORDER BY created_at DESC LIMIT 1";
     $result = $con->query($billQuery);
 
     if ($result->num_rows > 0) {

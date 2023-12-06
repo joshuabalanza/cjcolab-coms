@@ -207,11 +207,12 @@ include('includes/nav.php');
                     <th>Tenant Name</th>
                     <th>Due Date</th>
                     <th>Outstanding Amount</th>
+                    <th>Payment Status</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
-                $query = "SELECT space_id, tenant_name, due_date, total FROM bill WHERE owner_name = '$owner_name'";
+                $query = "SELECT space_id, tenant_name, due_date, total, paymentstatus FROM bill WHERE owner_name = '$owner_name'";
                 $result = mysqli_query($con, $query);
 
                 while ($row = mysqli_fetch_assoc($result)) {
@@ -220,6 +221,7 @@ include('includes/nav.php');
                     echo "<td>{$row['tenant_name']}</td>";
                     echo "<td>{$row['due_date']}</td>";
                     echo "<td>₱{$row['total']}</td>";
+                    echo "<td>{$row['paymentstatus']}</td>";
                     echo "</tr>";
                 }
                 ?>
