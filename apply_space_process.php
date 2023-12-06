@@ -110,11 +110,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['apply'])) {
     // Get user information from the session
     $tenantName = $_SESSION['uname'];
     $tenantEmail = $_SESSION['uemail'];
+    $tenantid = $_SESSION['uid'];
 
     // Get space information from the form
     $spaceName = $_POST['spacename'];
+    $SpaceID = $_POST['SpaceID'];
     $ownerName = $_SESSION['uname'];
     $ownerEmail = $_SESSION['uemail'];
+    $_GET['concourse_id'];
 
     $requirements_file = '';  // Initialize an empty string for space image
 
@@ -132,7 +135,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['apply'])) {
     }
 
     // Insert application into space_application table
-    $insertApplicationQuery = "INSERT INTO space_application (spacename, tenant_name, ap_email, status, Requirements) VALUES ('$spaceName', '$tenantName', '$tenantEmail', 'pending', '$requirements_file')";
+    $insertApplicationQuery = "INSERT INTO space_application (spacename, tenant_name, ap_email, status, tenantid, space_id, Requirements) VALUES ('$spaceName', '$tenantName', '$tenantEmail', 'pending', $tenantid, $SpaceID, '$requirements_file')";
     $insertResult = $con->query($insertApplicationQuery);
 
     // Update status in space table to 'reserved'

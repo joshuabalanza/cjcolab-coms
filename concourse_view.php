@@ -209,6 +209,7 @@ if (isset($_GET['concourse_id'])) {
                <h2>Apply for Space</h2>
                <form method="POST" action='apply_space_process.php'>
                   <input type="hidden" name="spacename" id="appSpacename" value="">
+                  <input type="hidden" name="SpaceID" id="appSpaceID" value="">               
                   <label for="tenant_name">Tenant Name:</label>
                   <input type="text" name="tenant_name" value="<?php echo $_SESSION['uname']; ?>" readonly>
                   <label for="ap_email">Tenant Email:</label>
@@ -235,7 +236,7 @@ if (isset($_GET['concourse_id'])) {
      
          // Set the spacename and status in the modalContent
          modalContent.innerHTML = `
-            <img src="/COMS/uploads/${spaceDetails['space_img']}" alt="Space Image" style="display: block; margin: 0 auto; max-width: 100%; max-height: 200px;">
+            <img src="./uploads/${spaceDetails['space_img']}" alt="Space Image" style="display: block; margin: 0 auto; max-width: 100%; max-height: 200px;">
             <h2 style="text-align: center; font-weight: bold;">${spaceName}</h2>
              <ul>
                <li><strong>Owner:</strong> ${spaceDetails['space_owner']}</li>
@@ -248,6 +249,7 @@ if (isset($_GET['concourse_id'])) {
      
          // Set the spacename in the application form
          document.getElementById("appSpacename").value = spaceName;
+         document.getElementById("appSpaceID").value = spaceDetails['space_id'];
      
          // Check if the space status is 'reserved' or 'occupied'
          if (spaceStatus === 'reserved' || spaceStatus === 'occupied') {
