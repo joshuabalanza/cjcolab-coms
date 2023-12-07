@@ -12,9 +12,10 @@ use PHPMailer\PHPMailer\Exception;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $applicationId = $_POST['applicationId'];
     $action = $_POST['action'];
+    $approverRemarks = $_POST['approverRemarks']; 
 
     // Update the space_application table using MySQLi
-    $updateApplicationQuery = "UPDATE space_application SET status = ? WHERE app_id = ?";
+    $updateApplicationQuery = "UPDATE space_application SET status = ?, approver_remarks = ? WHERE app_id = ?";
     $updateApplicationStmt = $con->prepare($updateApplicationQuery);
 
     if ($action === 'approve') {
@@ -54,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         // Update the space_application table
-        $updateApplicationStmt->bind_param('si', $status, $applicationId);
+        $updateApplicationStmt->bind_param('ssi', $status, $approverRemarks, $applicationId);
         $updateApplicationStmt->execute();
 
         // Update the space table if approved
@@ -66,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $status = 'rejected';
 
         // Update the space_application table
-        $updateApplicationStmt->bind_param('si', $status, $applicationId);
+        $updateApplicationStmt->bind_param('ssi', $status, $approverRemarks, $applicationId);
         $updateApplicationStmt->execute();
 
         // Update the space table if rejected
