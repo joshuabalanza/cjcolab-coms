@@ -12,16 +12,17 @@ use PHPMailer\PHPMailer\Exception;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $applicationId = $_POST['applicationId'];
     $action = $_POST['action'];
+    $approverRemarks = $_POST['approverRemarks']; 
 
     // Update the space_application table using MySQLi
-    $updateApplicationQuery = "UPDATE space_application SET status = ? WHERE app_id = ?";
+    $updateApplicationQuery = "UPDATE space_application SET status = ?, approver_remarks = ? WHERE app_id = ?";
     $updateApplicationStmt = $con->prepare($updateApplicationQuery);
 
     if ($action === 'approve') {
         $status = 'approved';
 
         // Get tenant_name, tenant_email, and space_name from space_application
-        $getTenantInfoQuery = "SELECT tenant_name, ap_email, spacename FROM space_application WHERE app_id = ?";
+        $getTenantInfoQuery = "SELECT tenant_name, ap_email, spacename, tenantid FROM space_application WHERE app_id = ?";
         $getTenantInfoStmt = $con->prepare($getTenantInfoQuery);
         $getTenantInfoStmt->bind_param('i', $applicationId);
         $getTenantInfoStmt->execute();
@@ -34,27 +35,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $spaceName = $tenantInfoRow['spacename'];
 
             // Get the current date for contract start
-            $contractStart = date('Y-m-d');
-
+            $currentdate = date('y-m-d');
+            $contractStart = date('y-m-d', strtotime($currentdate . '+2 days'));
+            
             // Calculate contract end (1 year from start)
-            $contractEnd = date('Y-m-d', strtotime($contractStart . ' + 1 year'));
+            $contractEnd =  date("Y-m-d", strtotime($contractStart . '+1 year'));
+            $sendingdate =  date("Y-m-d", strtotime($contractEnd . '-1 month'));
 
             // Update the contract table with start and end dates
-            $updateContractQuery = "INSERT INTO contract (tenant_name, c_start, c_end) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE c_start = VALUES(c_start), c_end = VALUES(c_end)";
-            $updateContractStmt = $con->prepare($updateContractQuery);
-            $updateContractStmt->bind_param('sss', $tenantName, $contractStart, $contractEnd);
-            $updateContractStmt->execute();
+            $updateContractQuery = "INSERT INTO contract (tenant_name, c_start, c_end, eoc_sendingdate, space_id) VALUES ('$tenantName', '$contractStart', '$contractEnd', '$sendingdate','$applicationId') ON DUPLICATE KEY UPDATE c_start = VALUES(c_start), c_end = VALUES(c_end)";
+            $con->query($updateContractQuery);
 
             // Send email notification to the tenant
             sendEmailToTenant($tenantEmail, $tenantName, $status, $spaceName);
 
             // Schedule notification 1 month before the end of the contract
-            $notificationDate = date('Y-m-d', strtotime($contractEnd . ' - 1 month'));
-            scheduleNotification($tenantName, $tenantEmail, $spaceName, $notificationDate);
+            // $notificationDate = date('Y-m-d', strtotime($contractEnd . ' - 1 month'));
+            // scheduleNotification($tenantName, $tenantEmail, $spaceName, $notificationDate);
         }
 
         // Update the space_application table
-        $updateApplicationStmt->bind_param('si', $status, $applicationId);
+        $updateApplicationStmt->bind_param('ssi', $status, $approverRemarks, $applicationId);
         $updateApplicationStmt->execute();
 
         // Update the space table if approved
@@ -66,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $status = 'rejected';
 
         // Update the space_application table
-        $updateApplicationStmt->bind_param('si', $status, $applicationId);
+        $updateApplicationStmt->bind_param('ssi', $status, $approverRemarks, $applicationId);
         $updateApplicationStmt->execute();
 
         // Update the space table if rejected
@@ -177,7 +178,7 @@ function scheduleNotification($tenantName, $tenantEmail, $spaceName, $notificati
         // Recipients
         $mail->setFrom('coms.system.adm@gmail.com', 'Concessionaire Monitoring Operation System');
         $mail->addAddress($tenantEmail, $tenantName);
-
+        
         // Content
         $mail->isHTML(true);
         $mail->Subject = 'Upcoming Contract End';

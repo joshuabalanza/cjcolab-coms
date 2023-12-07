@@ -260,15 +260,15 @@ include('includes/nav.php');
         $concourseDetails = $concourseResult->fetch_assoc();
         ?>
         <div class="container">
-            <h1 style="color: #c19f90;">Concourse Details</h1>
+        <h4 style="color:#fff; text-align:center" class="pt-2">Concourse Details</h4>
             <div class="card" style="width: 100%; height: 100%; padding: 10px; margin: 0 auto; position: relative;">
                 <div class="image-container">
                     <?php
                     // Display concourse image or map (similar to how you did in the previous code)
                     if (!empty($concourseDetails['concourse_image'])) {
-                        echo '<img src="/COMS/uploads/featured-concourse/' . $concourseDetails['concourse_image'] . '" id="concourseImage" class="card-img-top" alt="Concourse Image" style="width:100%; height: 300px;">';
+                        echo '<img src="./uploads/featured-concourse/' . $concourseDetails['concourse_image'] . '" id="concourseImage" class="card-img-top" alt="Concourse Image" style="width:100%; height: 300px;">';
                     } elseif (!empty($concourseDetails['concourse_map'])) {
-                        echo '<img src="/COMS/uploads/' . $concourseDetails['concourse_map'] . '" id="concourseImage" class="card-img-top" alt="Concourse Map" style="width:100%; height: 300px;">';
+                        echo '<img src="./uploads/' . $concourseDetails['concourse_map'] . '" id="concourseImage" class="card-img-top" alt="Concourse Map" style="width:100%; height: auto;">';
                     } else {
                         echo '<img src="path_to_placeholder_image.jpg" id="concourseImage" class="card-img-top" alt="Placeholder Image" style="width:100%; height: 300px;">';
                     }
@@ -330,6 +330,8 @@ include('includes/nav.php');
                         <input type="number" id="space_length_modal" name="space_length" required>
                         <!-- <label for="space_height_modal" hidden>Space Height:</label> -->
                         <!-- <input type="number" id="space_height_modal" name="space_height" hidden> -->
+                        <label for="space_length_modal">Additional Rate: (PHP)</label>
+                        <input type="number" id="additional_rate" name="space_length" required>
                         <label for="space_price">Rent Price:</label>
                         <input type="number" id="space_price" name="space_price" required>
                         <label for="status_modal">Space Status:</label>
@@ -355,7 +357,7 @@ include('includes/nav.php');
     $result = mysqli_query($con, $sql);
     $con->close();
     ?>
-    <h1 style="color: #c19f90;">SPACES</h1>
+    <h2 style="color: #fff; text-align:center" class="pt-3">SPACES</h2> <br/>
     <div class="container">
         <?php
         if ($result && mysqli_num_rows($result) > 0) {
@@ -407,27 +409,30 @@ include('includes/nav.php');
     //autocompute price
     $("#space_width_modal").on("input", function () {
         var space_length = (document.getElementById("space_length_modal").value);
+        var additional_rate = (document.getElementById("additional_rate").value);
         space_length = space_length.length > 0 ? space_length : 0;
         var space_width = document.getElementById("space_width_modal").value;
         space_width = space_width > 0 ? space_width : 0;
+        additional_rate = additional_rate > 0 ? additional_rate : 0;
 
-        var compute_price = (space_width * space_length) * 25;
+        var compute_price = ((space_width * space_length) * 25) + parseInt(additional_rate);
 
 
         document.getElementById("space_price").value = compute_price;
     });
 
-    $("#space_length_modal").on("input", function () {
+    $("#space_length_modal,#additional_rate").on("input", function () {
         var space_length = (document.getElementById("space_length_modal").value);
+        var additional_rate = (document.getElementById("additional_rate").value);
         space_length = space_length.length > 0 ? space_length : 0;
         var space_width = document.getElementById("space_width_modal").value;
         space_width = space_width > 0 ? space_width : 0;
+        additional_rate = additional_rate > 0 ? additional_rate : 0;
 
-        var compute_price = (space_width * space_length) * 25;
-
-
+        var compute_price = ((space_width * space_length) * 25) + parseInt(additional_rate);
         document.getElementById("space_price").value = compute_price;
     });
+    
 
     function openModalForSpace(spaceName) {
         var cardIndex = findCardIndexBySpaceName(spaceName);
@@ -478,7 +483,7 @@ include('includes/nav.php');
 
         // Set the spacename and status in the modalContent
         modalContent.innerHTML = `
-            <img src="/COMS/uploads/${spaceDetails['space_img']}" alt="Space Image" style="max-width: 100%; max-height: 200px;">
+            <img src="./uploads/${spaceDetails['space_img']}" alt="Space Image" style="max-width: 100%; max-height: 180px;">
             <h2>${spaceName}</h2>
             <p>Status: ${spaceStatus}</p>
             <ul>
@@ -488,9 +493,7 @@ include('includes/nav.php');
                 <li><strong>Status:</strong> ${spaceDetails['status']}</li>
                 <li><strong>Space Width:</strong> ${spaceDetails['space_width']}</li>
                 <li><strong>Space Length:</strong> ${spaceDetails['space_length']}</li>
-                <li><strong>Space Height:</strong> ${spaceDetails['space_height']}</li>
                 <li><strong>Space Area:</strong> ${spaceDetails['space_area']}</li>
-                <li><strong>Space Dimension:</strong> ${spaceDetails['space_dimension']}</li>
                 <li><strong>Space Tenant:</strong> ${spaceDetails['space_tenant']}</li>
             </ul>
         `;

@@ -48,7 +48,7 @@ if ($verificationResult && mysqli_num_rows($verificationResult) > 0) {
 
 $uploadDirectory = __DIR__ . '/uploads/';
 
-$approvedMapQuery = "SELECT * FROM concourse_verification WHERE status = 'approved'";
+$approvedMapQuery = "SELECT * FROM concourse_verification";
 $approvedMapResult = mysqli_query($con, $approvedMapQuery);
 
 ?>
@@ -82,15 +82,15 @@ include('includes/nav.php');
       <!-- **** CTA BUTTON DISPLAY DEPENDING ON USER TYPE AND ACCOUNT STATUS **** -->
       <!-- ********************************************************************** -->
       <!-- OWNER -->
-      <?php if ($verificationStatus === 'approved' && $utype === 'Owner'): ?>
+      <?php if ($utype === 'Owner'): ?>
          
-      <h3 style="text-align: center;">Your Concourse</h3>
+      <h5 style="text-align: center; color:white" class="pt-1">YOUR CONCOURSES</h5>
       <button id="openAddConcourseModal" class="btn-sm btn btn-success" style="display: block; margin: 0 auto; margin-bottom: 10px;">Add Concourse</button>
       <!-- <a href="concourse_add.php">
          <button class="btn-sm btn btn-success">Add a Concourse</button>
          </a> -->
          <?php
-            $checkApprovedMapsQuery = "SELECT * FROM concourse_verification WHERE owner_id = '$uid' AND status = 'approved'";
+            $checkApprovedMapsQuery = "SELECT * FROM concourse_verification WHERE owner_id = '$uid'";
           $checkApprovedMapsResult = mysqli_query($con, $checkApprovedMapsQuery);
 
           if ($checkApprovedMapsResult && mysqli_num_rows($checkApprovedMapsResult) > 0) {
@@ -104,10 +104,10 @@ include('includes/nav.php');
                   echo '<div class="image-container">';
                   if (!empty($mapData['concourse_image'])) {
                       // Display the concourse_image if it exists
-                      echo '<img src="/COMS/uploads/featured-concourse/' . $mapData['concourse_image'] . '" id="concourseImage" class="card-img-top smaller-image" alt="Concourse Image" style="width:100%; height: 300px;">';
+                      echo '<img src="./uploads/featured-concourse/' . $mapData['concourse_image'] . '" id="concourseImage" class="card-img-top smaller-image" alt="Concourse Image" style="width:100%; height: 300px;">';
                   } elseif (!empty($mapData['concourse_map'])) {
                       // Display the concourse_map if concourse_image is not available
-                      echo '<img src="/COMS/uploads/' . $mapData['concourse_map'] . '" id="concourseImage" class="card-img-top smaller-image" alt="Concourse Map" style="width:100%; height: 300px;">';
+                      echo '<img src="./uploads/' . $mapData['concourse_map'] . '" id="concourseImage" class="card-img-top smaller-image" alt="Concourse Map" style="width:100%; height: 300px;">';
                   } else {
                       // Handle the case when both concourse_image and concourse_map are empty, e.g., display a placeholder image
                       echo '<img src="path_to_placeholder_image.jpg" id="concourseImage" class="card-img-top smaller-image" alt="Placeholder Image" style="width:100%; height: 300px;">';
@@ -125,18 +125,18 @@ include('includes/nav.php');
                   echo '</div>';
               }
           } else {
-              echo '<div class="col-lg-12">';
-              echo '<p>No approved maps found.</p>';
+              echo '<div class="col-lg-12 text-center text-white mt-5">';
+              echo '<p>No maps found yet.</p>';
               echo '</div>';
           }
 echo '</div>';
 ?>
 
-      <?php elseif ($verificationStatus === 'rejected' && $utype === 'Owner'): ?>
+      <?php elseif ($verificationStatus !== 'rejected' && $utype === 'Owner'): ?>
       <div id="verificationModal" class="prompt-modal">
          <div class="modal-content">
             <span class="close">&times;</span>
-            <p>Verify your account to add concourse.</p>
+            <p>Setup your account to add concourse.</p>
             <a href="verification_account.php" class="btn-sm btn btn-success">Verify Account</a>
          </div>
       </div>
@@ -146,7 +146,9 @@ echo '</div>';
       <button class="btn-sm btn btn-success">Apply For Space</button>
       </a> -->
       <div class="container-fluid">
-      <h3 style="margin-top: 15px; text-align: center;">Concourses</h3>
+      <div class="pt-3"></div>
+      <h5 style="text-align: center; color:#fff">CONCOURSES</h5>
+      <div class="pt-3"></div>
       <div id="concourse-list" class="row" style="width: 80%; margin: 0 auto;">
          <!-- This div will be populated with the fetched data -->
       </div>
@@ -180,7 +182,7 @@ echo '</div>';
    <div id="addConcourseModal" class="modal">
       <div class="modal-content">
          <span class="close" id="closeAddConcourseModal">&times;</span>
-         <h2>Add a Concourse</h2>
+         <h4>ADD A CONCOURSE</h4>
          <!-- <form id="concourseForm" method="POST" action="verification_concourse_process.php"> -->
          <form id="concourseForm" method="POST" action="verification_concourse_process.php" enctype="multipart/form-data">
             <label for="concourseName">Concourse Name:</label>
@@ -189,9 +191,9 @@ echo '</div>';
             <input type="text" id="concourseAddress" name="concourseAddress" required>
             <label for="concourseMap">Concourse Map:</label>
             <input type="file" id="concourseMap" name="concourseMap" required>
-            <label for="concourseSpaces">Spaces:</label>
+            <!-- <label for="concourseSpaces">Spaces:</label> -->
             <!-- <textarea id="concourseSpaces" name="concourseSpaces" required></textarea> -->
-            <input type="number" id="concourseSpaces" name="concourseSpaces" required>
+            <!-- <input type="number" id="concourseSpaces" name="concourseSpaces" required> -->
             <button type="submit" class="btn btn-success"name="submit_concourse" >Submit</button>
          </form>
       </div>

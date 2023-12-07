@@ -89,9 +89,9 @@ if (isset($_POST['register'])) {
                 $activation_code = str_shuffle('abcdefghijklmno' . $act_str);
 
                 // Insert data into the database
-                $expiration_time = date("Y-m-d H:i:s", strtotime('+1 minutes'));
+                $expiration_time = date("Y-m-d H:i:s", strtotime('+3 minutes'));
                 $created_at = date("Y-m-d H:i:s");
-                $sql = "INSERT INTO user (uname, uemail, upassword, otp, activation_code, utype, created_at, otp_expiration, username) VALUES ('$uname', '$uemail', '$hashedPassword', '$otp', '$activation_code', '$usertype', '$created_at', '$expiration_time', '$username')";
+                $sql = "INSERT INTO user (uname, uemail, upassword, otp, activation_code, utype, created_at, otp_expiration, username, verified) VALUES ('$uname', '$uemail', '$hashedPassword', '$otp', '$activation_code', '$usertype', '$created_at', '$expiration_time', '$username',1)";
                 $con->query($sql);
 
                 // Send OTP to the user's email
@@ -118,7 +118,10 @@ if (isset($_POST['register'])) {
 
                 // Redirect to OTP verification page
                  header('Location: otp.php?email=' . $uemail);
-                exit();
+
+               
+                // $showSuccessModal = true;
+                // exit();
             }
         }
     }
@@ -330,7 +333,7 @@ include('includes/nav.php');
                 <div class="input-box">
                     <span for="birthdate" class="details">Birthday</span>
                     <input type="date" class="birthdate" name="birthdate" id="birthdate" autocomplete="off" style="padding-top:10px" required>
-                    <input type="text" name="validate_birthdate"  id="validate_birthdate">
+                    <input type="hidden" name="validate_birthdate"  id="validate_birthdate">
                 </div>
             </div>
 
@@ -367,6 +370,19 @@ include('includes/nav.php');
     </div>
 </div>
 
+<div id="successModal" class="modal">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+          <span class="close" onclick="closeSuccessModal()">&times;</span>
+          <h2>Registration Successful!</h2>
+          <p>Congratulations! Your are now registed.</p>
+          <div class="button-modal">
+              <button class="yes" onclick="redirectToLogin()">Go To Login</button>
+          </div>
+      </div>
+    </div>
+</div>
+
 <script>
 document.getElementById('username').addEventListener('input', function () {
     const enteredUsername = this.value.trim();
@@ -375,7 +391,7 @@ document.getElementById('username').addEventListener('input', function () {
     // Remove any existing suggestions
     suggestedUsername.innerHTML = '';
 
-    if (enteredUsername !== '') {
+    if (enteredUsername !== '' && enteredUsername.length > 3) {
         const url = `check_username_availability.php?username=${enteredUsername}`;
 
         // Make an AJAX request to check username availability
@@ -401,10 +417,29 @@ document.getElementById('username').addEventListener('input', function () {
                         })
                         .catch(error => console.error('Error:', error));
                 }
-            })
-            .catch(error => console.error('Error:', error));
+            }).catch(error => console.error('Error:', error));
     }
 });
+
+function openSuccessModal() {
+    var modal = document.getElementById('successModal');
+    modal.style.display = 'block';
+}
+
+function closeSuccessModal() {
+    var modal = document.getElementById('successModal');
+    modal.style.display = 'none';
+}
+
+function redirectToLogin() {
+    window.location.href = "login.php";
+}
+
+<?php if (isset($showSuccessModal) && $showSuccessModal) : ?>
+    window.onload = function() {
+        openSuccessModal();
+    };
+<?php endif; ?>
 </script>
 
 <script>

@@ -8,7 +8,7 @@ if (isset($_GET['username'])) {
 
     $response = array('available' => ($result->num_rows === 0));
     echo json_encode($response);
-} if (isset($_GET['acusername'])) {
+} elseif (isset($_GET['acusername'])) {
     $acusername = $_GET['acusername'];
     $checkUsernameQuery = "SELECT acusername FROM accountant WHERE acusername = '$acusername'";
     $result = $con->query($checkUsernameQuery);

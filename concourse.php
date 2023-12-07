@@ -123,10 +123,10 @@ include('includes/nav.php');
         <?php
     if (!empty($concourseData['concourse_image'])) {
         // Display the concourse_image if it exists
-        echo '<img src="/COMS/uploads/featured-concourse/' . $concourseData['concourse_image'] . '" id="concourseImage" class="card-img-top smaller-image" alt="Concourse Image" style="width: 200px; height: 200px;">';
+        echo '<img src="./uploads/featured-concourse/' . $concourseData['concourse_image'] . '" id="concourseImage" class="card-img-top smaller-image" alt="Concourse Image" style="width: 200px; height: 200px;">';
     } else {
         // Display the concourse_map if concourse_image is not available
-        echo '<img src="/COMS/uploads/' . $concourseData['concourse_map'] . '" id="concourseImage" class="card-img-top smaller-image" alt="Concourse Map" style="width: 200px; height: 200px;">';
+        echo '<img src="./uploads/' . $concourseData['concourse_map'] . '" id="concourseImage" class="card-img-top smaller-image" alt="Concourse Map" style="width: 200px; height: 200px;">';
     }
 ?>
         <form method="post" action="concourse.php?concourse_id=<?php echo $concourse_id; ?>" enctype="multipart/form-data">
