@@ -148,17 +148,15 @@ $spaceApplicationsResult = $con->query($spaceApplicationsQuery);
         </thead>
         <tbody>
             <?php
-            if($spaceApplicationsResult && $spaceApplicationsResult->num_rows > 0) {
-                while($row = $spaceApplicationsResult->fetch_assoc()) {
+            if ($spaceApplicationsResult && $spaceApplicationsResult->num_rows > 0) {
+                while ($row = $spaceApplicationsResult->fetch_assoc()) {
                     echo "<tr data-applicationid='{$row['app_id']}' class='application-row'>";
                     echo "<td>{$row['app_id']}</td>";
                     echo "<td>{$row['spacename']}</td>";
                     echo "<td>{$row['tenant_name']}</td>";
                     echo "<td>{$row['ap_email']}</td>";
                     echo "<td>{$row['status']}</td>";
-                    // echo "<td><button class='action-btn' data-action='view' data-appid='{$row['app_id']}' 
-                    // onclick='ViewApplication({$row['app_id']}, "."{$row['pdf_file']}".", "."{$row['tenant_name']}".")'>View</button> </td>";
-                    echo '<td><button class="action-btn" onclick="ViewApplication('."'{$row['app_id']}'".','."'{$row['pdf_file']}'".','."'{$row['tenant_name']}'".')"> View </button></td>';
+                    echo '<td><button class="action-btn" onclick="ViewApplication(' . "'{$row['app_id']}'" . ',' . "'{$row['pdf_file']}'" . ',' . "'{$row['tenant_name']}'" . ')"> View </button></td>';
                     echo "</tr>";
 
                 }
@@ -231,8 +229,14 @@ $spaceApplicationsResult = $con->query($spaceApplicationsQuery);
                     data: { applicationId, action, approverRemarks },
                     success: function (response) {
                         // Handle the response as needed
-                        alert("Successfully Approved");
-                        window.location.reload();
+                        // alert("Successfully Approved");
+                        Swal.fire({
+                            title: "Success",
+                            text: "Application Approved",
+                            icon: "success"
+                        }).then((result) => {
+                            window.location.reload();
+                        });
                     },
                     error: function () {
                         alert('Error updating application status');
@@ -255,8 +259,15 @@ $spaceApplicationsResult = $con->query($spaceApplicationsQuery);
                             data: { applicationId, action, approverRemarks },
                             success: function (response) {
                                 // Handle the response as needed
-                                alert("Successfully Rejected");
-                                window.location.reload();
+                                // alert("Successfully Rejected");
+                                Swal.fire({
+                                    title: "Success",
+                                    text: "Application Rejected",
+                                    icon: "success"
+                                }).then((result) => {
+                                    window.location.reload();
+                                });
+
                             },
                             error: function () {
                                 alert('Error updating application status');
