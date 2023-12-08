@@ -20,6 +20,7 @@ if (!isset($_SESSION['uid'])) {
 
 $uid = $_SESSION['uid'];
 $utype = $_SESSION['utype'];
+$uname = $_SESSION['uname'];
 
 // Check the status in the user_verification table
 $verificationStatus = "Not approved"; // Default status
@@ -34,26 +35,26 @@ if ($verificationResult && mysqli_num_rows($verificationResult) > 0) {
 
 
 // Space overview available/occupied/reserved
-$propertyOverviewQuery = "SELECT status, COUNT(*) AS count FROM space GROUP BY status";
+$propertyOverviewQuery = "SELECT COUNT(*) AS count FROM concourse_verification WHERE owner_name = '$uname'";
 $propertyOverviewResult = mysqli_query($con, $propertyOverviewQuery);
-
-
+$propertyOverviewData = mysqli_fetch_assoc($propertyOverviewResult);
+$propertyOverviewData = $propertyOverviewData["count"];
 
 // Fetch Data into an associative Array
-$propertyOverviewData = [];
-while ($row = mysqli_fetch_assoc($propertyOverviewResult)) {
-   $propertyOverviewData[$row['status']] = $row['count'];
-}
+// $propertyOverviewData = [];
+// while ($row = mysqli_fetch_assoc($propertyOverviewResult)) {
+//    $propertyOverviewData[$row['status']] = $row['count'];
+// }
 
 // Calculate total spaces
-$totalSpacesQuery = "SELECT COUNT(*) AS total FROM space";
+$totalSpacesQuery = "SELECT COUNT(*) AS total FROM space WHERE space_owner = '$uname'";
 $totalSpacesResult = mysqli_query($con, $totalSpacesQuery);
 $totalSpacesRow = mysqli_fetch_assoc($totalSpacesResult);
 $totalSpaces = $totalSpacesRow['total'];
 
 // Calculate percentage occupancy
-$percentOccupied = ($propertyOverviewData['occupied'] / $totalSpaces) * 100;
-$percentAvailable = ($propertyOverviewData['available'] / $totalSpaces) * 100;
+// $percentOccupied = ($propertyOverviewData['occupied'] / $totalSpaces) * 100;
+// $percentAvailable = ($propertyOverviewData['available'] / $totalSpaces) * 100;
 
 // Close result sets
 mysqli_free_result($propertyOverviewResult);
@@ -319,7 +320,7 @@ include('includes/nav.php');
                <div class="section-content">
                   <div class="section-item">
                      <p>
-                        <?php echo $propertyOverviewData['occupied']; ?>
+                        <?php echo $propertyOverviewData; ?>
                      </p>
                      <i class="fas fa-map-marker-alt"></i> <!-- Icon for Maps -->
                   </div>
@@ -339,8 +340,8 @@ include('includes/nav.php');
                <div class="section-content">
                   <?php
                   // Count the number of active and inactive tenants
-                  $activeTenantQuery = "SELECT COUNT(*) as count FROM `user` WHERE `utype` = 'Tenant' AND `status` = 'active'";
-                  $inactiveTenantQuery = "SELECT COUNT(*) as count FROM `user` WHERE `utype` = 'Tenant' AND `status` = 'inactive'";
+                  $activeTenantQuery = "SELECT COUNT(*) as count FROM `space` WHERE space_owner = '$uname' AND status ='occupied'";
+                  $inactiveTenantQuery = "SELECT COUNT(*) as count FROM `space` WHERE space_owner = '$uname' AND status !='occupied' AND (space_tenant != '' OR space_tenant != null ) ";
 
                   $activeTenantResult = mysqli_query($con, $activeTenantQuery);
                   $inactiveTenantResult = mysqli_query($con, $inactiveTenantQuery);
@@ -368,12 +369,27 @@ include('includes/nav.php');
             <section>
                <h2>Reservation Tracking</h2>
                <div class="section-content">
+                  <?php
+                  // Count the number of active and inactive tenants
+                  $reservedspace = "SELECT COUNT(*) as count FROM `space` WHERE space_owner = '$uname' AND status ='reserved'";
+                  $forapproval = "SELECT COUNT(*) as count FROM `space_application` WHERE owner_name = '$uname' AND status ='pending'";
+
+                  $reservedspaceResult = mysqli_query($con, $reservedspace);
+                  $forapprovalResult = mysqli_query($con, $forapproval);
+
+                  $reservedspaceCount = ($reservedspaceResult && mysqli_num_rows($reservedspaceResult) > 0) ? mysqli_fetch_assoc($reservedspaceResult)['count'] : 0;
+                  $forapprovalCount = ($forapprovalResult && mysqli_num_rows($forapprovalResult) > 0) ? mysqli_fetch_assoc($forapprovalResult)['count'] : 0;
+                  ?>
                   <div class="section-item">
-                     <p>28</p>
+                     <p>
+                        <?php echo $reservedspaceCount; ?>
+                     </p>
                      <i class="fas fa-calendar-check"></i> <!-- Icon for Reservations -->
                   </div>
                   <div class="section-item">
-                     <p>65</p>
+                     <p>
+                        <?php echo $forapprovalCount; ?>
+                     </p>
                      <i class="fas fa-file-alt"></i> <!-- Icon for Applications -->
                   </div>
                   <div class="pie-chart">
@@ -387,7 +403,8 @@ include('includes/nav.php');
                <h2>Financial Overview</h2>
                <div class="section-content">
                   <div class="section-item">
-                     <p>Php<?php
+                     <p>Php
+                        <?php
                         $owner_name = $_SESSION['uname'];
                         $query = "WITH latestbilling AS ( SELECT m.*, ROW_NUMBER() OVER (PARTITION BY space_id ORDER BY bill_id DESC) AS rn FROM bill AS m WHERE owner_name = '$owner_name'  ) SELECT SUM(total) as totalAmount FROM latestbilling WHERE rn = 1";
                         $result = mysqli_query($con, $query);
