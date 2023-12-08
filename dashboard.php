@@ -340,11 +340,11 @@ include('includes/nav.php');
                <div class="section-content">
                   <?php
                   // Count the number of active and inactive tenants
-                  $activeTenantQuery = "SELECT COUNT(*) as count FROM `space` WHERE space_owner = '$uname' AND status ='occupied'";
-                  $inactiveTenantQuery = "SELECT COUNT(*) as count FROM `space` WHERE space_owner = '$uname' AND status !='occupied' AND (space_tenant != '' OR space_tenant != null ) ";
+                  $activeTenant = "SELECT COUNT(*) as count FROM `space` WHERE space_owner = '$uname' AND status ='occupied'";
+                  $inactiveTenant = "SELECT COUNT(*) as count FROM `space` WHERE space_owner = '$uname' AND status !='occupied' AND (space_tenant != '' OR space_tenant != null ) ";
 
-                  $activeTenantResult = mysqli_query($con, $activeTenantQuery);
-                  $inactiveTenantResult = mysqli_query($con, $inactiveTenantQuery);
+                  $activeTenantResult = mysqli_query($con, $activeTenant);
+                  $inactiveTenantResult = mysqli_query($con, $inactiveTenant);
 
                   $activeTenantCount = ($activeTenantResult && mysqli_num_rows($activeTenantResult) > 0) ? mysqli_fetch_assoc($activeTenantResult)['count'] : 0;
                   $inactiveTenantCount = ($inactiveTenantResult && mysqli_num_rows($inactiveTenantResult) > 0) ? mysqli_fetch_assoc($inactiveTenantResult)['count'] : 0;
