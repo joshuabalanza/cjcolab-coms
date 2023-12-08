@@ -253,7 +253,7 @@ if (isset($_GET['concourse_id'])) {
                     <label for="electric" class="font-weight-bold">Electric Consumption: (kw * <?php echo $varbillingElectricAmount ?>)</label>
                     <input type="text" name="electric2" id="electric2" required>
                     <input type="text" name="electric" id="electric">
-                    <label for="water" class="font-weight-bold">Water Consumption: (kw * <?php echo $varbillingWaterAmount ?>)</label>
+                    <label for="water" class="font-weight-bold">Water Consumption: (cubic * <?php echo $varbillingWaterAmount ?>)</label>
                     <input type="text" name="water2" id="water2"  required>
                     <input type="text" name="water" id="water">
                     <div class="pt-3"></div>

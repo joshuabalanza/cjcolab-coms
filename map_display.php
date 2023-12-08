@@ -261,6 +261,7 @@ include('includes/nav.php');
         ?>
         <div class="container">
         <h4 style="color:#fff; text-align:center" class="pt-2">Concourse Details</h4>
+            <input type="button" class="btn btn-primary" id="btnBilling" value="Details" style="width:120px;"/>
             <div class="card" style="width: 100%; height: 100%; padding: 10px; margin: 0 auto; position: relative;">
                 <div class="image-container">
                     <?php
@@ -404,6 +405,10 @@ include('includes/nav.php');
             openModalForSpace(spaceNameParam);
         }
 
+    });
+
+    $("#btnBilling").on("click", function () {
+        location.href="view_concourse.php?concourse_id=<?php echo $_GET["concourse_id"]; ?>"
     });
 
     //autocompute price
