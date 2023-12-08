@@ -215,10 +215,10 @@ $spaceApplicationsResult = $con->query($spaceApplicationsQuery);
                 "<h5>Uploaded FIle</h5>" +
                 "<embed src='uploads/" + pdf_file + "' type='application/pdf' width='100%' height='350px' />",
             showCloseButton: true,
-            showCancelButton: true,
+            showDenyButton: true,
             confirmButtonText:
                 '<i class="fa fa-thumbs-up"></i> Approve!',
-            cancelButtonText:
+            denyButtonText:
                 '<i class="fa fa-thumbs-down"></i> Reject'
         }).then((result) => {
             if (result.isConfirmed) {
@@ -243,7 +243,8 @@ $spaceApplicationsResult = $con->query($spaceApplicationsQuery);
                     }
                 });
             }
-            else {
+            else if(result.isDenied){
+                console.log(result);
                 Swal.fire({
                     title: "Remarks",
                     text: "Write something:",
