@@ -23,12 +23,14 @@ require('includes/dbconnection.php');
 $itemsPerPage = 6;
 if (isset($_GET['page'])) {
     $currentPage = (int)$_GET['page'];
+    $search = $_GET['searchvalue']; 
 } else {
     $currentPage = 1;
+    $search = $_GET['searchvalue']; 
 }
 
 $offset = ($currentPage - 1) * $itemsPerPage;
-$approvedConcoursesQuery = "SELECT * FROM concourse_verification ORDER BY concourse_id DESC LIMIT $itemsPerPage OFFSET $offset";
+$approvedConcoursesQuery = "SELECT * FROM concourse_verification WHERE (concourse_name LIKE '%$search%' or concourse_address LIKE '%$search%') ORDER BY concourse_id DESC LIMIT $itemsPerPage OFFSET $offset";
 $approvedConcoursesResult = mysqli_query($con, $approvedConcoursesQuery);
 
 if ($approvedConcoursesResult && mysqli_num_rows($approvedConcoursesResult) > 0) {
