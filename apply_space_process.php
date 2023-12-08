@@ -117,7 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['apply'])) {
     $SpaceID = $_POST['SpaceID'];
     $ownerName = $_SESSION['uname'];
     $ownerEmail = $_SESSION['uemail'];
-    // $_GET['concourse_id'];
+    $concourseid = isset($_GET['concourse_id']);
 
     $requirements_file = '';
 
@@ -158,12 +158,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['apply'])) {
         } else {
             echo 'Error sending email notification to the owner.';
         }
-
-        header('Location: concourse_view.php'); // Redirect back to concourse_view.php
+        header('Location: concourses.php'); // Redirect back to concourse_view.php
         exit();
     } else {
         $_SESSION['errorMessage'] = 'Error submitting application. Please try again.';
-        header('Location: concourse_view.php'); // Redirect back to dashboard.php
+        header('Location: concourses.php'); // Redirect back to dashboard.php
         exit();
     }
 }
