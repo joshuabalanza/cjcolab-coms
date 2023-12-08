@@ -366,7 +366,7 @@ include('includes/nav.php');
 
          function closeBillDetails() {
                 document.getElementById('BillDetailsModal').style.display = 'none';
-                location.href = "http://localhost/cjcolab-coms/bill-owner.php";
+                location.href = "bill-owner.php";
             };
 
         function openBillingDetailsModal(button) {
@@ -375,7 +375,7 @@ include('includes/nav.php');
             let searchParams = new URLSearchParams(window.location.search)
             console.log(searchParams.has('spaceid'))
             if (searchParams.has('spaceid') == false){
-                location.href = "http://localhost/cjcolab-coms/bill-owner.php?spaceid="+spaceId;
+                location.href = "bill-owner.php?spaceid="+spaceId;
                 
             }
             document.getElementById('BillDetailsModal').style.display = 'flex';
