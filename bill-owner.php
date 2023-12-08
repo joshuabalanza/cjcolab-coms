@@ -115,33 +115,6 @@ include('includes/nav.php');
         color: white;
     }
 
-    .modal {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        justify-content: center;
-        align-items: center;
-    }
-
-    .modal-content {
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 5px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        max-width: 600px;
-        margin: 0 auto;
-        text-align: center;
-    }
-
-    .close-modal {
-        cursor: pointer;
-        margin-top: 10px;
-        color: #333;
-    }
 
     tbody tr:hover {
         cursor: pointer;
@@ -176,6 +149,15 @@ include('includes/nav.php');
         display: none;
     }
 
+    .modal{
+        overflow-y: initial !important
+    }
+
+    .modal-content, .modal-body, .modal-dialog{
+        width:1000px !important;
+        max-width: 800px !important;
+    }
+
     #paymentHistoryModal .modal-content table {
         margin-top: 10px;
     }
@@ -183,7 +165,53 @@ include('includes/nav.php');
 </head>
 
 <body>
-    <section id="bill-table" style="margin-top: 100px;">
+
+
+<div id="BillDetailsModal" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Bill Details</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeBillDetails()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <table style="width:90%">
+            <thead>
+                <tr><th>Due Date</th>
+                    <th>Outstanding Amount</th>
+                    <th>Payment Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                    $space_id = $_GET["spaceid"];
+                try{
+                    $query = "SELECT * FROM bill where space_id = '$space_id' ORDER BY bill_id DESC";
+                    $result = mysqli_query($con, $query);
+    
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        echo "<tr>";
+                        echo "<td>{$row['due_date']}</td>";
+                        echo "<td>₱{$row['total']}</td>";
+                        echo "<td>{$row['paymentstatus']}</td>";
+                        echo "</tr>";
+                    }
+                }
+                catch (Exception $e) {
+                    return false; // Email sending failed
+                }
+               
+                ?>
+            </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section id="bill-table" style="margin-top: 100px;">
     <button class="btn btn-primary" onclick="redirectCreateAccountant()">Create Accountant</button>
     <button class="btn btn-primary" onclick="showBillingModal()">Manage Billing Amount</button>
     <div class="pt-3"></div>
@@ -191,7 +219,7 @@ include('includes/nav.php');
         <div>
             <?php
             $owner_name = $_SESSION['uname'];
-            $query = "SELECT SUM(total) as totalAmount FROM bill WHERE owner_name = '$owner_name'";
+            $query = "WITH latestbilling AS ( SELECT m.*, ROW_NUMBER() OVER (PARTITION BY space_id ORDER BY bill_id DESC) AS rn FROM bill AS m WHERE owner_name = '$owner_name'  ) SELECT SUM(total) as totalAmount FROM latestbilling WHERE rn = 1";
             $result = mysqli_query($con, $query);
             $row = mysqli_fetch_assoc($result);
 
@@ -208,22 +236,32 @@ include('includes/nav.php');
                     <th>Due Date</th>
                     <th>Outstanding Amount</th>
                     <th>Payment Status</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 <?php
-                $query = "SELECT space_id, tenant_name, due_date, total, paymentstatus FROM bill WHERE owner_name = '$owner_name'";
-                $result = mysqli_query($con, $query);
 
-                while ($row = mysqli_fetch_assoc($result)) {
-                    echo "<tr>";
-                    echo "<td>{$row['space_id']}</td>";
-                    echo "<td>{$row['tenant_name']}</td>";
-                    echo "<td>{$row['due_date']}</td>";
-                    echo "<td>₱{$row['total']}</td>";
-                    echo "<td>{$row['paymentstatus']}</td>";
-                    echo "</tr>";
+                try{
+                    $query = "
+                    WITH latestbilling AS ( SELECT m.*, ROW_NUMBER() OVER (PARTITION BY space_id ORDER BY bill_id DESC) AS rn FROM bill AS m WHERE owner_name = '$owner_name'  ) SELECT * FROM latestbilling WHERE rn = 1";
+                    $result = mysqli_query($con, $query);
+    
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        echo "<tr>";
+                        echo "<td>{$row['space_id']}</td>";
+                        echo "<td>{$row['tenant_name']}</td>";
+                        echo "<td>{$row['due_date']}</td>";
+                        echo "<td>₱{$row['total']}</td>";
+                        echo "<td>{$row['paymentstatus']}</td>";
+                        echo '<td><button class="action-button" data-space-id="' . $row['space_id'] . '" onclick="openBillingDetailsModal(this)"><i class="fas fa-file-alt"></i></button></td>';
+                        echo "</tr>";
+                    }
                 }
+                catch (Exception $e) {
+                    return false; // Email sending failed
+                }
+               
                 ?>
             </tbody>
         </table>
@@ -240,6 +278,7 @@ include('includes/nav.php');
         </div>
     </section>
 
+    
     <div id="chargeBreakdownModal" class="modal">
         <div class="modal-content" id="chargeBreakdownContent">
             <span class="close-modal" onclick="closeChargeBreakdownModal()">&times;</span>
@@ -269,7 +308,7 @@ include('includes/nav.php');
                         <input type="text" name="billingElectricAmount" id="billingElectricAmount" value="<?php echo $varbillingElectricAmount ?>"/>
                     </div>
                     <div>
-                        <label for="billingWaterAmount">Water Bill Rate (per kilowats)</label>
+                        <label for="billingWaterAmount">Water Bill Rate (per cubic)</label>
                         <input type="text" name="billingWaterAmount" id="billingWaterAmount" value="<?php echo $varbillingWaterAmount ?>"/>
                     </div>
                     <div class="pt-1" style="color:gray">Last Modified: <?php echo $varbillingAmountAsOf ?></div>
@@ -291,14 +330,20 @@ include('includes/nav.php');
     </div>
 
     <script>
+
         document.addEventListener('DOMContentLoaded', function () {
             const modalOverlay = document.querySelector('.modal');
             modalOverlay.addEventListener('click', function (event) {
                 if (event.target === modalOverlay) {
                     closeChargeBreakdownModal();
                 }
-                
+              
             });
+                let searchParams = new URLSearchParams(window.location.search)
+                console.log(searchParams.has('spaceid'))
+                if (searchParams.has('spaceid')){
+                    document.getElementById('BillDetailsModal').style.display = 'flex';
+                }
 
             const billingTable = document.getElementById('billingTable');
             const tbody = billingTable.querySelector('tbody');
@@ -313,12 +358,29 @@ include('includes/nav.php');
                     showChargeBreakdown({ electric, water, spaceBill });
                 }
             });
-
-            
         });
      
         if ( window.history.replaceState ) {
             window.history.replaceState( null, null, window.location.href );
+        }
+
+         function closeBillDetails() {
+                document.getElementById('BillDetailsModal').style.display = 'none';
+                location.href = "http://localhost/cjcolab-coms/bill-owner.php";
+            };
+
+        function openBillingDetailsModal(button) {
+            var spaceId = button.getAttribute('data-space-id');
+            
+            let searchParams = new URLSearchParams(window.location.search)
+            console.log(searchParams.has('spaceid'))
+            if (searchParams.has('spaceid') == false){
+                location.href = "http://localhost/cjcolab-coms/bill-owner.php?spaceid="+spaceId;
+                
+            }
+            document.getElementById('BillDetailsModal').style.display = 'flex';
+
+            console.log(spaceId,'spaceId');
         }
 
         function showChargeBreakdown(data) {
