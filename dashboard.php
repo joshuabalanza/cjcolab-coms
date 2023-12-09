@@ -35,7 +35,7 @@ if ($verificationResult && mysqli_num_rows($verificationResult) > 0) {
 
 
 // Space overview available/occupied/reserved
-$propertyOverviewQuery = "SELECT COUNT(*) AS count FROM concourse_verification2 WHERE owner_name = '$uname'";
+$propertyOverviewQuery = "SELECT COUNT(*) AS count FROM concourse_verification WHERE owner_name = '$uname'";
 $propertyOverviewResult = mysqli_query($con, $propertyOverviewQuery);
 $propertyOverviewData = mysqli_fetch_assoc($propertyOverviewResult);
 $propertyOverviewData = $propertyOverviewData["count"];
@@ -82,7 +82,7 @@ if ($totalBillsResult && mysqli_num_rows($totalBillsResult) > 0) {
 
 // Get approved maps
 $uploadDirectory = __DIR__ . '/uploads/';
-$approvedMapQuery = "SELECT * FROM concourse_verification2 WHERE status = 'approved'";
+$approvedMapQuery = "SELECT * FROM concourse_verification WHERE status = 'approved'";
 $approvedMapResult = mysqli_query($con, $approvedMapQuery);
 ?>
 <!-- ******************** -->

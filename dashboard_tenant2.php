@@ -81,7 +81,7 @@
    
    // Get approved maps
    $uploadDirectory = __DIR__ . '/uploads/';
-   $approvedMapQuery = "SELECT * FROM concourse_verification2 WHERE status = 'approved'";
+   $approvedMapQuery = "SELECT * FROM concourse_verification WHERE status = 'approved'";
    $approvedMapResult = mysqli_query($con, $approvedMapQuery);
    ?>
 <!-- ******************** -->

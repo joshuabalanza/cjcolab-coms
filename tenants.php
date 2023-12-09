@@ -7,6 +7,10 @@ require('includes/dbconnection.php');
 
 include('includes/header.php');
 include('includes/nav.php');
+
+$concourseID = isset($_GET['SearchConcourse']) ? $_GET['SearchConcourse'] : '%';
+$owner_id= $_SESSION['uid'];
+$owner_name= $_SESSION['uname'];
 ?>
 
 <style>
@@ -53,15 +57,32 @@ include('includes/nav.php');
         color: white;
     }
 </style>
-
+<?php 
+        $concourseQuery = "SELECT * FROM concourse_verification WHERE owner_id = '$owner_id'  ";
+        $result = $con->query($concourseQuery);
+    ?>
 <section>
+    <div>
+        <select class="form-control" id="selectConcourse" onchange="searchconcourse()" style="width:300px; position:absolute; right:20px">
+            <option value="%">ALL</option>
+            <?php
+            if ($result && mysqli_num_rows($result) > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    $selected= ($concourseID==$row['concourse_id']  ? 'selected' : '');
+                echo '<option '.$selected.' value="'.$row['concourse_id'].'">'.$row['concourse_name'].'</option>';
+                }
+            }
+            ?>
+        </select>
+    </div>
+   
     <?php
     $owner = $_SESSION['uname']; // Replace this with your actual session variable
 
     // Fetch and display concourse information
     $concourseQuery = "SELECT DISTINCT s.concourse_id
                         FROM space s
-                        WHERE s.space_owner = '$owner'";
+                        WHERE s.space_owner = '$owner' and concourse_id like '$concourseID'";
 
     $concourseResult = mysqli_query($con, $concourseQuery);
 
@@ -109,5 +130,12 @@ include('includes/nav.php');
     }
     ?>
 </section>
+
+<script>
+    function searchconcourse(){
+        var SearchConcourseID= $("#selectConcourse").val()
+        location.href="tenants.php?SearchConcourse=" + SearchConcourseID
+    }
+</script>
 
 <?php include('includes/footer.php'); ?>

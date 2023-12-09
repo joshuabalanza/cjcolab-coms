@@ -140,7 +140,7 @@ include('includes/nav.php');
         <tbody>
         <?php
         // Fetch data from the 'bill' table for the specific tenant
-        $query = "SELECT * FROM bill WHERE tenant_name = '$tenant'";
+        $query = "SELECT * FROM bill WHERE tenant_name = '$tenant' ORDER BY bill_id DESC";
         $result = mysqli_query($con, $query);
 
         while ($row = mysqli_fetch_assoc($result)) {
