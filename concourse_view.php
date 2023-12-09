@@ -110,7 +110,7 @@ if(isset($_GET['concourse_id'])) {
     $concourseId = $_GET['concourse_id'];
 
     // Fetch concourse details based on the concourse_id
-    $concourseQuery = "SELECT * FROM concourse_verification WHERE concourse_id = '$concourseId'";
+    $concourseQuery = "SELECT * FROM concourse_verification2 WHERE concourse_id = '$concourseId'";
     $result = $con->query($concourseQuery);
 
     if($result->num_rows > 0) {

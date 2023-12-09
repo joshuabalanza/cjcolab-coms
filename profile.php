@@ -23,7 +23,7 @@ $uid = $_SESSION['uid'];
 
 $verificationStatus = ""; // Default status
 
-$verificationQuery = "SELECT status, first_name, last_name, address, gender, birthday FROM user_verification WHERE user_id = $uid";
+$verificationQuery = "SELECT status, first_name, last_name, address, gender, birthday FROM user WHERE uid = $uid";
 $verificationResult = mysqli_query($con, $verificationQuery);
 
 if ($verificationResult && mysqli_num_rows($verificationResult) > 0) {
@@ -86,13 +86,6 @@ include('includes/nav.php');
             <br>
             <div class="text-center">
                <a href="profile_edit.php"><button class="btn-sm" style="background-color: #9b593c;">Edit Profile</button></a>
-               <?php if ($verificationStatus === 'approved'): ?>
-                     <button class="btn-sm" style="background-color: #9b593c;" disabled>Verified</button>
-               <?php else: ?>
-                     <a href="verification_account.php">
-                        <button class="btn-sm" style="background-color: #9b593c;">Verify Account</button>
-                     </a>
-               <?php endif; ?>
             </div>
          </div>
          <div class="col-sm-8 col-md-9 bg-light p-2"  style="border-radius: 10px; max-width: 600px; margin: 0 auto;">
@@ -117,7 +110,6 @@ include('includes/nav.php');
                   <th>Date Created:</th>
                   <td><?php echo $created_at; ?></td>
                </tr>
-               <?php if ($verificationStatus === 'approved'): ?>
                <tr>
                   <th>First Name:</th>
                   <td><?php echo $verificationData['first_name']; ?></td>
@@ -139,7 +131,7 @@ include('includes/nav.php');
                   <td><?php echo $verificationData['birthday']; ?></td>
                </tr>
                <!-- Add other verification fields as needed -->
-               <?php endif; ?>
+     
             </table>
             <div class="col-sm-8 col-md-9 bg-light p-2" style="border-radius: 10px; max-width: 600px; margin: 0 auto;">
                <?php if ($verificationStatus === 'approved'): ?>
@@ -152,7 +144,7 @@ include('includes/nav.php');
                   <?php elseif ($verificationStatus === 'pending'): ?>
                      <p>You have already submitted the verification. Please wait for approval.</p>
                   <?php else: ?>
-                     <p>Please, verify your account.</p>
+                     <!-- <p>Please, verify your account.</p> -->
                <?php endif; ?>
             </div>
          </div>
