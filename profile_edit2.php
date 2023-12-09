@@ -23,13 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Handle form submission
     $uid = $_SESSION['uid'];
     $newName = $_POST['newName'];
-    $newEmail = $_POST['newEmail'];
     $newPhone = $_POST['newPhone'];
-    $newFirstname = $_POST['newFirstname'];
-    $newLastname = $_POST['newLastname'];
-    $newAddress = $_POST['newAddress'];
-    $newGender = $_POST['newGender'];
-    $newBirthday = $_POST['newBirthday'];
 
     // Handle image upload
     if (isset($_FILES['profileImage']) && $_FILES['profileImage']['error'] === 0) {
@@ -47,16 +41,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = "Username '$newName' is already taken. Please choose a different username.";
     } else {
         // Update the user's name, phone, and profile image in the database
-        $sql = "UPDATE user SET username = '$newName', uphone = '$newPhone', uimage = '$imagePath', first_name= '$newFirstname', last_name='$newLastname', address='$newAddress', gender='$newGender', birthday='$newBirthday'  WHERE uid = $uid";
+        $sql = "UPDATE user SET username = '$newName', uphone = '$newPhone', uimage = '$imagePath' WHERE uid = $uid";
         if (mysqli_query($con, $sql)) {
             $_SESSION['username'] = $newName;
             $_SESSION['uphone'] = $newPhone;
-            $_SESSION['uemail'] = $newEmail;
-            $_SESSION['ufirstname'] = $newFirstname;
-            $_SESSION['ulastname'] = $newLastname;
-            $_SESSION['uaddress'] = $newAddress;
-            $_SESSION['ugender'] = $newGender;
-            $_SESSION['ubirthday'] = $newBirthday;
             if (!empty($imagePath)) {
                 $_SESSION['uimage'] = $imagePath;
             }
@@ -142,36 +130,8 @@ include('includes/nav.php');
                 <div id="availability-message"></div>
             </div>
             <div class="form-group">
-                <label for="newEmail" style="font-weight: bold;">Email:</label>
-                <input type="text" class="form-control" id="newEmail" name="newEmail" value="<?php echo isset($_SESSION['uemail']) ? $_SESSION['uemail'] : ''; ?>">
-            </div>
-            <div class="form-group">
                 <label for="newPhone" style="font-weight: bold;">Phone:</label>
                 <input type="text" class="form-control" id="newPhone" name="newPhone" value="<?php echo isset($_SESSION['uphone']) ? $_SESSION['uphone'] : ''; ?>">
-            </div>
-            
-            <div class="form-group">
-                <label for="newFirstname" style="font-weight: bold;">First Name:</label>
-                <input type="text" class="form-control" id="newFirstname" name="newFirstname" value="<?php echo isset($_SESSION['ufirstname']) ? $_SESSION['ufirstname'] : ''; ?>">
-            </div>
-            <div class="form-group">
-                <label for="newLastname" style="font-weight: bold;">Last Name:</label>
-                <input type="text" class="form-control" id="newLastname" name="newLastname" value="<?php echo isset($_SESSION['ulastname']) ? $_SESSION['ulastname'] : ''; ?>">
-            </div>
-            <div class="form-group">
-                <label for="newAddress" style="font-weight: bold;">Address:</label>
-                <input type="text" class="form-control" id="newAddress" name="newAddress" value="<?php echo isset($_SESSION['uaddress']) ? $_SESSION['uaddress'] : ''; ?>">
-            </div>
-            <div class="form-group">
-                <label for="newGender" style="font-weight: bold;">Gender:</label>
-                <select class="form-control" id="newGender" name="newGender">
-                    <option vallue="Male">Male</option>
-                    <option vallue="Female">Female</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="newBirthday" style="font-weight: bold;">Birthday:</label>
-                <input type="date" class="form-control" id="newBirthday" name="newBirthday" value="<?php echo isset($_SESSION['ubirthday']) ? $_SESSION['ubirthday'] : ''; ?>">
             </div>
         </div>
 
@@ -190,7 +150,7 @@ include('includes/nav.php');
                     <a href="profile.php" class="btn btn-secondary" style="margin-top: 10px;">Cancel</a>
                 </div>
                 <br>
-            </form>
+                </form>
             </div>
         </div>
     </div>

@@ -91,7 +91,7 @@ if (isset($_POST['register'])) {
                 // Insert data into the database
                 $expiration_time = date("Y-m-d H:i:s", strtotime('+3 minutes'));
                 $created_at = date("Y-m-d H:i:s");
-                $sql = "INSERT INTO user (uname, uemail, upassword, otp, activation_code, utype, created_at, otp_expiration, username, verified) VALUES ('$uname', '$uemail', '$hashedPassword', '$otp', '$activation_code', '$usertype', '$created_at', '$expiration_time', '$username',1)";
+                $sql = "INSERT INTO user (uname, uemail, upassword, otp, activation_code, utype, created_at, otp_expiration, username, verified, first_name,last_name) VALUES ('$uname', '$uemail', '$hashedPassword', '$otp', '$activation_code', '$usertype', '$created_at', '$expiration_time', '$username',1,'$uname','$uname')";
                 $con->query($sql);
 
                 // Send OTP to the user's email

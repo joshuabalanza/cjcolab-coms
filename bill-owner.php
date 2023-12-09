@@ -70,7 +70,7 @@ if ($billingresult2->num_rows > 0) {
 
 // Close the database connection
 $con->close();
-
+$owner_name = $_SESSION['uname'];
 ?>
  
 <?php
@@ -210,15 +210,19 @@ include('includes/nav.php');
     </div>
   </div>
 </div>
-
+<?php 
+    $concourseQuery = "SELECT * FROM concourse_verification WHERE owner_name = '$owner_name'  ";
+    $result = $con->query($concourseQuery);
+?>
 <section id="bill-table" style="margin-top: 100px;">
     <button class="btn btn-primary" onclick="redirectCreateAccountant()">Create Accountant</button>
     <button class="btn btn-primary" onclick="showBillingModal()">Manage Billing Amount</button>
+
     <div class="pt-3"></div>
         <h2>Bill Summary</h2>
         <div>
             <?php
-            $owner_name = $_SESSION['uname'];
+           
             $query = "WITH latestbilling AS ( SELECT m.*, ROW_NUMBER() OVER (PARTITION BY space_id ORDER BY bill_id DESC) AS rn FROM bill AS m WHERE owner_name = '$owner_name'  ) SELECT SUM(total) as totalAmount FROM latestbilling WHERE rn = 1";
             $result = mysqli_query($con, $query);
             $row = mysqli_fetch_assoc($result);

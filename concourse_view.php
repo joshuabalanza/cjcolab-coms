@@ -32,7 +32,6 @@ include('includes/nav.php');
         padding: 20px;
         width: calc(33.33% - 20px);
         margin-bottom: 20px;
-        cursor: pointer;
     }
 
     h1 {
@@ -119,18 +118,21 @@ if(isset($_GET['concourse_id'])) {
         ?>
         <div class="container" style="margin-top: 120px;">
             <h5 style="color: #fff;">CONCOURSE DETAILS</h5>
-            <div class="card" style="width: 100%; height: 100%; padding: 10px; margin: 0 auto;">
+            <div class="card" style="width: 100%; height: 100%; padding: 10px; margin: 0 auto; ">
                 <div class="image-container">
                     <?php
                     // Display concourse image or map (similar to how you did in the previous code)
                     if(!empty($concourseDetails['concourse_image'])) {
-                        echo '<img src="./uploads/featured-concourse/'.$concourseDetails['concourse_image'].'" id="concourseImage" class="card-img-top" alt="Concourse Image" style="width:100%; height: 300px;">';
+                        echo '<img src="./uploads/featured-concourse/'.$concourseDetails['concourse_image'].'" id="concourseImage" class="card-img-top" alt="Concourse Image" style="width:100%; height: 300px;" usemap="#workmap">';
                     } elseif(!empty($concourseDetails['concourse_map'])) {
-                        echo '<img src="./uploads/'.$concourseDetails['concourse_map'].'" id="concourseImage" class="card-img-top" alt="Concourse Map" style="width:100%; height: 300px;">';
+                        echo '<img src="./uploads/'.$concourseDetails['concourse_map'].'" id="concourseImage" class="card-img-top" alt="Concourse Map" style="width:100%; height: 300px;" usemap="#workmap"  <map name="workmap">
+                        <area shape="circle" coords="613,146,30" alt="Space 1" href="#" id="areamap" style="cursor:pointer">
+                        </map>';
                     } else {
                         echo '<img src="path_to_placeholder_image.jpg" id="concourseImage" class="card-img-top" alt="Placeholder Image" style="width:100%; height: 300px;">';
                     }
                     ?>
+                   
                 </div>
                 <div class="card-body">
                     <h5 class="card-title">
@@ -175,7 +177,7 @@ $con->close();
     <?php
     if($result && mysqli_num_rows($result) > 0) {
         while($row = $result->fetch_assoc()) {
-            echo "<div class='card' onclick='openModal(\"{$row['space_name']}\", \"{$row['status']}\", ".json_encode($row).")'>";
+            echo "<div class='card' style='cursor:pointer' onclick='openModal(\"{$row['space_name']}\", \"{$row['status']}\", ".json_encode($row).")'>";
             echo "<h2>{$row['space_name']}</h2>";
             echo "<h6>{$row['status']}</h6>";
             echo "<h7>{$row['space_owner']}</h6>";
@@ -200,7 +202,7 @@ $con->close();
     }
     ?>
     <!-- Modal for space details -->
-    <div id="myModal" class="modal">
+    <div id="myModal" class="modal" style="z-index:9999 !important">
         <div class="modal-content" style="text-align: left; padding: 20px; position: relative;">
             <span class="close-btn" onclick="closeModal()"
                 style="position: absolute; top: 10px; right: 10px; cursor: pointer; font-size: 20px; color: #000;">&times;</span>
@@ -390,6 +392,14 @@ $con->close();
         var appModal = document.getElementById("appModal");
         appModal.style.display = "none";
     }
+
+    $("img").on("click", function(event) {
+        console.log(event);
+        var x = event.offsetX - this.offsetLeft;  
+        var y = event.offsetY - this.offsetTop;
+        console.log(this.offsetLeft)
+        alert("X Coordinate: " + x + " Y Coordinate: " + y);
+    });
 
 </script>
 <?php include('includes/footer.php'); ?>

@@ -1,6 +1,7 @@
 <?php
 
 // For Local
+
 // $con = mysqli_connect("localhost", "root", "", "test_coms3");
 
 //For Live

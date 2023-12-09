@@ -85,8 +85,8 @@ if ($utype === 'Owner') {
             if (move_uploaded_file($image_tmp, $upload_path)) {
                 // File upload was successful
                 // Update the database query to include the image filename
-                $insert_query = "INSERT INTO concourse_verification (owner_id, owner_name, concourse_name,concourse_address, concourse_map, created_at, status)
-                                VALUES ('$owner_id', '$owner_name', '$concourse_name','$concourse_address', '$image_filename', NOW(), 'pending')";
+                $insert_query = "INSERT INTO concourse_verification (owner_id, owner_name, concourse_name,concourse_address, concourse_map, `status`)
+                                VALUES ('$owner_id', '$owner_name', '$concourse_name','$concourse_address', '$image_filename', 'pending')";
 
                 if (mysqli_query($con, $insert_query)) {
                     // Concourse verification data inserted successfully
@@ -94,7 +94,7 @@ if ($utype === 'Owner') {
                     exit();
                 } else {
                     // Handle database insertion error
-                    header('Location: concourses.php?error=database');
+                    header('Location: concourses.php?error=database&' .  $owner_name . $owner_id . $concourse_name . $concourse_address);
                     exit();
                 }
             } else {

@@ -9,7 +9,12 @@ include('includes/header.php');
 include('includes/nav.php');
 
 // Fetch space applications
-$spaceApplicationsQuery = "SELECT * FROM space_application WHERE status = 'pending'";
+$owner_id= $_SESSION['uid'];
+$owner_name= $_SESSION['uname'];
+
+$concourseID = isset($_GET['SearchConcourse']) ? $_GET['SearchConcourse'] : '%';
+
+$spaceApplicationsQuery = "SELECT * FROM space a LEFT JOIN space_application b on a.space_id=b.space_id  WHERE b.status = 'pending' and a.space_owner = '$owner_name' and a.concourse_id like '$concourseID' ";
 $spaceApplicationsResult = $con->query($spaceApplicationsQuery);
 ?>
 
@@ -132,9 +137,27 @@ $spaceApplicationsResult = $con->query($spaceApplicationsQuery);
         color: white;
     }
 </style>
-
+<?php 
+        $concourseQuery = "SELECT * FROM concourse_verification WHERE owner_id = '$owner_id'  ";
+        $result = $con->query($concourseQuery);
+    ?>
 <section>
-    <h2>Space Applications</h2>
+    <div class="row">
+        <div class="col"><h2>Space Applications</h2></div>
+        <div class="col-auto">
+        <select class="form-control" id="selectConcourse" onchange="searchconcourse()" style="width:300px">
+            <option value="%">ALL</option>
+            <?php
+            if ($result && mysqli_num_rows($result) > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    $selected= ($concourseID==$row['concourse_id']  ? 'selected' : '');
+                echo '<option '.$selected.' value="'.$row['concourse_id'].'">'.$row['concourse_name'].'</option>';
+                }
+            }
+            ?>
+        </select>
+        </div>
+    </div>
     <table id="applicationsTable" class="applications-table">
         <thead>
             <tr>
@@ -170,39 +193,8 @@ $spaceApplicationsResult = $con->query($spaceApplicationsQuery);
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
-    // document.addEventListener('DOMContentLoaded', function () {
-    //     const applicationsTable = document.getElementById('applicationsTable');
-    //     const actionButtons = document.querySelectorAll('.action-btn');
 
-    //     applicationsTable.addEventListener('click', function (event) {
-    //         const target = event.target.closest('.application-row');
-    //         if (target) {
-    //             const applicationId = target.getAttribute('data-applicationid');
-    //             const action = event.target.getAttribute('data-action');
-    //             var pdfRequirements = event.target.getAttribute('data-img');
-
-    //             console.log(pdfRequirements);
-
-    //             if (action === 'approve' || action === 'reject') {
-    //                 // Make AJAX request to update the database
-    //                 $.ajax({
-    //                     url: 'update_application_status.php',
-    //                     method: 'POST',
-    //                     data: { applicationId, action },
-    //                     success: function (response) {
-    //                         // Handle the response as needed
-    //                         alert(response);
-    //                         // You can optionally reload the page to reflect the updated data
-    //                         // location.reload();
-    //                     },
-    //                     error: function () {
-    //                         alert('Error updating application status');
-    //                     }
-    //                 });
-    //             }
-    //         }
-    //     });
-    // });
+    
 
     function ViewApplication(app_id, pdf_file, tenant) {
         var action = "approve";
@@ -286,6 +278,12 @@ $spaceApplicationsResult = $con->query($spaceApplicationsQuery);
             }
         });
     }
+
+    function searchconcourse(){
+        var SearchConcourseID= $("#selectConcourse").val()
+        location.href="applications.php?SearchConcourse=" + SearchConcourseID
+    }
+
 </script>
 
 <?php include('includes/footer.php'); ?>
