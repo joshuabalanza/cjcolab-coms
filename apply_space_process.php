@@ -137,7 +137,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['apply'])) {
     }
 
     // Insert application into space_application table
-    $insertApplicationQuery = "INSERT INTO space_application (spacename, tenant_name, ap_email, status, tenantid, space_id, pdf_file) VALUES ('$spaceName', '$tenantName', '$tenantEmail', 'pending', $tenantid, $SpaceID, '$requirements_file')";
+    $insertApplicationQuery = "INSERT INTO space_application (spacename, tenant_name, ap_email, status, tenantid, space_id, pdf_file, owner_name) VALUES ('$spaceName', '$tenantName', '$tenantEmail', 'pending', $tenantid, $SpaceID, '$requirements_file', '$ownerName')";
     $insertResult = $con->query($insertApplicationQuery);
 
     // Update status in space table to 'reserved'
