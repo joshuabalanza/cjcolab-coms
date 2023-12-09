@@ -40,9 +40,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_space_modal'])
         }
     
         // Insert space with owner information, coordinates, and space image
-        $dimension = $space_width . " x " . $space_length;
-        $insertQuery = "INSERT INTO space (concourse_id, space_name, space_width, space_length, space_price, status, space_owner, space_oemail, space_img, space_dimension) 
-                        VALUES ('$concourse_id', '$space_name', $space_width, $space_length, $space_price, '$space_status', '$ownerName', '$ownerEmail', '$space_image','$dimension')";
+        $insertQuery = "INSERT INTO space (concourse_id, space_name, space_width, space_length, space_price, status, space_owner, space_oemail, space_img) 
+                        VALUES ('$concourse_id', '$space_name', $space_width, $space_length, $space_price, '$space_status', '$ownerName', '$ownerEmail', '$space_image')";
     
         if (mysqli_query($con, $insertQuery)) {
             // Successfully inserted space, redirect to map_display_mayk.php with the necessary information
