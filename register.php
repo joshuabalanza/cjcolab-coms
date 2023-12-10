@@ -391,7 +391,7 @@ document.getElementById('username').addEventListener('input', function () {
     // Remove any existing suggestions
     suggestedUsername.innerHTML = '';
 
-    if (enteredUsername !== '' && enteredUsername.length > 3) {
+    if (enteredUsername !== '') {
         const url = `check_username_availability.php?username=${enteredUsername}`;
 
         // Make an AJAX request to check username availability
