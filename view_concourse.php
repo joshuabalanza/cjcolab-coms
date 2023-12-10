@@ -182,7 +182,7 @@ if (isset($_GET['concourse_id'])) {
                     if (!empty($concourseDetails['concourse_image'])) {
                         echo '<img src="./uploads/featured-concourse/' . $concourseDetails['concourse_image'] . '" id="concourseImage" class="card-img-top" alt="Concourse Image" style="width:100%; height: auto;">';
                     } elseif (!empty($concourseDetails['concourse_map'])) {
-                        echo '<img src="./uploads/' . $concourseDetails['concourse_map'] . '" id="concourseImage" class="card-img-top" alt="Concourse Map" style="width:100%; height: auto;">';
+                        echo '<img src="./uploads/' . $concourseDetails['concourse_map'] . '" id="concourseImage" class="card-img-top" alt="Concourse Map" style="width:100%; height: auto;" usemap="#workmap">';
                     } else {
                         echo '<img src="path_to_placeholder_image.jpg" id="concourseImage" class="card-img-top" alt="Placeholder Image" style="width:100%; height: auto;">';
                     }
@@ -272,9 +272,9 @@ if (isset($_GET['concourse_id'])) {
         <form id="updateBillForm" method="post" action="process_update_bill.php">
             <input type="hidden" name="space_id" id="updateBillSpaceIdInput" value="">
             <label for="updatedElectricInput">Current Electric Bill:</label>
-            <input type="text" name="updated_electric" id="updatedElectricInput" readonly>
+            <input type="text" name="updated_electric" id="updatedElectricInput">
             <label for="updatedWaterInput">Current Water Bill:</label>
-            <input type="text" name="updated_water" id="updatedWaterInput" readonly>
+            <input type="text" name="updated_water" id="updatedWaterInput">
             <label for="updatedWaterInput">Payment Status:</label>
             <select class="form-control" name="updated_paymentstatus" id="updated_paymentstatus" >
                 <option value="UnPaid" selected>Unpaid</option>
@@ -350,6 +350,7 @@ document.getElementById('createBillForm').addEventListener('submit', function (e
                     console.log(data);
                     // Close the modal
                     document.getElementById('updateBillModal').style.display = 'none';
+                    location.reload();
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -385,5 +386,14 @@ document.getElementById('createBillForm').addEventListener('submit', function (e
     document.getElementById("electric").value = electrilbill;
     document.getElementById("water").value = waterbill;
 });
+
+// $("#concourseImage").on("click", function (e){     
+//         var offset = $(this).offset();
+//         var x = e.pageX - offset.left;
+//         var y = e.pageY - offset.top;
+
+//         alert(x +' '+ y);
+//     })
+
 </script>
 <?php include('includes/footer.php'); ?>

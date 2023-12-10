@@ -319,7 +319,7 @@ include('includes/nav.php');
       <!-- **********************************-->
       <!-- ************ OWNER ***************-->
       <!-- **********************************-->
-      <?php if ($verificationStatus === 'approved' && $utype === 'Owner'): ?>
+      <?php if ($utype === 'Owner'): ?>
          <div class="row">
             <section>
                <h2>Space Overview</h2>

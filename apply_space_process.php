@@ -115,11 +115,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['apply'])) {
     // Get space information from the form
     $spaceName = $_POST['spacename'];
     $SpaceID = $_POST['SpaceID'];
-    $ownerName = $_SESSION['uname'];
-    $ownerEmail = $_SESSION['uemail'];
     $concourseid = isset($_GET['concourse_id']);
 
     $requirements_file = '';
+ 
+    $concourseQuery3 = "SELECT * FROM concourse_verification WHERE concourse_id = '$concourseid'  ";
+    if ($concourseQuery3Result && mysqli_num_rows($concourseQuery3) > 0) {
+        $concourseData = mysqli_fetch_assoc($concourseQuery3Result);
+        $ownerName = $concourseData['uname'];
+        $ownerEmail = $concourseData['uemail'];
+    }
 
     //Handle file upload
     if (isset($_FILES['pdf_requirements'])) {
@@ -141,7 +146,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['apply'])) {
     $insertResult = $con->query($insertApplicationQuery);
 
     // Update status in space table to 'reserved'
-    $updateSpaceStatusQuery = "UPDATE space SET space_owner = '$ownerName', space_oemail = '$ownerEmail', status = 'reserved', space_tenant = '$tenantName' WHERE space_name = '$spaceName'";
+    $updateSpaceStatusQuery = "UPDATE space SET status = 'reserved', space_tenant = '$tenantName' WHERE space_name = '$spaceName'";
     $updateResult = $con->query($updateSpaceStatusQuery);
 
     // Notify space owner

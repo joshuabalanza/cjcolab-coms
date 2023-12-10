@@ -38,14 +38,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_space_modal'])
                 exit;
             }
         }
-    
+        $space_dimension = $space_width . ' x ' . $space_length;
         // Insert space with owner information, coordinates, and space image
-        $insertQuery = "INSERT INTO space (concourse_id, space_name, space_width, space_length, space_price, status, space_owner, space_oemail, space_img) 
-                        VALUES ('$concourse_id', '$space_name', $space_width, $space_length, $space_price, '$space_status', '$ownerName', '$ownerEmail', '$space_image')";
+        $insertQuery = "INSERT INTO space (concourse_id, space_name, space_width, space_length, space_price, status, space_owner, space_oemail, space_img, space_dimension) 
+                        VALUES ('$concourse_id', '$space_name', $space_width, $space_length, $space_price, '$space_status', '$ownerName', '$ownerEmail', '$space_image', '$space_dimension')";
     
         if (mysqli_query($con, $insertQuery)) {
             // Successfully inserted space, redirect to map_display_mayk.php with the necessary information
-            header("Location: map_display.php?concourse_id=$concourse_id&inserted_space=$space_name");
+            header("Location: map_display.php?concourse_id=$concourse_id&inserted_space=$space_name&spacedim=$space_dimension");
             exit();
         } else {
             echo "Error: " . mysqli_error($con);

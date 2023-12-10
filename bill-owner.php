@@ -30,7 +30,7 @@ if (isset($_POST['SavaChangesBilling'])) {
             $row2 = $billingresult2->fetch_assoc();
             $varbillingElectricAmount = $row2['Amount'];
         }     
-        // RefreshContent(); 
+        RefreshContent(); 
         $showSuccessModal = true;
         
     }
