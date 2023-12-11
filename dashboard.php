@@ -310,11 +310,23 @@ include('includes/nav.php');
 <div class="dashboard-body" style="margin-top:90px;">
    <h1>Dashboard</h1>
    <div class="row" style="padding:2rem;">
-   <div class="col-xl-12 p-20" style="text-align: center;">
-               <a class="btn btn-success" href="concourses.php">Time to add bills for this
-                  month</a>
-            </div>
-   </div>
+         <div class="col-xl-12 p-20" style="text-align: center;">
+            <a class="btn btn-success" href="concourses.php">Time to add bills for this month for Space 
+                        <?php
+                        $owner_name = $_SESSION['uname'];
+                        $query = "SELECT a.space_id, a.space_name FROM space a left join bill b on a.space_id=b.space_id and month(created_at)=month(CURRENT_DATE()) where b.bill_id is null and space_owner= '$owner_name'";
+                        $BillResult = $con->query($query);
+                        if ($BillResult && mysqli_num_rows($BillResult) > 0) {
+                           while ($row = $BillResult->fetch_assoc()) {
+                           $space_name = $row['space_name'];
+                           echo $space_name . ', ';
+                           }
+                        }
+                        ?>
+                        </a>
+                     </div>
+                  </div>
+   
    <div class="row dashboard-reports">
       <!-- **********************************-->
       <!-- ************ OWNER ***************-->
@@ -413,12 +425,14 @@ include('includes/nav.php');
                      <p>Php
                         <?php
                         $owner_name = $_SESSION['uname'];
-                        $query = "WITH latestbilling AS ( SELECT m.*, ROW_NUMBER() OVER (PARTITION BY space_id ORDER BY bill_id DESC) AS rn FROM bill AS m WHERE owner_name = '$owner_name'  ) SELECT SUM(total) as totalAmount FROM latestbilling WHERE rn = 1";
-                        $result = mysqli_query($con, $query);
-                        $row = mysqli_fetch_assoc($result);
-
-                        $totalAmount = $row['totalAmount'];
-                        echo number_format($totalAmount, 2);
+                        $query = "WITH latestbilling AS ( SELECT m.*, ROW_NUMBER() OVER (PARTITION BY space_id ORDER BY bill_id DESC) AS rn FROM bill AS m WHERE owner_name = '$owner_name'  ) SELECT IFNULL(SUM(total),0)  as totalAmount FROM latestbilling WHERE rn = 1";
+                        $query_TotalResult = mysqli_query($con, $query);
+                        if ($query_TotalResult && mysqli_num_rows($query_TotalResult) > 0) {
+                           $totalAmount = ($row && mysqli_num_rows($query_TotalResult) > 0) ? mysqli_fetch_assoc($query_TotalResult)['totalAmount'] : 0;
+                           echo number_format($totalAmount, 2);
+                        }else{
+                           echo number_format(0, 2);
+                        }
                         ?>
                      </p>
                      <h5>Total Bills</h5>

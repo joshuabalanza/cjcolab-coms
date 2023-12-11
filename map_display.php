@@ -271,19 +271,18 @@ include('includes/nav.php');
                       </map>';
                     } elseif (!empty($concourseDetails['concourse_map'])) {
                         echo '<img src="./uploads/' . $concourseDetails['concourse_map'] . '" id="concourseImage" class="card-img-top" alt="Concourse Map" style="width:100%; height: auto;" usemap="#workmap"> ';
-                        echo ' <map name="workmap" id="workmap">';
-                        if ($result2 && mysqli_num_rows($result2) > 0) {
-                            while ($row = $result2->fetch_assoc()) {
-                                echo '<area shape="circle" id="workmap2" coords="'.$row['coords'].'" >';
-                            }
-                        }
-                        echo '</map>';
 
                     } else {
                         echo '<img src="path_to_placeholder_image.jpg" id="concourseImage" class="card-img-top" alt="Placeholder Image" style="width:100%; height: 300px;">';
                     }
                     ?>
-
+  <!-- echo ' <map name="workmap" id="workmap">';
+                        if ($result2 && mysqli_num_rows($result2) > 0) {
+                            while ($row = $result2->fetch_assoc()) {
+                                echo '<area shape="circle" id="workmap2" coords="'.$row['coords'].'" >';
+                            }
+                        }
+                        echo '</map>' -->
                 </div>
                 <div class="card-body">
                     <h5 class="card-title">

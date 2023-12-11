@@ -348,7 +348,7 @@ $con->close();
                <li><strong>Space Dimension:</strong> ${spaceDetails['space_dimension']}</li>
                <li><strong>Status:</strong> ${spaceDetails['status']}</li>
                <li><strong>Rent Price:</strong> ${spaceDetails['space_price']}</li>
-               <li><strong>Space Tenant:</strong> ${spaceDetails['space_tenant']}</li>
+               <li><strong>Space Tenant:</strong> ${spaceDetails['space_tenant'] == null ? '' : spaceDetails['space_tenant'] }</li>
              </ul>
          `;
 

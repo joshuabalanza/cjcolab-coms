@@ -90,11 +90,7 @@ $owner_name= $_SESSION['uname'];
         $concourseId = $concourse['concourse_id'];
 
         // Fetch and display tenant data for each concourse along with space details
-        $tenantQuery = "SELECT u.*, s.space_name, c.c_start, c.c_end
-                        FROM user u
-                        JOIN space s ON u.uname = s.space_tenant
-                        LEFT JOIN contract c ON s.space_tenant = c.tenant_name
-                        WHERE s.space_owner = '$owner' AND s.concourse_id = '$concourseId'";
+        $tenantQuery = "SELECT * FROM concourse_verification A LEFT JOIN `space` B ON A.concourse_id=B.concourse_id left join space_application c on b.space_id=c.space_id left join contract d on c.app_id=d.space_id WHERE A.owner_name='$owner' and b.status='occupied' and a.concourse_id = '$concourseId' and d.contract_id is not null";
 
         $tenantResult = mysqli_query($con, $tenantQuery);
 
@@ -104,7 +100,6 @@ $owner_name= $_SESSION['uname'];
         echo '<tr>';
         echo '<th>Name</th>';
         echo '<th>Email</th>';
-        echo '<th>Phone</th>';
         echo '<th>Space Name</th>';
         echo '<th>Concourse ID</th>';
         echo '<th>Lease Start</th>';
@@ -115,9 +110,8 @@ $owner_name= $_SESSION['uname'];
 
         while ($tenant = mysqli_fetch_assoc($tenantResult)) {
             echo '<tr class="tenant-row">';
-            echo '<td>' . $tenant['uname'] . '</td>';
-            echo '<td>' . $tenant['uemail'] . '</td>';
-            echo '<td>' . $tenant['uphone'] . '</td>';
+            echo '<td>' . $tenant['tenant_name'] . '</td>';
+            echo '<td>' . $tenant['ap_email'] . '</td>';
             echo '<td>' . $tenant['space_name'] . '</td>';
             echo '<td>' . $concourseId . '</td>';
             echo '<td>' . $tenant['c_start'] . '</td>';
