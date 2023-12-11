@@ -12,6 +12,9 @@ if (isset($_GET['concourse_id'])) {
     $concourse_id = $_GET['concourse_id'];
     $concourseQuery = "SELECT * FROM concourse_verification WHERE concourse_id = $concourse_id";
     $concourseResult = mysqli_query($con, $concourseQuery);
+
+    $spaceQuery = "SELECT * FROM space WHERE concourse_id = $concourse_id";;
+    $result2 = $con->query($spaceQuery);
 } else {
     echo 'Concourse ID not provided.';
 }
@@ -47,7 +50,6 @@ include('includes/nav.php');
         width: 200px;
         /* Adjust the width as needed */
         margin: 10px;
-        cursor: pointer;
         transition: transform 0.3s ease-in-out;
     }
 
@@ -107,7 +109,6 @@ include('includes/nav.php');
         border: 1px solid #ddd;
         /* Add borders or styling as needed */
         box-sizing: border-box;
-        cursor: pointer;
     }
 
     @media (max-width: 1200px) {
@@ -194,7 +195,6 @@ include('includes/nav.php');
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         padding: 20px;
         margin-bottom: 20px;
-        cursor: pointer;
     }
 
     h1 {
@@ -262,14 +262,23 @@ include('includes/nav.php');
         <div class="container">
         <h4 style="color:#fff; text-align:center" class="pt-2">Concourse Details</h4>
             <input type="button" class="btn btn-primary" id="btnBilling" value="Details" style="width:120px;"/>
-            <div class="card" style="width: 100%; height: 100%; padding: 10px; margin: 0 auto; position: relative;">
+            <div class="card" style="width: 100%; height: 100%; padding: 10px; margin: 0 auto; position: relative; ">
                 <div class="image-container">
                     <?php
                     // Display concourse image or map (similar to how you did in the previous code)
                     if (!empty($concourseDetails['concourse_image'])) {
-                        echo '<img src="./uploads/featured-concourse/' . $concourseDetails['concourse_image'] . '" id="concourseImage" class="card-img-top" alt="Concourse Image" style="width:100%; height: 300px;">';
+                        echo '<img src="./uploads/featured-concourse/' . $concourseDetails['concourse_image'] . '" id="concourseImage" class="card-img-top" alt="Concourse Image" style="width:100%; height: 300px;"> 
+                      </map>';
                     } elseif (!empty($concourseDetails['concourse_map'])) {
-                        echo '<img src="./uploads/' . $concourseDetails['concourse_map'] . '" id="concourseImage" class="card-img-top" alt="Concourse Map" style="width:100%; height: auto;">';
+                        echo '<img src="./uploads/' . $concourseDetails['concourse_map'] . '" id="concourseImage" class="card-img-top" alt="Concourse Map" style="width:100%; height: auto;" usemap="#workmap"> ';
+                        echo ' <map name="workmap" id="workmap">';
+                        if ($result2 && mysqli_num_rows($result2) > 0) {
+                            while ($row = $result2->fetch_assoc()) {
+                                echo '<area shape="circle" id="workmap2" coords="'.$row['coords'].'" >';
+                            }
+                        }
+                        echo '</map>';
+
                     } else {
                         echo '<img src="path_to_placeholder_image.jpg" id="concourseImage" class="card-img-top" alt="Placeholder Image" style="width:100%; height: 300px;">';
                     }
@@ -363,7 +372,7 @@ include('includes/nav.php');
         <?php
         if ($result && mysqli_num_rows($result) > 0) {
             while ($row = $result->fetch_assoc()) {
-                echo "<div class='card' onclick='openSpaceModal(\"{$row['space_name']}\", \"{$row['status']}\", " . json_encode($row) . ")'>";
+                echo "<div class='card' style='cursor:pointer' onclick='openSpaceModal(\"{$row['space_name']}\", \"{$row['status']}\", " . json_encode($row) . ")'>";
                 echo "<h2>{$row['space_name']}</h2>";
                 echo "<h6>{$row['status']}</h6>";
                 echo "<h7>{$row['space_owner']}</h6>";
@@ -513,7 +522,29 @@ include('includes/nav.php');
     function showSpaceDetailsForm() {
         $('#spaceDetailsModal').modal('show');
     }
+
+    // $("#concourseImage").on("click", function (e){     
+    //     var offset = $(this).offset();
+    //     var x = e.pageX - offset.left;
+    //     var y = e.pageY - offset.top;
+
+    //     alert(x +' '+ y);
+        
+    // })
+
+    // $("#workmap").hover(function(e){
+    //     alert('dasdosaj');
+    //     console.log(e)
+    // })
+
+    // function workmapEvent(){
+    //     alert('dasdosaj');
+    // }
+
+    // $("#workmap").mouseenter(function(){
+    //     alert('dasdosaj');
+    // });
+  
 </script>
 
-</script>
 <?php include('includes/footer.php'); ?>

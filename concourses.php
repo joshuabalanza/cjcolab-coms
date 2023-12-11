@@ -144,7 +144,7 @@ include('includes/nav.php');
             </div>
          </div>
          <!-- TENANT -->
-      <?php elseif ($verificationStatus === 'approved' && $utype === 'Tenant'): ?>
+      <?php elseif ($utype === 'Tenant'): ?>
          <!-- <a href="tenant-apply-space.php">
       <button class="btn-sm btn btn-success">Apply For Space</button>
       </a> -->

@@ -309,11 +309,17 @@ include('includes/nav.php');
 </style>
 <div class="dashboard-body" style="margin-top:90px;">
    <h1>Dashboard</h1>
-   <div class="dashboard-reports">
+   <div class="row" style="padding:2rem;">
+   <div class="col-xl-12 p-20" style="text-align: center;">
+               <a class="btn btn-success" href="concourses.php">Time to add bills for this
+                  month</a>
+            </div>
+   </div>
+   <div class="row dashboard-reports">
       <!-- **********************************-->
       <!-- ************ OWNER ***************-->
       <!-- **********************************-->
-      <?php if ($verificationStatus === 'approved' && $utype === 'Owner'): ?>
+      <?php if ($utype === 'Owner'): ?>
          <div class="row">
             <section>
                <h2>Space Overview</h2>
@@ -399,6 +405,7 @@ include('includes/nav.php');
             </section>
          </div>
          <div class="row">
+            
             <section>
                <h2>Financial Overview</h2>
                <div class="section-content">
@@ -419,6 +426,7 @@ include('includes/nav.php');
                   <div style="padding-top: 35px;" class="section-item">
                      <a class="btn btn-primary" style="margin-bottom: 10px;" href="bill-owner.php">Billing Information</a>
                      <button>Financial Reports</button>
+
                   </div>
                </div>
             </section>

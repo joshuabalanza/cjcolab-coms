@@ -57,7 +57,7 @@ $owner_name= $_SESSION['uname'];
         color: white;
     }
 </style>
-<?php 
+    <?php 
         $concourseQuery = "SELECT * FROM concourse_verification WHERE owner_id = '$owner_id'  ";
         $result = $con->query($concourseQuery);
     ?>
